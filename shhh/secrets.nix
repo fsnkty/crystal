@@ -6,5 +6,8 @@ in {
 
   "user_cloud.age".publicKeys = [library];
   "personal_mail.age".publicKeys = [library];
+
   "services_mail.age".publicKeys = [library];
+  "vault_env.age".publicKeys = [library];
+  "cloud_env.age".publicKeys = [library];
 }

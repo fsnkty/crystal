@@ -9,13 +9,15 @@
     domain = "cloud.${config.local.services.web.domain}";
   in
     lib.mkIf config.local.services.web.nextcloud.enable {
-      #### STATEFUL CRAP WARNING ####
-      # this module only sets the service up. all config is done in the client
-      # the postgres table used is apart of this, trying to put in a volume seems impractical.
-      # thankfully actual user data is stored in the nextcloud volume.
-      age.secrets.user_cloud = {
-        file = ../../shhh/user_cloud.age;
-        owner = "nextcloud";
+      age.secrets = {
+        user_cloud = {
+          file = ../../shhh/user_cloud.age;
+          owner = "nextcloud";
+        };
+        cloud_env = {
+          file = ../../shhh/cloud_env.age;
+          owner = "nextcloud";
+        };
       };
       services = {
         nextcloud = {
@@ -23,27 +25,44 @@
           package = pkgs.nextcloud28;
           hostName = domain;
           home = "/storage/volumes/nextcloud";
-          autoUpdateApps.enable = true;
-          configureRedis = true;
+          
+          nginx.recommendedHttpHeaders = true;
+          https = true;
+          
           config = {
             adminuser = "nuko";
-            adminpassFile = config.age.secrets.user_cloud.path;
+            adminpassFile = config.age.secrets.user_cloud.path; # only set on setup.
             dbtype = "pgsql";
             dbhost = "/run/postgresql";
-            dbname = "nextcloud";
           };
+          phpOptions = {
+            "opcache.interned_strings_buffer" = "16";
+            "output_buffering" = "off";
+          };
+          configureRedis = true;
+          
           extraOptions = {
             overwriteprotocol = "https";
             trusted_proxies = ["https://${domain}"];
             trusted_domains = ["https://${domain}"];
             default_phone_region = "NZ";
+            # service mail setup.
+            mail_smtpmode = "smtp";
+            mail_sendmailmode = "smtp";
+            mail_smtpsecure = "ssl";
+            mail_smtphost = "mail.nuko.city";
+            mail_smtport = "465";
+            mail_smtpauth = 1;
+            mail_smtpname = "cloud@nuko.city";
+            mail_from_address = "cloud";
           };
-          nginx.recommendedHttpHeaders = true;
-          https = true;
-          phpOptions = {
-            "opcache.interned_strings_buffer" = "16";
-            "output_buffering" = "off";
-          };
+          # just the smtp pass.
+          secretFile = config.age.secrets.cloud_env.path;
+          
+          appstoreEnable = false;
+          autoUpdateApps.enable = true;
+          extraAppsEnable = true;
+          extraApps = { inherit (pkgs.nextcloud28Packages.apps) mail calendar bookmarks notes; };
         };
         postgresql = {
           enable = true;

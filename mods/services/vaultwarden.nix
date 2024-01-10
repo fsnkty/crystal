@@ -8,6 +8,10 @@
     domain = "vault.${config.local.services.web.domain}";
   in
     lib.mkIf config.local.services.web.vaultwarden.enable {
+      age.secrets.vault_env = {
+        file = ../../shhh/vault_env.age;
+        owner = "vaultwarden";
+      };
       services = {
         vaultwarden = {
           enable = true;
@@ -17,18 +21,14 @@
             ROCKET_ADDRESS = "127.0.0.1";
             ROCKET_PORT = 8222;
             ROCKET_LOG = "critical";
-
-            # disabled as theres no nice/simple way to supply the SMTP_PASSWORD secret.
-            # can always just reenable privately if a recovery email is needed. jank :(
-            #SMTP_HOST = "mail.nuko.city";
-            #SMPT_PORT = 465;
-            #SMTP_SSL = true;
-            #SMTP_FROM = "vaultwarden@nuko.city";
-            #SMTP_FROM_NAME = "vault.nuko.city Vaultwarden server";
-            #SMTP_USERNAME = "vaultwarden@nuko.city";
-            #SMTP_PASSWORD = "";
+            SMTP_HOST = "mail.nuko.city";
+            SMPT_PORT = 465;
+            SMTP_SECURITY = "starttls";
+            SMTP_FROM = "vault@nuko.city";
+            SMTP_FROM_NAME = "vault.nuko.city Vaultwarden server";
+            SMTP_USERNAME = "vault@nuko.city";
           };
-          backupDir = "/storage/volumes/vault";
+          environmentFile = config.age.secrets.vault_env.path;
         };
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;

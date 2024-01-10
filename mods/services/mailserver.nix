@@ -29,7 +29,7 @@
             aliases = ["me@${baseDomain}" "acme@${baseDomain}" "admin@${baseDomain}"];
           };
           "cloud@${baseDomain}".hashedPasswordFile = config.age.secrets.services.path;
-          #"vault@${baseDomain}".hashedPasswordFile = config.age.secrets.services.path;
+          "vault@${baseDomain}".hashedPasswordFile = config.age.secrets.services.path;
         };
         certificateScheme = "acme-nginx";
       };
