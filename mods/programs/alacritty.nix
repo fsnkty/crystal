@@ -3,7 +3,7 @@
   lib,
   pkgs,
   ...
-} : {
+}: {
   options.local.programs.alacritty.enable = lib.mkEnableOption "";
   config = lib.mkIf config.local.programs.alacritty.enable {
     users.users.main.packages = [pkgs.alacritty];

@@ -1,4 +1,8 @@
-{lib, config, ...}: {
+{
+  lib,
+  config,
+  ...
+}: {
   # https://github.com/mountain-theme/Mountain
   options.local.mountain = lib.mkOption {};
   config.local.mountain = {
@@ -39,7 +43,7 @@
     };
   };
 
-  # base16 colours 
+  # base16 colours
   options.local.colours = lib.mkOption {};
   config.local.colours = let
     c = config.local.mountain;

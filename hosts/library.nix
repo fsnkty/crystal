@@ -20,6 +20,7 @@
     };
     services = {
       fail2ban.enable = true;
+      postgres.enable = true;
       web = {
         enable = true;
         domain = "nuko.city";
@@ -28,6 +29,7 @@
         qbit.enable = true;
         nextcloud.enable = true;
         vaultwarden.enable = true;
+        synapse.enable = true;
       };
       mailserver.enable = true;
     };

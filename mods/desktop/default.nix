@@ -78,7 +78,7 @@
       d1 = "DP-1";
       d2 = "HDMI-A-1";
 
-      directions = [ "left" "down" "up" "right"];
+      directions = ["left" "down" "up" "right"];
 
       grim = lib.getExe pkgs.grim;
       slurp = lib.getExe pkgs.slurp;
@@ -143,7 +143,7 @@
         ${ccms "\n" (n: "workspace ${n} output ${d2}") (map toString (lib.range 5 8))}
         # move focus / +Shift move focused client to workspace
         ${ccms "\n" (n: "bindsym ${mod}+${n} workspace number ${n}") (map toString (lib.range 1 8))}
-        ${ccms "\n" (n: "bindsym ${mod}+Shift+${n} move container to workspace number ${n}") (map toString (lib.range 1 8)) }
+        ${ccms "\n" (n: "bindsym ${mod}+Shift+${n} move container to workspace number ${n}") (map toString (lib.range 1 8))}
       '';
       ".config/waybar/config".text = let
         workspaces = ''

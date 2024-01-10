@@ -25,10 +25,10 @@
           package = pkgs.nextcloud28;
           hostName = domain;
           home = "/storage/volumes/nextcloud";
-          
+
           nginx.recommendedHttpHeaders = true;
           https = true;
-          
+
           config = {
             adminuser = "nuko";
             adminpassFile = config.age.secrets.user_cloud.path; # only set on setup.
@@ -40,7 +40,7 @@
             "output_buffering" = "off";
           };
           configureRedis = true;
-          
+
           extraOptions = {
             overwriteprotocol = "https";
             trusted_proxies = ["https://${domain}"];
@@ -51,21 +51,21 @@
             mail_sendmailmode = "smtp";
             mail_smtpsecure = "ssl";
             mail_smtphost = "mail.nuko.city";
-            mail_smtport = "465";
+            mail_smtpport = "465";
             mail_smtpauth = 1;
             mail_smtpname = "cloud@nuko.city";
             mail_from_address = "cloud";
+            mail_domain = "nuko.city";
           };
           # just the smtp pass.
           secretFile = config.age.secrets.cloud_env.path;
-          
+
           appstoreEnable = false;
           autoUpdateApps.enable = true;
           extraAppsEnable = true;
-          extraApps = { inherit (pkgs.nextcloud28Packages.apps) mail calendar bookmarks notes; };
+          extraApps = {inherit (pkgs.nextcloud28Packages.apps) mail calendar bookmarks notes;};
         };
         postgresql = {
-          enable = true;
           ensureDatabases = [config.services.nextcloud.config.dbname];
           ensureUsers = [
             {
