@@ -10,17 +10,15 @@
         config = true;
         flakePath = "/storage/repos/crystal";
       };
-      age.setup = true;
-      clean.enable = true;
-      root.disable = true;
       shell = {
         enable = true;
         prompt = "'%F{magenta}圖書館%F{reset_color} %~ %% '";
       };
+      ageSetup = true;
+      cleanDefaults = true;
+      disableRoot = true;
     };
     services = {
-      fail2ban.enable = true;
-      postgres.enable = true;
       web = {
         enable = true;
         domain = "nuko.city";
@@ -31,6 +29,8 @@
         vaultwarden.enable = true;
         synapse.enable = true;
       };
+      fail2ban.enable = true;
+      postgres.enable = true;
       mailserver.enable = true;
     };
     programs = {

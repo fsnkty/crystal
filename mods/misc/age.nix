@@ -5,8 +5,8 @@
   inputs,
   ...
 }: {
-  options.local.misc.age.setup = lib.mkEnableOption "";
-  config = lib.mkIf config.local.misc.age.setup {
+  options.local.misc.ageSetup = lib.mkEnableOption "";
+  config = lib.mkIf config.local.misc.ageSetup {
     environment.systemPackages = [inputs.agenix.packages.${pkgs.system}.default];
     age.identityPaths = ["/home/${config.users.users.main.name}/.ssh/id_ed25519"];
   };

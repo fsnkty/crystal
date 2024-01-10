@@ -4,8 +4,8 @@
   pkgs,
   ...
 }: {
-  options.local.misc.root.disable = lib.mkEnableOption "";
-  config = lib.mkIf config.local.misc.root.disable {
+  options.local.misc.disableRoot = lib.mkEnableOption "";
+  config = lib.mkIf config.local.misc.disableRoot {
     users.users.root = {
       hashedPassword = "!"; # wont eval
       shell = pkgs.shadow; # more informative than just no password

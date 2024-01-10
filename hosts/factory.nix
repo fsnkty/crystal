@@ -10,13 +10,13 @@
         config = true;
         flakePath = "/storage/crystal";
       };
-      age.setup = true;
-      clean.enable = true;
-      root.disable = true;
       shell = {
         enable = true;
         prompt = "'%~ %% '";
       };
+      ageSetup = true;
+      cleanDefaults = true;
+      disableRoot = true;
     };
     desktop = {
       enable = true;

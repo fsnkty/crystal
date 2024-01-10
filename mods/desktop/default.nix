@@ -74,29 +74,31 @@
       platformTheme = "gtk2";
     };
     home.file = let
-      mod = "Mod4";
       d1 = "DP-1";
       d2 = "HDMI-A-1";
-
-      directions = ["left" "down" "up" "right"];
-
-      grim = lib.getExe pkgs.grim;
-      slurp = lib.getExe pkgs.slurp;
-      jq = lib.getExe pkgs.jq;
-
-      ccms = lib.concatMapStringsSep;
-
       lcp = config.local.colours.primary;
       lca = config.local.colours.alpha;
     in {
-      ".config/sway/config".text = ''
+      ".config/sway/config".text = let
+        mod = "Mod4";
+        directions = ["left" "down" "up" "right"];
+        grim = lib.getExe pkgs.grim;
+        slurp = lib.getExe pkgs.slurp;
+        jq = lib.getExe pkgs.jq;
+        ccs = lib.concatStrings;
+        ccms = lib.concatMapStringsSep;
+        inherit (lib) replicate range;
+      in ''
+        # setup
         seat seat0 xcursor_theme phinger-cursors 24
+        xwayland enable
         exec {
           systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
           autotiling-rs
           waybar
           swayidle -w before-sleep 'swaylock -f -c 000000'
         }
+        input "5426:132:Razer_Razer_DeathAdder_V2" { accel_profile flat }
         output ${d1} {
             mode 1920x1080@144Hz
             position 0,0
@@ -106,21 +108,17 @@
             mode 1920x1080@60Hz
             position 1920,0
         }
-        input "5426:132:Razer_Razer_DeathAdder_V2" {
-            accel_profile flat
-        }
-
-        # visuals
+        ${ccms "\n" (n: "workspace ${n} output ${d1}") (map toString (range 1 4))}
+        ${ccms "\n" (n: "workspace ${n} output ${d2}") (map toString (range 5 8))}
+        # visual
         output ${d1} background wallpaper1 fill
         output ${d2} background wallpaper2 fill
         default_border pixel 3
         gaps inner 5
-        client.focused #${lcp.main} #${lcp.main} #${lcp.main} #${lcp.main}
-        client.unfocused #${lcp.bg} #${lcp.bg} #${lcp.bg} #${lcp.bg}
-        client.focused_inactive #${lcp.bg} #${lcp.bg} #${lcp.bg} #${lcp.bg}
-
-        xwayland enable
-
+        client.focused ${ccs (replicate 4 "#${lcp.main} ")}
+        client.unfocused ${ccs (replicate 4 "#${lcp.bg} ")}
+        client.focused_inactive ${ccs (replicate 4 "#${lcp.bg} ")}
+        # keybinds
         bindsym ${mod}+Return exec alacritty
         bindsym ${mod}+Shift+q kill
         bindsym ${mod}+d exec wofi --show drun -a -W 15% -H 35%
@@ -128,22 +126,14 @@
         bindsym ${mod}+Shift+d exec ${grim} -g "$(swaymsg -t get_tree | ${jq} -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | ${slurp} -d)" - | wl-copy -t image/png
         bindsym ${mod}+Shift+e exec swaynag -t warning -m 'confirm quit sway' -B 'confirm' 'swaymsg exit'
         bindsym ${mod}+l exec swaylock -f -c 000000
-
         floating_modifier ${mod} normal
         bindsym ${mod}+Shift+a floating toggle
         bindsym ${mod}+Shift+z fullscreen toggle
-
-        # move client focus
         ${ccms "\n" (n: "bindsym ${mod}+${n} focus ${n}") directions}
-        # move focused client
         ${ccms "\n" (n: "bindsym ${mod}+Shift+${n} move ${n}") directions}
-
-        # bind workspaces to specific monitors
-        ${ccms "\n" (n: "workspace ${n} output ${d1}") (map toString (lib.range 1 4))}
-        ${ccms "\n" (n: "workspace ${n} output ${d2}") (map toString (lib.range 5 8))}
-        # move focus / +Shift move focused client to workspace
-        ${ccms "\n" (n: "bindsym ${mod}+${n} workspace number ${n}") (map toString (lib.range 1 8))}
-        ${ccms "\n" (n: "bindsym ${mod}+Shift+${n} move container to workspace number ${n}") (map toString (lib.range 1 8))}
+        ${ccms "\n" (n: "bindsym ${mod}+${n} workspace number ${n}") (map toString (range 1 8))}
+        ${ccms "\n" (n: "bindsym ${mod}+Shift+${n} move container to workspace number ${n}") (map toString (range 1 8))}
+        
       '';
       ".config/waybar/config".text = let
         workspaces = ''
