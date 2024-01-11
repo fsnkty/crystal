@@ -19,10 +19,13 @@
       disableRoot = true;
     };
     desktop = {
-      enable = true;
       console = true;
       fonts = true;
       audio = true;
+      sway = true;
+      theme = true;
+      waybar = true;
+      wofi = true;
     };
     programs = {
       alacritty.enable = true;

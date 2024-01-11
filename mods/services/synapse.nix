@@ -19,17 +19,21 @@
             public_baseurl = "https://" + matrixdomain;
             max_upload_size = "5G";
             enable_registration = false;
-            listeners = [{
-              port = 8008;
-              bind_addresses = ["127.0.0.1"];
-              type = "http";
-              tls = false;
-              x_forwarded = true;
-              resources = [{
-                names = ["client" "federation"];
-                compress = true;
-              }];
-            }];
+            listeners = [
+              {
+                port = 8008;
+                bind_addresses = ["127.0.0.1"];
+                type = "http";
+                tls = false;
+                x_forwarded = true;
+                resources = [
+                  {
+                    names = ["client" "federation"];
+                    compress = true;
+                  }
+                ];
+              }
+            ];
           };
           dataDir = "/storage/volumes/synapse";
         };
@@ -54,7 +58,7 @@
             forceSSL = true;
             enableACME = true;
             locations = {
-              "/".extraConfig = '' return 404; '';
+              "/".extraConfig = ''return 404; '';
               "~ ^(/_matrix|/_synapse/client)".proxyPass = "http://127.0.0.1:8008";
             };
           };
