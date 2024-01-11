@@ -3,8 +3,8 @@
   config,
   ...
 }: {
-  options.local.desktop.audio = lib.mkEnableOption "";
-  config = lib.mkIf config.local.desktop.audio {
+  options.desktop.audio = lib.mkEnableOption "";
+  config = lib.mkIf config.desktop.audio {
     services.pipewire = {
       enable = true;
       alsa.enable = true;

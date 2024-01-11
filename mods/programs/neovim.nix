@@ -5,8 +5,8 @@
   inputs,
   ...
 }: {
-  options.local.programs.neovim.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.local.programs.neovim.enable {
+  options.program.neovim = lib.mkEnableOption "";
+  config = lib.mkIf config.program.neovim {
     users.users.main.packages = with pkgs; [
       (pkgs.callPackage ../../pkgs/neovim.nix {inherit inputs;})
       deadnix

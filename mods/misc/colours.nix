@@ -4,8 +4,8 @@
   ...
 }: {
   # https://github.com/mountain-theme/Mountain
-  options.local.mountain = lib.mkOption {};
-  config.local.mountain = {
+  options.mountain = lib.mkOption {};
+  config.mountain = {
     grayscale = {
       yoru = "0f0f0f";
       kesseki = "191919";
@@ -44,9 +44,9 @@
   };
 
   # base16 colours
-  options.local.colours = lib.mkOption {};
-  config.local.colours = let
-    c = config.local.mountain;
+  options.colours = lib.mkOption {};
+  config.colours = let
+    c = config.mountain;
   in {
     primary = {
       bg = c.grayscale.yoru;

@@ -4,11 +4,11 @@
   lib,
   ...
 }: {
-  options.local.services.web.nextcloud.enable = lib.mkEnableOption "";
+  options.service.web.nextcloud = lib.mkEnableOption "";
   config = let
-    domain = "cloud.${config.local.services.web.domain}";
+    domain = "cloud.${config.service.web.domain}";
   in
-    lib.mkIf config.local.services.web.nextcloud.enable {
+    lib.mkIf config.service.web.nextcloud {
       age.secrets = {
         user_cloud = {
           file = ../../shhh/user_cloud.age;

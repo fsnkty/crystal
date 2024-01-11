@@ -4,36 +4,34 @@
   inputs,
   ...
 }: {
-  local = {
-    misc = {
-      nix = {
-        config = true;
-        flakePath = "/storage/crystal";
-      };
-      shell = {
-        enable = true;
-        prompt = "'%~ %% '";
-      };
-      ageSetup = true;
-      cleanDefaults = true;
-      disableRoot = true;
+  misc = {
+    nix = {
+      config = true;
+      flakePath = "/storage/crystal";
     };
-    desktop = {
-      console = true;
-      fonts = true;
-      audio = true;
-      sway = true;
-      theme = true;
-      waybar = true;
-      wofi = true;
+    shell = {
+      enable = true;
+      prompt = "'%~ %% '";
     };
-    programs = {
-      alacritty.enable = true;
-      firefox.enable = true;
-      htop.enable = true;
-      neovim.enable = true;
-      prism.enable = true;
-    };
+    ageSetup = true;
+    cleanDefaults = true;
+    disableRoot = true;
+  };
+  desktop = {
+    console = true;
+    fonts = true;
+    audio = true;
+    sway = true;
+    theme = true;
+    waybar = true;
+    wofi = true;
+  };
+  program = {
+    alacritty = true;
+    firefox = true;
+    htop = true;
+    neovim = true;
+    prism = true;
   };
   ### misc ###
   time.timeZone = "NZ";

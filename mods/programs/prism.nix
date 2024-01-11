@@ -5,8 +5,8 @@
   ...
 }: {
   # prism launcher is an alternative minecraft client manager.
-  options.local.programs.prism.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.local.programs.prism.enable {
+  options.program.prism = lib.mkEnableOption "";
+  config = lib.mkIf config.program.prism {
     # using the qt5 version as it responds to gtk adapt qt themes better
     users.users.main.packages = [pkgs.prismlauncher-qt5];
     # give the jdkbin a consistent path

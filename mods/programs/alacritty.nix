@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: {
-  options.local.programs.alacritty.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.local.programs.alacritty.enable {
+  options.program.alacritty = lib.mkEnableOption "";
+  config = lib.mkIf config.program.alacritty {
     users.users.main.packages = [pkgs.alacritty];
     home.file.".config/alacritty/alacritty.toml".text = let
-      lcp = config.local.colours.primary;
-      lca = config.local.colours.alpha;
-      lcac = config.local.colours.accent;
+      lcp = config.colours.primary;
+      lca = config.colours.alpha;
+      lcac = config.colours.accent;
     in ''
       [colors.bright]
       black = '#${lcac.black}'

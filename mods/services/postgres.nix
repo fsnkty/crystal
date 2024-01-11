@@ -3,8 +3,8 @@
   lib,
   ...
 }: {
-  options.local.services.postgres.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.local.services.postgres.enable {
+  options.service.postgres = lib.mkEnableOption "";
+  config = lib.mkIf config.service.postgres {
     services.postgresql = {
       enable = true;
       dataDir = "/storage/volumes/postgres";

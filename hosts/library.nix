@@ -4,39 +4,37 @@
   inputs,
   ...
 }: {
-  local = {
-    misc = {
-      nix = {
-        config = true;
-        flakePath = "/storage/repos/crystal";
-      };
-      shell = {
-        enable = true;
-        prompt = "'%F{magenta}圖書館%F{reset_color} %~ %% '";
-      };
-      ageSetup = true;
-      cleanDefaults = true;
-      disableRoot = true;
+  misc = {
+    nix = {
+      config = true;
+      flakePath = "/storage/repos/crystal";
     };
-    services = {
-      web = {
-        enable = true;
-        domain = "nuko.city";
-        forgejo.enable = true;
-        jellyfin.enable = true;
-        qbit.enable = true;
-        nextcloud.enable = true;
-        vaultwarden.enable = true;
-        synapse.enable = true;
-      };
-      fail2ban.enable = true;
-      postgres.enable = true;
-      mailserver.enable = true;
+    shell = {
+      enable = true;
+      prompt = "'%F{magenta}圖書館%F{reset_color} %~ %% '";
     };
-    programs = {
-      htop.enable = true;
-      neovim.enable = true;
+    ageSetup = true;
+    cleanDefaults = true;
+    disableRoot = true;
+  };
+  service = {
+    web = {
+      enable = true;
+      domain = "nuko.city";
+      forgejo = true;
+      jellyfin = true;
+      qbit = true;
+      nextcloud = true;
+      vaultwarden = true;
+      synapse = true;
     };
+    fail2ban = true;
+    postgres = true;
+    mailserver = true;
+  };
+  program = {
+    htop = true;
+    neovim = true;
   };
   ### misc ###
   time.timeZone = "NZ";

@@ -3,8 +3,8 @@
   lib,
   ...
 }: {
-  options.local.services.fail2ban.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.local.services.fail2ban.enable {
+  options.service.fail2ban = lib.mkEnableOption "";
+  config = lib.mkIf config.service.fail2ban {
     services.fail2ban = {
       enable = true;
       bantime-increment = {

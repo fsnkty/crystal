@@ -3,11 +3,11 @@
   lib,
   ...
 }: {
-  options.local.services.web.vaultwarden.enable = lib.mkEnableOption "";
+  options.service.web.vaultwarden = lib.mkEnableOption "";
   config = let
-    domain = "vault.${config.local.services.web.domain}";
+    domain = "vault.${config.service.web.domain}";
   in
-    lib.mkIf config.local.services.web.vaultwarden.enable {
+    lib.mkIf config.service.web.vaultwarden {
       age.secrets.vault_env = {
         file = ../../shhh/vault_env.age;
         owner = "vaultwarden";

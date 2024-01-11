@@ -3,11 +3,11 @@
   lib,
   ...
 }: {
-  options.local.services.mailserver.enable = lib.mkEnableOption "";
+  options.service.mailserver = lib.mkEnableOption "";
   config = let
-    baseDomain = "${config.local.services.web.domain}";
+    baseDomain = "${config.service.web.domain}";
   in
-    lib.mkIf config.local.services.mailserver.enable {
+    lib.mkIf config.service.mailserver {
       age.secrets = {
         personal = {
           file = ../../shhh/personal_mail.age;

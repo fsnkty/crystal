@@ -4,8 +4,8 @@
   lib,
   ...
 }: {
-  options.local.desktop.fonts = lib.mkEnableOption "";
-  config = lib.mkIf config.local.desktop.fonts {
+  options.desktop.fonts = lib.mkEnableOption "";
+  config = lib.mkIf config.desktop.fonts {
     fonts = {
       packages = with pkgs; [
         (pkgs.callPackage ../../pkgs/sfFonts.nix {})

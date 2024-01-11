@@ -4,11 +4,11 @@
   config,
   ...
 }: {
-  options.local.misc.nix = {
+  options.misc.nix = {
     config = lib.mkEnableOption "";
     flakePath = lib.mkOption {type = lib.types.str;};
   };
-  config = lib.mkIf config.local.misc.nix.config {
+  config = lib.mkIf config.misc.nix.config {
     nix = {
       settings = {
         experimental-features = [
@@ -35,7 +35,7 @@
     };
     environment = {
       etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
-      sessionVariables.FLAKE = config.local.misc.nix.flakePath;
+      sessionVariables.FLAKE = config.misc.nix.flakePath;
     };
     documentation.enable = false;
   };

@@ -4,8 +4,8 @@
   config,
   ...
 }: {
-  options.local.programs.firefox.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.local.programs.firefox.enable {
+  options.program.firefox = lib.mkEnableOption "";
+  config = lib.mkIf config.program.firefox {
     home.file = {
       ".mozilla/firefox/profiles.ini".text = ''
         [Profile0]
@@ -18,7 +18,7 @@
       '';
       #https://github.com/crambaud/waterfall
       ".mozilla/firefox/${config.users.users.main.name}/chrome/userChrome.css".text = let
-        lc = config.local.colours;
+        lc = config.colours;
       in ''
         :root {
            --window-colour:               #${lc.primary.bg};

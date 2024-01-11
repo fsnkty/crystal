@@ -3,8 +3,8 @@
   config,
   ...
 }: {
-  options.local.desktop.theme = lib.mkEnableOption "";
-  config = lib.mkIf config.local.desktop.theme {
+  options.desktop.theme = lib.mkEnableOption "";
+  config = lib.mkIf config.desktop.theme {
     programs.dconf = {
       enable = true;
       profiles.user.databases = [

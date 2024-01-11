@@ -10,11 +10,11 @@
     "${inputs.qbit}/nixos/modules/services/torrent/qbittorrent.nix"
   ];
   ####
-  options.local.services.web.qbit.enable = lib.mkEnableOption "";
+  options.service.web.qbit = lib.mkEnableOption "";
   config = let
-    domain = "qbit.${config.local.services.web.domain}";
+    domain = "qbit.${config.service.web.domain}";
   in
-    lib.mkIf config.local.services.web.qbit.enable {
+    lib.mkIf config.service.web.qbit {
       services = {
         qbittorrent = {
           enable = true;

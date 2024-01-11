@@ -3,12 +3,12 @@
   lib,
   ...
 }: {
-  options.local.services.web.synapse.enable = lib.mkEnableOption "";
+  options.service.web.synapse = lib.mkEnableOption "";
   config = let
-    domain = config.local.services.web.domain;
+    domain = config.service.web.domain;
     matrixdomain = "matrix." + domain;
   in
-    lib.mkIf config.local.services.web.synapse.enable {
+    lib.mkIf config.service.web.synapse {
       services = {
         matrix-synapse = {
           enable = true;

@@ -3,8 +3,8 @@
   config,
   ...
 }: {
-  options.local.misc.cleanDefaults = lib.mkEnableOption "";
-  config = lib.mkIf config.local.misc.cleanDefaults {
+  options.misc.cleanDefaults = lib.mkEnableOption "";
+  config = lib.mkIf config.misc.cleanDefaults {
     programs = {
       # i dont need more than one editor thank you
       nano.enable = lib.mkForce false;

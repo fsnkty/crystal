@@ -4,11 +4,11 @@
   pkgs,
   ...
 }: {
-  options.local.misc.shell = {
+  options.misc.shell = {
     enable = lib.mkEnableOption "";
     prompt = lib.mkOption {type = lib.types.lines;};
   };
-  config = lib.mkIf config.local.misc.shell.enable {
+  config = lib.mkIf config.misc.shell.enable {
     users.users.main.shell = lib.mkForce pkgs.zsh;
     environment = {
       shells = [pkgs.zsh];
@@ -50,7 +50,7 @@
         grep = "grep --color=auto";
         ssh-library = "ssh 192.168.0.3";
       };
-      promptInit = "PROMPT=${config.local.misc.shell.prompt}";
+      promptInit = "PROMPT=${config.misc.shell.prompt}";
     };
   };
 }

@@ -5,8 +5,8 @@
   inputs,
   ...
 }: {
-  options.local.desktop.sway = lib.mkEnableOption "";
-  config = lib.mkIf config.local.desktop.sway {
+  options.desktop.sway = lib.mkEnableOption "";
+  config = lib.mkIf config.desktop.sway {
     programs = {
       zsh.loginShellInit = ''
         if [ -z "''${WAYLAND_DISPLAY}" ] && [ "''${XDG_VTNR}" -eq 1 ]; then
@@ -43,7 +43,7 @@
       d2 = "HDMI-A-1";
       m = "Mod4";
       directions = ["left" "down" "up" "right"];
-      lcp = config.local.colours.primary;
+      lcp = config.colours.primary;
       ccs = lib.concatStrings;
       ccms = lib.concatMapStringsSep;
       inherit (lib) replicate range getExe;

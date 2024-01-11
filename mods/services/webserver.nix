@@ -3,14 +3,14 @@
   lib,
   ...
 }: {
-  options.local.services.web = {
+  options.service.web = {
     enable = lib.mkEnableOption "";
     domain = lib.mkOption {type = lib.types.str;};
   };
   config = let
-    domain = "${config.local.services.web.domain}";
+    domain = "${config.service.web.domain}";
   in
-    lib.mkIf config.local.services.web.enable {
+    lib.mkIf config.service.web.enable {
       networking.firewall.allowedTCPPorts = [80 443 8080];
       security.acme = {
         acceptTerms = true;

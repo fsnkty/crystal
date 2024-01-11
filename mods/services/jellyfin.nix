@@ -14,11 +14,11 @@
     "${inputs.jelly}/nixos/modules/services/misc/jellyfin.nix"
   ];
   ####
-  options.local.services.web.jellyfin.enable = lib.mkEnableOption "";
+  options.service.web.jellyfin = lib.mkEnableOption "";
   config = let
-    domain = "jelly.${config.local.services.web.domain}";
+    domain = "jelly.${config.service.web.domain}";
   in
-    lib.mkIf config.local.services.web.jellyfin.enable {
+    lib.mkIf config.service.web.jellyfin {
       services = {
         jellyfin = {
           enable = true;

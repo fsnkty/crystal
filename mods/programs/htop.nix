@@ -4,8 +4,8 @@
   pkgs,
   ...
 }: {
-  options.local.programs.htop.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.local.programs.htop.enable {
+  options.program.htop = lib.mkEnableOption "";
+  config = lib.mkIf config.program.htop {
     users.users.main.packages = [pkgs.htop];
     home.file.".config/htop/htoprc".text = ''
       htop_version=3.2.2
