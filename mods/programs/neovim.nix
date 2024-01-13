@@ -2,17 +2,12 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }: {
   options.program.neovim = lib.mkEnableOption "";
   config = lib.mkIf config.program.neovim {
-    users.users.main.packages = with pkgs; [
-      (pkgs.callPackage ../../pkgs/neovim.nix {inherit inputs;})
-      deadnix
-      statix
-      nil
-      alejandra
+    users.users.main.packages = [
+      (pkgs.callPackage ../../pkgs/neovim.nix)
     ];
     environment.variables = {
       EDITOR = "nvim";

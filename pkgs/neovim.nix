@@ -1,14 +1,22 @@
 {
+  lib,
   pkgs,
-  inputs,
-}:
-pkgs.neovim.override {
-  # stupid defaults
-  withPython3 = false;
-  withRuby = false;
-  configure = {
+}: let
+  con = pkgs.neovimUtils.makeNeovimConfig {
+    plugins = with pkgs.vimPlugins; [
+      nvim-lspconfig
+      null-ls-nvim
+      nvim-treesitter
+      nvim-tree-lua
+      nvim-web-devicons
+      lualine-nvim
+      inputs.mountain.packages.${pkgs.system}.nvim
+    ];
+    withPython3 = false;
+    withRuby = false;
+    viAlias = true;
+    vimAlias = true;
     customRC = ''
-      lua << EOF
       local k = vim.keymap.set
       k("n", "<C-DOWN>", "<cmd>resize +2<cr>")
       k("n", "<C-UP>", "<cmd>resize -2<cr>")
@@ -82,18 +90,23 @@ pkgs.neovim.override {
           require('null-ls').builtins.diagnostics.deadnix
         }
       }
-      EOF
     '';
-    packages.myPlugins = with pkgs.vimPlugins; {
-      start = [
-        nvim-lspconfig
-        null-ls-nvim
-        nvim-treesitter
-        nvim-tree-lua
-        nvim-web-devicons
-        lualine-nvim
-        inputs.mountain.packages.${pkgs.system}.nvim
-      ];
-    };
   };
-}
+  wrapperArgs = let
+    path = lib.makeBinPath [
+      #Nix
+      pkgs.deadnix
+      pkgs.statix
+      pkgs.nil
+      pkgs.alejandra
+    ];
+  in
+    con.wrapperArgs
+    ++ [
+      "--prefix"
+      "PATH"
+      ":"
+      path
+    ];
+in
+  pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped (con // wrapperArgs)
