@@ -1,10 +1,17 @@
 {
   lib,
+  pkgs,
+  inputs,
   config,
   ...
 }: {
   options.desktop.theme = lib.mkEnableOption "";
   config = lib.mkIf config.desktop.theme {
+    users.users.main.packages = [
+      pkgs.phinger-cursors
+      inputs.mountain.packages.${pkgs.system}.gtk
+      pkgs.flat-remix-icon-theme
+    ];
     programs.dconf = {
       enable = true;
       profiles.user.databases = [
@@ -28,7 +35,7 @@
         gtk-icon-theme-name=Flat-Remix-Purple-Dark
         gtk-theme-name=phocus-mountain
       '';
-      # this is for qt compat
+      # qt compat mode is gtk2 based.
       "xdg/gtk-2.0/gtkrc".text = ''
         gtk-theme-name = "phocus-mountain"
       '';

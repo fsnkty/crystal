@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: {
@@ -8,16 +9,18 @@
     wofi = lib.mkEnableOption "";
   };
   config = {
+    users.users.main.packages =
+      lib.optionals (config.desktop.wofi) [pkgs.wofi]
+      ++ lib.optionals (config.desktop.waybar) [pkgs.waybar];
     home.file = let
       d1 = "DP-1";
       d2 = "HDMI-A-1";
-      lcp = config.colours.primary;
-      lca = config.colours.alpha;
+      inherit (config.colours) primary alpha;
     in {
       ".config/wofi/style.css" = lib.mkIf config.desktop.wofi {
         text = ''
           #window {
-              border: 3px solid #${lcp.main};
+              border: 3px solid #${primary.main};
           }
           #input {
               marfin: 15px;
@@ -29,7 +32,7 @@
               margin: 5px;
           }
           #entry:selected {
-              color: #${lcp.main};
+              color: #${primary.main};
           }
         '';
       };
@@ -125,9 +128,9 @@
           #workspaces {
               padding: 0px;
               border-radius: 0px;
-              border:2px solid #${lca.black};
-              background-color: #${lcp.bg};
-              color: #${lcp.fg};
+              border:2px solid #${alpha.black};
+              background-color: #${primary.bg};
+              color: #${primary.fg};
           }
           #worksapces button {
               padding: 2px;
@@ -136,26 +139,26 @@
               border-radius: 0px;
           }
           #workspaces button.focused {
-              color: #${lcp.main};
+              color: #${primary.main};
           }
           #workspaces button.urgent {
-              color: #${lcp.main};
+              color: #${primary.main};
           }
           #network,
           #pulseaudio,
           #tray,
           #clock {
               border-radius: 0px;
-              border:2px solid #${lca.black};
-              background-color: #${lcp.bg};
-              color: #${lcp.fg};
+              border:2px solid #${alpha.black};
+              background-color: #${primary.bg};
+              color: #${primary.fg};
               padding: 2px;
           }
           tooltip label {
-              background-color: #${lcp.bg};
-              color: #${lcp.fg};
+              background-color: #${primary.bg};
+              color: #${primary.fg};
               border-radius: 0px;
-              border:2px solid #${lca.black};
+              border:2px solid #${alpha.black};
           }
         '';
       };
