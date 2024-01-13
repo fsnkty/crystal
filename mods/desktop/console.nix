@@ -12,24 +12,24 @@
       packages = with pkgs; [terminus_font];
       keyMap = "us";
       colors = let
-        lc = config.colours;
+        inherit (config.colours) alpha accent primary;
       in [
         "000000" # prevent flicker
-        lc.alpha.red
-        lc.alpha.green
-        lc.alpha.yellow
-        lc.alpha.blue
-        lc.alpha.magenta
-        lc.alpha.cyan
-        lc.alpha.white
-        lc.accent.red
-        lc.accent.green
-        lc.accent.yellow
-        lc.accent.blue
-        lc.accent.magenta
-        lc.accent.cyan
-        lc.accent.white
-        lc.primary.fg
+        alpha.red
+        alpha.green
+        alpha.yellow
+        alpha.blue
+        alpha.magenta
+        alpha.cyan
+        alpha.white
+        accent.red
+        accent.green
+        accent.yellow
+        accent.blue
+        accent.magenta
+        accent.cyan
+        accent.white
+        primary.fg
       ];
     };
     # auto specify username to tty logins

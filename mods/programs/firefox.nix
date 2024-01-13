@@ -18,20 +18,20 @@
       '';
       #https://github.com/crambaud/waterfall
       ".mozilla/firefox/${config.users.users.main.name}/chrome/userChrome.css".text = let
-        lc = config.colours;
+        inherit (config.colours) primary alpha accent;
       in ''
         :root {
-           --window-colour:               #${lc.primary.bg};
-           --secondary-colour:            #${lc.alpha.black};
-           --inverted-colour:             #${lc.primary.fg};
-           --uc-identity-color-blue:      #${lc.alpha.blue};
-           --uc-identity-color-turquoise: #${lc.alpha.cyan};
-           --uc-identity-color-green:     #${lc.alpha.green};
-           --uc-identity-color-yellow:    #${lc.alpha.yellow};
-           --uc-identity-color-orange:    #${lc.alpha.orange};
-           --uc-identity-color-red:       #${lc.alpha.red};
-           --uc-identity-color-pink:      #${lc.accent.red};
-           --uc-identity-color-purple:    #${lc.alpha.magenta};
+           --window-colour:               #${primary.bg};
+           --secondary-colour:            #${alpha.black};
+           --inverted-colour:             #${primary.fg};
+           --uc-identity-color-blue:      #${alpha.blue};
+           --uc-identity-color-turquoise: #${alpha.cyan};
+           --uc-identity-color-green:     #${alpha.green};
+           --uc-identity-color-yellow:    #${alpha.yellow};
+           --uc-identity-color-orange:    #${alpha.orange};
+           --uc-identity-color-red:       #${alpha.red};
+           --uc-identity-color-pink:      #${accent.red};
+           --uc-identity-color-purple:    #${alpha.magenta};
            --urlbar-popup-url-color: var(--uc-identity-color-purple) !important;
            --uc-border-radius: 0;
            --uc-urlbar-width: clamp(200px, 50vw, 600px);

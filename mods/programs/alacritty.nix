@@ -8,33 +8,31 @@
   config = lib.mkIf config.program.alacritty {
     users.users.main.packages = [pkgs.alacritty];
     home.file.".config/alacritty/alacritty.toml".text = let
-      lcp = config.colours.primary;
-      lca = config.colours.alpha;
-      lcac = config.colours.accent;
+      inherit (config.colours) primary alpha accent;
     in ''
       [colors.bright]
-      black = '#${lcac.black}'
-      red = '#${lcac.red}'
-      green = '#${lcac.green}'
-      yellow = '#${lcac.yellow}'
-      blue = '#${lcac.blue}'
-      magenta = '#${lcac.magenta}'
-      cyan = '#${lcac.cyan}'
-      white = '#${lcac.white}'
+      black = '#${accent.black}'
+      red = '#${accent.red}'
+      green = '#${accent.green}'
+      yellow = '#${accent.yellow}'
+      blue = '#${accent.blue}'
+      magenta = '#${accent.magenta}'
+      cyan = '#${accent.cyan}'
+      white = '#${accent.white}'
       [colors.normal]
-      black = '#${lca.black}'
-      red = '#${lca.red}'
-      green = '#${lca.green}'
-      yellow = '#${lca.yellow}'
-      blue = '#${lca.blue}'
-      magenta = '#${lca.magenta}'
-      cyan = '#${lca.cyan}'
-      white = '#${lca.white}'
+      black = '#${alpha.black}'
+      red = '#${alpha.red}'
+      green = '#${alpha.green}'
+      yellow = '#${alpha.yellow}'
+      blue = '#${alpha.blue}'
+      magenta = '#${alpha.magenta}'
+      cyan = '#${alpha.cyan}'
+      white = '#${alpha.white}'
       [colors.primary]
-      background = '#${lcp.bg}'
-      bright_foreground = '#${lcp.fg}'
-      dim_foreground = '#${lcp.fg}'
-      foreground = '#${lcp.fg}'
+      background = '#${primary.bg}'
+      bright_foreground = '#${primary.fg}'
+      dim_foreground = '#${primary.fg}'
+      foreground = '#${primary.fg}'
       [cursor]
       style = 'Underline'
       unfocused_hollow = false

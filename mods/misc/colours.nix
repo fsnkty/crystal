@@ -46,34 +46,34 @@
   # base16 colours
   options.colours = lib.mkOption {};
   config.colours = let
-    c = config.mountain;
+    inherit (config.mountain) grayscale alpha accent;
   in {
     primary = {
-      bg = c.grayscale.yoru;
-      fg = c.accent.yuki;
-      main = c.accent.sakura;
+      bg = grayscale.yoru;
+      fg = accent.yuki;
+      main = accent.sakura;
     };
     alpha = {
-      red = c.alpha.kaen;
-      green = c.alpha.take;
-      yellow = c.alpha.chikyu;
-      blue = c.alpha.ume;
-      magenta = c.alpha.kosumosu;
-      cyan = c.alpha.shinkai;
-      orange = c.alpha.aki;
-      black = c.alpha.iwa;
-      white = c.alpha.usagi;
+      red = alpha.kaen;
+      green = alpha.take;
+      yellow = alpha.chikyu;
+      blue = alpha.ume;
+      magenta = alpha.kosumosu;
+      cyan = alpha.shinkai;
+      orange = alpha.aki;
+      black = alpha.iwa;
+      white = alpha.usagi;
     };
     accent = {
-      red = c.accent.ichigo;
-      green = c.accent.kusa;
-      yellow = c.accent.suna;
-      blue = c.accent.ajisai;
-      magenta = c.accent.sakura;
-      cyan = c.accent.kori;
-      orange = c.accent.yuyake;
-      black = c.accent.amagumo;
-      white = c.accent.yuki;
+      red = accent.ichigo;
+      green = accent.kusa;
+      yellow = accent.suna;
+      blue = accent.ajisai;
+      magenta = accent.sakura;
+      cyan = accent.kori;
+      orange = accent.yuyake;
+      black = accent.amagumo;
+      white = accent.yuki;
     };
   };
 }
