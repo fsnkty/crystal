@@ -65,7 +65,7 @@
       client.focused ${concatStrings (replicate 4 "#${primary.main} ")}
       client.unfocused ${concatStrings (replicate 4 "#${primary.bg} ")}
       client.focused_inactive ${concatStrings (replicate 4 "#${primary.bg} ")}
-      seat seat0 xcursor_theme phinger-cursors 24 # theme.nix required.
+      seat seat0 xcursor_theme phinger-cursors 24
       # keybinds
       bindsym ${m}+Return exec alacritty
       bindsym ${m}+Shift+q kill
