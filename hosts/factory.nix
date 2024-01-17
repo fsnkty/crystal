@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   inputs,
   ...
@@ -74,13 +75,16 @@
       ];
     };
   };
-  home.file = {
-    "Documents".source = "/storage/Documents";
-    "Downloads".source = "/storage/Downloads";
-    "Pictures".source = "/storage/Pictures";
-    "Crystal".source = "/storage/crystal";
-    "Videos".source = "/storage/Videos";
-  };
+  home.file =
+    lib.genAttrs [
+      "Documents"
+      "Downloads"
+      "Pictures"
+      "Videos"
+      "crystal"
+    ] (name: {
+      source = "/storage/${name}";
+    });
   # requires some system level setup.
   programs.steam = {
     enable = true;
