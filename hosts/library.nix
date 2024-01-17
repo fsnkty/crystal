@@ -8,6 +8,7 @@
     nix = {
       config = true;
       flakePath = "/storage/repos/crystal";
+      nh = true;
     };
     shell = {
       enable = true;

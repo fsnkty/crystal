@@ -1,5 +1,6 @@
 {
   inputs,
+  pkgs,
   lib,
   config,
   ...
@@ -7,6 +8,7 @@
   options.misc.nix = {
     config = lib.mkEnableOption "";
     flakePath = lib.mkOption {type = lib.types.str;};
+    nh = lib.mkEnableOption "";
   };
   config = lib.mkIf config.misc.nix.config {
     nix = {
@@ -38,5 +40,6 @@
       sessionVariables.FLAKE = config.misc.nix.flakePath;
     };
     documentation.enable = false;
+    users.users.main.packages = lib.optionals (config.misc.nix.nh) [inputs.nh.packages.${pkgs.system}.default];
   };
 }

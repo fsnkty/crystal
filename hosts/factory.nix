@@ -2,13 +2,13 @@
   pkgs,
   lib,
   config,
-  inputs,
   ...
 }: {
   misc = {
     nix = {
       config = true;
       flakePath = "/storage/crystal";
+      nh = true;
     };
     shell = {
       enable = true;
@@ -70,7 +70,6 @@
         eza
         yazi
         ueberzugpp
-        inputs.nh.packages.${pkgs.system}.default
       ];
     };
   };
