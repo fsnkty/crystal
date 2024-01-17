@@ -9,6 +9,12 @@
     matrixdomain = "matrix." + domain;
   in
     lib.mkIf config.service.web.synapse {
+      networking.firewall = {
+        enable = true;
+        allowedTCPPorts = [
+          8448 # Matrix federation
+        ];
+      };
       services = {
         matrix-synapse = {
           enable = true;
@@ -46,26 +52,27 @@
           ];
           ensureDatabases = ["matrix-synapse"];
         };
-        nginx.virtualHosts = let
-          serverConfig."m.server" = matrixdomain + ":443";
-          clientConfig."m.homeserver".base_url = "https://" + domain;
-          mkWellKnown = data: ''
-            default_type application/json;
-            return 200 '${builtins.toJSON data}';
-          '';
-        in {
+        nginx.virtualHosts = {
           ${matrixdomain} = {
             forceSSL = true;
             enableACME = true;
             locations = {
-              "/".extraConfig = ''return 404; '';
-              "~ ^(/_matrix|/_synapse/client)".proxyPass = "http://127.0.0.1:8008";
+              "/_matrix".proxyPass = "http://127.0.0.1:8008";
+              "/_synapse/client)".proxyPass = "http://127.0.0.1:8008";
             };
           };
           ${domain} = {
-            locations = {
-              "= /.well-known/matrix/server".extraConfig = mkWellKnown serverConfig;
-              "= /.well-known/matrix/client".extraConfig = mkWellKnown clientConfig;
+            locations = let
+              mkWellKnown = data: ''
+                default_type application/json;
+                return 200 '${builtins.toJSON data}';
+              '';
+            in {
+              "/.well-known/matrix/server".extraConfig = mkWellKnown {"m.server" = "matrix.nuko.city:443";};
+              "/.well-known/matrix/client".extraConfig = mkWellKnown {
+                "m.homeserver".base_url = "https://matrix.nuko.city";
+                "m.server".base_url = "https://matrix.nuko.city";
+              };
             };
           };
         };
