@@ -45,5 +45,28 @@
       style = "gtk2";
       platformTheme = "gtk2";
     };
+    fonts = {
+      packages = with pkgs; [
+        (pkgs.callPackage ../../pkgs/sfFonts.nix {})
+        noto-fonts-emoji
+        noto-fonts-extra
+        # fallsbacks.
+        noto-fonts
+        noto-fonts-cjk
+        dejavu_fonts
+      ];
+      fontconfig = {
+        defaultFonts = {
+          sansSerif = ["SF Pro Text"];
+          serif = ["SF Pro Text"];
+          monospace = ["Liga SFMono Nerd Font"];
+        };
+        enable = true;
+        antialias = true;
+        hinting.enable = true;
+        hinting.autohint = true;
+        subpixel.rgba = "rgb";
+      };
+    };
   };
 }

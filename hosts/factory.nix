@@ -20,7 +20,6 @@
   };
   desktop = {
     console = true;
-    fonts = true;
     audio = true;
     sway = true;
     theme = true;
@@ -90,7 +89,7 @@
     enable = true;
     package = pkgs.steam.override {
       # required for source1 games.
-      extraLibraries = pkgs: [pkgs.pkgsi686Linux.gperftools];
+      extraLibraries = pkgs: [pkgs.pkgsi686Linux.gperftools pkgs.wqy_zenhei];
     };
   };
   # removes 7sec boot delay lol
@@ -147,9 +146,6 @@
     kernelParams = [
       "quiet"
       "splash"
-      "video=DP-1:1920x1080@144"
-      "video=HDMI-A-1:1920x1080@60"
-      "initcall_blacklist=acpi_cpufreq_init"
       "amd_pstate=guided"
       "amd_pstate.shared_mem=1"
     ];
