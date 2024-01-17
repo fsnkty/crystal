@@ -35,6 +35,7 @@
       d2 = "HDMI-A-1";
       m = "Mod4";
       directions = ["left" "down" "up" "right"];
+      lock = "swaylock -f -c 000000";
       inherit (lib) replicate range getExe concatMapStringsSep concatStrings;
       inherit (pkgs) grim slurp;
       inherit (config.colours) primary;
@@ -43,7 +44,7 @@
       exec {
         autotiling-rs
         waybar
-        swayidle -w before-sleep 'swaylock -f -c 000000'
+        swayidle -w before-sleep '${lock}'
       }
       input "5426:132:Razer_Razer_DeathAdder_V2" accel_profile flat
       output ${d1} {
@@ -51,28 +52,22 @@
         position 0,0
         adaptive_sync on
       }
-      output ${d2} {
-        mode 1920x1080@60Hz
-        position 1920,0
-      }
       ${concatMapStringsSep "\n" (n: "workspace ${n} output ${d1}") (map toString (range 1 4))}
       ${concatMapStringsSep "\n" (n: "workspace ${n} output ${d2}") (map toString (range 5 8))}
-      # visual
       output ${d1} background wallpaper1 fill
       output ${d2} background wallpaper2 fill
+      seat seat0 xcursor_theme phinger-cursors 24
       default_border pixel 3
       gaps inner 5
       client.focused ${concatStrings (replicate 4 "#${primary.main} ")}
       client.unfocused ${concatStrings (replicate 4 "#${primary.bg} ")}
       client.focused_inactive ${concatStrings (replicate 4 "#${primary.bg} ")}
-      seat seat0 xcursor_theme phinger-cursors 24
-      # keybinds
       bindsym ${m}+Return exec alacritty
       bindsym ${m}+Shift+q kill
       bindsym ${m}+d exec wofi --show drun -a -W 15% -H 35%
       bindsym ${m}+Shift+s exec ${getExe grim} -g "$(${getExe slurp} -d)" - | wl-copy -t image/png
       bindsym ${m}+Shift+e exec swaynag -t warning -m 'confirm quit sway' -B 'confirm' 'swaymsg exit'
-      bindsym ${m}+l exec swaylock -f -c 000000
+      bindsym ${m}+l exec ${lock}
       floating_modifier ${m} normal
       bindsym ${m}+Shift+a floating toggle
       bindsym ${m}+Shift+z fullscreen toggle
