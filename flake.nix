@@ -43,7 +43,6 @@
           [
             ./hosts/factory.nix
             agenix.nixosModules.default
-            snms.nixosModules.default
           ]
           ++ importAll ./libs
           ++ importAll ./mods;
