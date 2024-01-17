@@ -22,7 +22,6 @@
       services = {
         jellyfin = {
           enable = true;
-          package = pkgs.jellyfin.override {withAribcaption = false;};
           openFirewall = true;
           dataDir = "/storage/volumes/jellyfin";
         };

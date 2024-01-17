@@ -35,6 +35,11 @@
           serverAliases = [domain];
           root = "/storage/volumes/website/public";
         };
+        virtualHosts."wires.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          root = "/storage/volumes/website/wires";
+        };
       };
     };
 }
