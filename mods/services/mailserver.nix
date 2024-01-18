@@ -5,13 +5,14 @@
 }: {
   options.service.mailserver = lib.mkEnableOption "";
   config = lib.mkIf config.service.mailserver {
-    age.secrets = lib.genAttrs [
-      "personal"
-      "services"
-    ] (name: {
-      file = ../../shhh + "/${name}_mail.age";
-      owner = "dovecot2";
-    });
+    age.secrets =
+      lib.genAttrs [
+        "personal"
+        "services"
+      ] (name: {
+        file = ../../shhh + "/${name}_mail.age";
+        owner = "dovecot2";
+      });
     mailserver = let
       inherit (config.service.web) domain;
     in {
