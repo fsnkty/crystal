@@ -1,10 +1,6 @@
 {
   inputs = {
-    # awaiting pr's
-    qbit.url = "github:nu-nu-ko/nixpkgs?ref=nixos/qbittorrent-init";
-    jelly.url = "github:nu-nu-ko/nixpkgs?ref=nixos-jellyfin-dirs";
-
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs?rev=317484b1ead87b9c1b8ac5261a8d2dd748a0492d";
     agenix = {
       url = "github:ryantm/agenix";
       inputs = {
@@ -13,14 +9,11 @@
         home-manager.follows = "";
       };
     };
-    snms = {
-      url = "gitlab:/simple-nixos-mailserver/nixos-mailserver";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    mountain = {
-      url = "github:nu-nu-ko/mountain-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    snms.url = "gitlab:/simple-nixos-mailserver/nixos-mailserver";
+    mountain.url = "github:nu-nu-ko/mountain-nix";
+    # awaiting pr's
+    qbit.url = "github:nu-nu-ko/nixpkgs?ref=nixos/qbittorrent-init";
+    jelly.url = "github:nu-nu-ko/nixpkgs?ref=nixos-jellyfin-dirs";
   };
   outputs = inputs: let
     inherit (inputs.nixpkgs.lib) hasSuffix filesystem genAttrs nixosSystem;
