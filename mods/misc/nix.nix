@@ -40,6 +40,6 @@
       sessionVariables.FLAKE = config.misc.nix.flakePath;
     };
     documentation.enable = false;
-    users.users.main.packages = lib.optionals (config.misc.nix.nh) [inputs.nh.packages.${pkgs.system}.default];
+    users.users.main.packages = lib.optionals (config.misc.nix.nh) [pkgs.nh];
   };
 }

@@ -1,9 +1,9 @@
 {
   inputs = {
-    # needs openFirewall to be fixed, and a solution to including alt webuis
+    # awaiting pr's
     qbit.url = "github:nu-nu-ko/nixpkgs?ref=nixos/qbittorrent-init";
-    # awaiting pr merge
     jelly.url = "github:nu-nu-ko/nixpkgs?ref=nixos-jellyfin-dirs";
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     agenix = {
       url = "github:ryantm/agenix";
@@ -17,48 +17,29 @@
       url = "gitlab:/simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nh = {
-      url = "github:viperML/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mountain = {
       url = "github:nu-nu-ko/mountain-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = {
-    nixpkgs,
-    agenix,
-    snms,
-    ...
-  } @ inputs: let
-    importAll = path:
-      builtins.filter (nixpkgs.lib.hasSuffix ".nix")
-      (map toString (nixpkgs.lib.filesystem.listFilesRecursive path));
+  outputs = inputs: let
+    inherit (inputs.nixpkgs.lib) hasSuffix filesystem genAttrs nixosSystem;
   in {
-    nixosConfigurations = {
-      factory = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-        modules =
-          [
-            ./hosts/factory.nix
-            agenix.nixosModules.default
-          ]
-          ++ importAll ./libs
-          ++ importAll ./mods;
-      };
-      library = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-        modules =
-          [
-            ./hosts/library.nix
-            agenix.nixosModules.default
-            snms.nixosModules.default
-          ]
-          ++ importAll ./libs
-          ++ importAll ./mods;
-      };
-    };
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+    nixosConfigurations = let
+      importAll = path:
+        builtins.filter (hasSuffix ".nix")
+        (map toString (filesystem.listFilesRecursive path));
+    in
+      genAttrs [
+        "factory"
+        "library"
+      ] (name:
+        nixosSystem {
+          specialArgs = {inherit inputs;};
+          modules =
+            [./hosts/${name}.nix]
+            ++ importAll ./libs
+            ++ importAll ./mods;
+        });
   };
 }

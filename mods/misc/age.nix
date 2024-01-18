@@ -5,6 +5,7 @@
   inputs,
   ...
 }: {
+  imports = [inputs.agenix.nixosModules.default];
   options.misc.ageSetup = lib.mkEnableOption "";
   config = lib.mkIf config.misc.ageSetup {
     environment.systemPackages = [inputs.agenix.packages.${pkgs.system}.default];

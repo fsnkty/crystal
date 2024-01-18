@@ -61,6 +61,7 @@
         imv
         mpv
         alacritty
+        cinny-desktop
         # games
         osu-lazer-bin
         protontricks
@@ -73,6 +74,13 @@
       ];
     };
   };
+  programs.steam = {
+    enable = true;
+    package = pkgs.steam.override {
+      # required for source1 games.
+      extraLibraries = pkgs: [pkgs.pkgsi686Linux.gperftools pkgs.wqy_zenhei];
+    };
+  };
   home.file =
     lib.genAttrs [
       "Documents"
@@ -83,21 +91,12 @@
     ] (name: {
       source = "/storage/${name}";
     });
-  # requires some system level setup.
-  programs.steam = {
-    enable = true;
-    package = pkgs.steam.override {
-      # required for source1 games.
-      extraLibraries = pkgs: [pkgs.pkgsi686Linux.gperftools pkgs.wqy_zenhei];
-    };
-  };
-  # removes 7sec boot delay lol
   systemd.services.systemd-udev-settle.enable = false;
   ### hardware ###
   networking = {
     hostName = "factory";
     hostId = "007f0200";
-    firewall.enable = true;
+    #firewall.enable = true;
     enableIPv6 = false;
     useDHCP = false;
     interfaces.enp39s0.ipv4.addresses = [

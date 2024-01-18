@@ -1,8 +1,10 @@
 {
+  inputs,
   config,
   lib,
   ...
 }: {
+  imports = [inputs.snms.nixosModules.default];
   options.service.mailserver = lib.mkEnableOption "";
   config = lib.mkIf config.service.mailserver {
     age.secrets =

@@ -22,6 +22,7 @@
       services = {
         jellyfin = {
           enable = true;
+          package = inputs.nixpkgs.legacyPackages.x86_64-linux.jellyfin;
           openFirewall = true;
           dataDir = "/storage/volumes/jellyfin";
         };
