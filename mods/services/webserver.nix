@@ -29,7 +29,6 @@
         virtualHosts."${domain}" = {
           forceSSL = true;
           enableACME = true;
-          serverAliases = [domain];
           root = "/storage/volumes/website/public";
         };
         virtualHosts."wires.${domain}" = {

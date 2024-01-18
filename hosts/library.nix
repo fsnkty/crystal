@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  inputs,
   ...
 }: {
   misc = {
@@ -69,7 +68,6 @@
           rsync
           eza
           yazi
-          inputs.nh.packages.${pkgs.system}.default
         ];
         openssh.authorizedKeys.keys = [
           # factory / desktop
@@ -105,9 +103,9 @@
   powerManagement.cpuFreqGovernor = "performance";
   boot = {
     loader = {
-      timeout = 0; # headless anyway
+      timeout = 0;
       systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true; # just incase
+      efi.canTouchEfiVariables = true;
     };
     initrd.availableKernelModules = ["xhci_pci" "ahci" "sd_mod"];
     kernelModules = ["kvm-intel"];
@@ -128,7 +126,6 @@
     };
   };
   swapDevices = [{device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part2";}];
-
   ### remember the warning.. ###
   system.stateVersion = "23.11";
 }

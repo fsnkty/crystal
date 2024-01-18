@@ -14,7 +14,7 @@
       colors = let
         inherit (config.colours) alpha accent primary;
       in [
-        "000000" # prevent flicker
+        "000000" # match boot.
         alpha.red
         alpha.green
         alpha.yellow
@@ -32,7 +32,7 @@
         primary.fg
       ];
     };
-    # auto specify username to tty logins
+    # auto specify username.
     services.getty = {
       extraArgs = ["--skip-login"];
       loginOptions = "-- ${config.users.users.main.name}";

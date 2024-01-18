@@ -9,29 +9,25 @@
     domain = "cloud.${config.service.web.domain}";
   in
     lib.mkIf config.service.web.nextcloud {
-      age.secrets = {
-        user_cloud = {
-          file = ../../shhh/user_cloud.age;
+      age.secrets =
+        lib.genAttrs [
+          "user_cloud"
+          "cloud_env"
+        ] (name: {
+          file = ../../shhh + "/${name}.age";
           owner = "nextcloud";
-        };
-        cloud_env = {
-          file = ../../shhh/cloud_env.age;
-          owner = "nextcloud";
-        };
-      };
+        });
       services = {
         nextcloud = {
           enable = true;
           package = pkgs.nextcloud28;
           hostName = domain;
           home = "/storage/volumes/nextcloud";
-
           nginx.recommendedHttpHeaders = true;
           https = true;
-
           config = {
             adminuser = "nuko";
-            adminpassFile = config.age.secrets.user_cloud.path; # only set on setup.
+            adminpassFile = config.age.secrets.user_cloud.path;# only set on setup.
             dbtype = "pgsql";
             dbhost = "/run/postgresql";
           };
@@ -40,13 +36,11 @@
             "output_buffering" = "off";
           };
           configureRedis = true;
-
           extraOptions = {
             overwriteprotocol = "https";
             trusted_proxies = ["https://${domain}"];
             trusted_domains = ["https://${domain}"];
             default_phone_region = "NZ";
-            # service mail setup.
             mail_smtpmode = "smtp";
             mail_sendmailmode = "smtp";
             mail_smtpsecure = "ssl";
@@ -59,7 +53,6 @@
           };
           # just the smtp pass.
           secretFile = config.age.secrets.cloud_env.path;
-
           appstoreEnable = false;
           autoUpdateApps.enable = true;
           extraAppsEnable = true;

@@ -47,7 +47,7 @@
     owner = config.users.users.main.name;
   };
   users = {
-    mutableUsers = false; # more declaritve
+    mutableUsers = false;
     users.main = {
       name = "nuko";
       uid = 1000;
@@ -55,18 +55,15 @@
       extraGroups = ["wheel"];
       hashedPasswordFile = config.age.secrets.user.path;
       packages = with pkgs; [
-        # gui
         krita
         obs-studio
         imv
         mpv
         alacritty
         cinny-desktop
-        # games
         osu-lazer-bin
         protontricks
         r2modman
-        # cli/tui
         git
         eza
         yazi
@@ -96,7 +93,6 @@
   networking = {
     hostName = "factory";
     hostId = "007f0200";
-    #firewall.enable = true;
     enableIPv6 = false;
     useDHCP = false;
     interfaces.enp39s0.ipv4.addresses = [
@@ -114,10 +110,7 @@
     opengl = {
       enable = true;
       driSupport32Bit = true;
-      extraPackages = [
-        pkgs.vaapiVdpau
-        pkgs.libvdpau-va-gl
-      ];
+      extraPackages = [pkgs.vaapiVdpau pkgs.libvdpau-va-gl];
     };
     xone.enable = true;
   };
@@ -129,13 +122,13 @@
   boot = {
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
     loader = {
-      timeout = 0; # hold space to open the menu
+      timeout = 0; # hold space to open the menu.
       systemd-boot.enable = true;
     };
     plymouth.enable = true;
     initrd = {
       verbose = false;
-      systemd.enable = true; # experimental.. seems cleaner
+      systemd.enable = true;
       kernelModules = ["amdgpu"];
       availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
     };

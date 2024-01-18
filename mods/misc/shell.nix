@@ -12,15 +12,12 @@
     users.users.main.shell = lib.mkForce pkgs.zsh;
     environment = {
       shells = [pkgs.zsh];
-      binsh = lib.getExe pkgs.dash; #speed!
+      binsh = lib.getExe pkgs.dash;
       variables = {
-        # keep ~ clean.
         XDG_DATA_HOME = "\"$HOME\"/.local/share";
         XDG_CONFIG_HOME = "\"$HOME\"/.config";
         XDG_STATE_HOME = "\"$HOME\"/.local/state";
         XDG_CACHE_HOME = "\"$HOME\"/.cache";
-        XCOMPOSECACHE = "\"$XDG_CACHE_HOME\"/X11/xcompose";
-        ERRFILE = "\"$XDG_CACHE_HOME\"/X11/xsession-errors";
       };
     };
     programs.zsh = {
@@ -33,10 +30,8 @@
       shellInit = ''
         bindkey "^[[1;5C" forward-word
         bindkey "^[[1;5D" backward-word
-        # ctrl backwards / delete
         bindkey '^H' backward-kill-word
         bindkey '5~' kill-word
-        # disable weird underline
         (( ''${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
         ZSH_HIGHLIGHT_STYLES[path]=none
         ZSH_HIGHLIGHT_STYLES[path_prefix]=none

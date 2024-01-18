@@ -17,7 +17,7 @@
         wrapperFeatures.gtk = true;
         extraPackages = with pkgs; [
           vulkan-validation-layers # upstream might remove this dep soon.
-          autotiling-rs # tile rules.
+          autotiling-rs
           wl-clipboard
           swaylock
           swayidle

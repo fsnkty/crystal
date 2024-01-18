@@ -20,8 +20,8 @@
           "flakes"
         ];
         auto-optimise-store = true;
-        allowed-users = ["@wheel"]; # why would this not be default
-        use-xdg-base-directories = true; # keep ~ clean.
+        allowed-users = ["@wheel"];
+        use-xdg-base-directories = true;
       };
       gc = {
         automatic = true;

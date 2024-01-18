@@ -42,8 +42,6 @@
       yuki = "f0f0f0";
     };
   };
-
-  # base16 colours
   options.colours = lib.mkOption {};
   config.colours = let
     inherit (config.mountain) grayscale alpha accent;
