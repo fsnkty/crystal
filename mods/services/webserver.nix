@@ -37,5 +37,6 @@
           root = "/storage/volumes/website/wires";
         };
       };
+      users.users.nginx.extraGroups = ["acme"];
     };
 }

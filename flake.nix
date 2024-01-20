@@ -10,6 +10,10 @@
       };
     };
     snms.url = "gitlab:/simple-nixos-mailserver/nixos-mailserver";
+    conduit = {
+      url = "gitlab:famedly/conduit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mountain.url = "github:nu-nu-ko/mountain-nix";
     # awaiting pr's
     qbit.url = "github:nu-nu-ko/nixpkgs?ref=nixos/qbittorrent-init";
