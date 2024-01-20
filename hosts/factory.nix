@@ -69,6 +69,7 @@
         yazi
         ueberzugpp
       ];
+      openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" ];
     };
   };
   programs.steam = {
@@ -95,14 +96,21 @@
     hostId = "007f0200";
     enableIPv6 = false;
     useDHCP = false;
-    interfaces.enp39s0.ipv4.addresses = [
-      {
-        address = "192.168.0.4";
-        prefixLength = 24;
-      }
-    ];
-    defaultGateway = "192.168.0.1";
-    nameservers = ["1.1.1.1" "1.1.0.0"];
+  };
+  systemd.network = {
+    enable = true;
+    networks.enp39s0 = {
+      enable = true;
+      name = "enp39s0";
+      networkConfig = {
+        DHCP = "no";
+        DNSSEC = "yes";
+        DNSOverTLS = "yes";
+        DNS = ["1.1.1.1" "1.1.0.0"];
+      };
+      address = ["192.168.0.4/24"];
+      routes = [{routeConfig.Gateway = "192.168.0.1";}];
+    };
   };
   hardware = {
     enableRedistributableFirmware = true;

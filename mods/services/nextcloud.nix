@@ -27,7 +27,7 @@
           https = true;
           config = {
             adminuser = "nuko";
-            adminpassFile = config.age.secrets.user_cloud.path;# only set on setup.
+            adminpassFile = config.age.secrets.user_cloud.path; # only set on setup.
             dbtype = "pgsql";
             dbhost = "/run/postgresql";
           };

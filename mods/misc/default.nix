@@ -1,4 +1,3 @@
-
 {
   pkgs,
   lib,
@@ -23,7 +22,7 @@
     users.users.root = mkIf disableRoot {
       hashedPassword = "!";
       shell = pkgs.shadow;
-      home = lib.mkForce "/home/root";# for sudo.
+      home = lib.mkForce "/home/root"; # for sudo.
     };
     ### clean
     programs = mkIf cleanDefaults {
