@@ -7,22 +7,21 @@
     fail2ban = lib.mkEnableOption "";
     postgres = lib.mkEnableOption "";
   };
-  config = {
+  config = let
+    inherit (lib) mkIf;
+    inherit (config.service) fail2ban postgres;
+  in {
     services = {
-      fail2ban = lib.mkIf config.service.fail2ban {
+      fail2ban = mkIf fail2ban {
         enable = true;
         bantime-increment = {
           enable = true;
           factor = "16";
         };
       };
-      postgresql = lib.mkIf config.service.postgres {
+      postgresql = mkIf postgres {
         enable = true;
         dataDir = "/storage/volumes/postgres";
-        initdbArgs = [
-          "--no-locale"
-          "--encoding=UTF8"
-        ];
       };
     };
   };

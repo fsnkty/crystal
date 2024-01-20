@@ -56,10 +56,10 @@
       hashedPasswordFile = config.age.secrets.user.path;
       packages = with pkgs; [
         krita
-        obs-studio
         imv
         mpv
         alacritty
+        obs-studio
         element-desktop
         protontricks
         r2modman
