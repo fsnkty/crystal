@@ -68,6 +68,9 @@
                   "m.homeserver" = {
                     "base_url" = "https://${matrix_hostname}";
                   };
+                  "org.matrix.msc3575.proxy" = {
+                    "url" = "https://${matrix_hostname}";
+                  };
                 };
                 extraConfig = ''
                   default_type application/json;
