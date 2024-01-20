@@ -26,7 +26,7 @@
       qbit = true;
       nextcloud = true;
       vaultwarden = true;
-      synapse = true;
+      matrixhome = true;
     };
     fail2ban = true;
     postgres = true;
