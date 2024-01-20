@@ -60,8 +60,7 @@
         imv
         mpv
         alacritty
-        cinny-desktop
-        osu-lazer-bin
+        element-desktop
         protontricks
         r2modman
         git
@@ -69,14 +68,14 @@
         yazi
         ueberzugpp
       ];
-      openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" ];
+      openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"];
     };
   };
   programs.steam = {
     enable = true;
     package = pkgs.steam.override {
       # required for source1 games.
-      extraLibraries = pkgs: [pkgs.pkgsi686Linux.gperftools pkgs.wqy_zenhei];
+      extraLibraries = pkgs: [pkgs.wqy_zenhei pkgs.pkgsi686Linux.gperftools];
     };
   };
   home.file =

@@ -19,21 +19,11 @@
     in {
       ".config/wofi/style.css" = lib.mkIf config.desktop.wofi {
         text = ''
-          #window {
-              border: 3px solid #${primary.main};
-          }
-          #input {
-              marfin: 15px;
-          }
-          #inner-box {
-              margin: 0px 15px 15px 15px;
-          }
-          #entry {
-              margin: 5px;
-          }
-          #entry:selected {
-              color: #${primary.main};
-          }
+          #window { border: 3px solid #${primary.main}; }
+          #input { margin: 15px; }
+          #inner-box { margin: 0px 15px 15px 15px; }
+          #entry { margin: 5px; }
+          #entry:selected { color: #${primary.main}; }
         '';
       };
       ".config/waybar/config" = lib.mkIf config.desktop.waybar {
@@ -122,9 +112,7 @@
               transition-property: background-color;
               transition-duration: .5s;
           }
-          window#waybar.empty #window {
-              background-color: transparent;
-          }
+          window#waybar.empty #window { background-color: transparent; }
           #workspaces {
               padding: 0px;
               border-radius: 0px;
@@ -132,18 +120,10 @@
               background-color: #${primary.bg};
               color: #${primary.fg};
           }
-          #worksapces button {
-              padding: 2px;
-          }
-          #workspaces button:hover {
-              border-radius: 0px;
-          }
-          #workspaces button.focused {
-              color: #${primary.main};
-          }
-          #workspaces button.urgent {
-              color: #${primary.main};
-          }
+          #workspaces button { padding: 2px; }
+          #workspaces button:hover { border-radius: 0px; }
+          #workspaces button.focused { color: #${primary.main}; }
+          #workspaces button.urgent { color: #${primary.main}; }
           #network,
           #pulseaudio,
           #tray,

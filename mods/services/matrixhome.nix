@@ -24,11 +24,13 @@
           "${matrix_hostname}" = {
             forceSSL = true;
             enableACME = true;
-            listen = [{
-              addr = "0.0.0.0";
-              port = 443;
-              ssl = true;
-            }];
+            listen = [
+              {
+                addr = "0.0.0.0";
+                port = 443;
+                ssl = true;
+              }
+            ];
             locations."/_matrix/" = {
               proxyPass = "http://backend_conduit$request_uri";
               proxyWebsockets = true;

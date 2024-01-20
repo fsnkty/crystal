@@ -70,12 +70,9 @@
           yazi
         ];
         openssh.authorizedKeys.keys = [
-          # factory / desktop
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ"
-          # laptop
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIrSQqI/X+I9fcQGOxgvTzZ2p/9SG4abc4xXkrAdRxBc"
-          # phone
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZH8voUTYblnUaSThDyB+JrdFTVMVVxT4kA+EE+XrCG"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIrSQqI/X+I9fcQGOxgvTzZ2p/9SG4abc4xXkrAdRxBc" # lunar
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZH8voUTYblnUaSThDyB+JrdFTVMVVxT4kA+EE+XrCG" # orbit
         ];
       };
     };
@@ -87,14 +84,21 @@
     firewall.enable = true;
     enableIPv6 = false;
     useDHCP = false;
-    interfaces.enp6s0.ipv4.addresses = [
-      {
-        address = "192.168.0.3";
-        prefixLength = 24;
-      }
-    ];
-    defaultGateway = "192.168.0.1";
-    nameservers = ["1.1.1.1" "1.1.0.0"];
+  };
+  systemd.network = {
+    enable = true;
+    networks.enp6s0 = {
+      enable = true;
+      name = "enp6s0";
+      networkConfig = {
+        DHCP = "no";
+        DNSSEC = "yes";
+        DNSOverTLS = "yes";
+        DNS = ["1.1.1.1" "1.1.0.0"];
+      };
+      address = ["192.168.0.3/24"];
+      routes = [{routeConfig.Gateway = "192.168.0.1";}];
+    };
   };
   hardware = {
     enableRedistributableFirmware = true;
