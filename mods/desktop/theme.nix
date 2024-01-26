@@ -37,6 +37,7 @@
       profiles.user.databases = [
         {
           settings."org/gnome/desktop/interface" = {
+            color-scheme = "prefer-dark";
             gtk-theme = "phocus-mountain";
             icon-theme = "Flat-Remix-Purple-Dark";
             cursor-theme = "phinger-cursors";
@@ -62,8 +63,8 @@
     };
     qt = {
       enable = true;
-      style = "gtk2";
-      platformTheme = "gtk2";
+      style = "adwaita-dark";
+      platformTheme = "gnome";
     };
   };
 }
