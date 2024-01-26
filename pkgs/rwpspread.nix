@@ -9,13 +9,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "rwpspread";
-  version = "test";
+  version = "0.1.8";
 
   src = fetchFromGitHub {
-    owner = "nu-nu-ko";
+    owner = "0xk1f0";
     repo = "rwpspread";
-    rev = version;
-    hash = "sha256-CRlp5g6kcUk+w3qcwmICq/BTftB2bgxjUF7gBBFAEaY=";
+    rev = "v${version}";
+    hash = "sha256-slxsicASZ7JoUnnQf4R3xFB4zgtt4ZOZCU0NcbgBneM=";
   };
 
   cargoLock = {
@@ -37,9 +37,9 @@ rustPlatform.buildRustPackage rec {
 
   meta = with lib; {
     description = "Multi-Monitor Wallpaper Utility";
-    homepage = "https://github.com/nu-nu-ko/rwpspread";
+    homepage = "https://github.com/0xk1f0/rwpspread";
     license = licenses.gpl3Only;
-    maintainers = with maintainers; [ nu-nu-ko ];
+    maintainers = with maintainers; [ ];
     mainProgram = "rwpspread";
   };
 }
