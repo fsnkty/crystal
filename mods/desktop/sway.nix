@@ -21,6 +21,8 @@
           wl-clipboard
           swaylock
           swayidle
+          (pkgs.callPackage ../../pkgs/rwpspread.nix {})
+          wpaperd
         ];
         extraSessionCommands = ''
           export LIBSEAT_BACKEND=logind
@@ -43,6 +45,7 @@
       xwayland enable
       exec {
         autotiling-rs
+        wpaperd
         waybar
         swayidle -w before-sleep '${lock}'
       }
@@ -54,23 +57,23 @@
       }
       ${concatMapStringsSep "\n" (n: "workspace ${n} output ${d1}") (map toString (range 1 4))}
       ${concatMapStringsSep "\n" (n: "workspace ${n} output ${d2}") (map toString (range 5 8))}
-      output ${d1} background wallpaper1 fill
-      output ${d2} background wallpaper2 fill
       seat seat0 xcursor_theme phinger-cursors 24
       default_border pixel 3
       gaps inner 5
       client.focused ${concatStrings (replicate 4 "#${primary.main} ")}
       client.unfocused ${concatStrings (replicate 4 "#${primary.bg} ")}
       client.focused_inactive ${concatStrings (replicate 4 "#${primary.bg} ")}
-      bindsym ${m}+Return exec alacritty
-      bindsym ${m}+Shift+q kill
-      bindsym ${m}+d exec wofi --show drun -a -W 15% -H 35%
-      bindsym ${m}+Shift+s exec ${getExe grim} -g "$(${getExe slurp} -d)" - | wl-copy -t image/png
-      bindsym ${m}+Shift+e exec swaynag -t warning -m 'confirm quit sway' -B 'confirm' 'swaymsg exit'
-      bindsym ${m}+l exec ${lock}
+      ${concatMapStringsSep "\n" (n: "bindsym ${m}+${n}") [
+        "Return exec alacritty"
+        "Shift+q kill"
+        "d exec wofi --show drun -a -W 15% -H 35%"
+        "Shift+s exec ${getExe grim} -g \"$(${getExe slurp} -d)\" - | wl-copy -t image/png"
+        "Shift+e exec swaynag -t warning -m 'confirm quit sway' -B 'confirm' 'swaymsg exit'"
+        "Shift+a floating toggle"
+        "Shift+z fullscreen toggle"
+        "l exec ${lock}"
+      ]}
       floating_modifier ${m} normal
-      bindsym ${m}+Shift+a floating toggle
-      bindsym ${m}+Shift+z fullscreen toggle
       ${concatMapStringsSep "\n" (n: "bindsym ${m}+${n} focus ${n}") directions}
       ${concatMapStringsSep "\n" (n: "bindsym ${m}+Shift+${n} move ${n}") directions}
       ${concatMapStringsSep "\n" (n: "bindsym ${m}+${n} workspace number ${n}") (map toString (range 1 8))}

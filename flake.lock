@@ -221,18 +221,18 @@
     },
     "jelly": {
       "locked": {
-        "lastModified": 1706266566,
+        "lastModified": 1706266950,
         "narHash": "sha256-pEklD0mrIrg8MlLwyOZgm+ZEJNJwOmEwQaTiL9/s0sU=",
-        "ref": "nixos-jellyfin-dirs",
-        "rev": "4f800e0cd513dc65efcd5dfc735144fb918e9f48",
-        "revCount": 562967,
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs"
+        "owner": "nu-nu-ko",
+        "repo": "nixpkgs",
+        "rev": "475b7609daa44829aa90a72b2641fce4a228b8b1",
+        "type": "github"
       },
       "original": {
+        "owner": "nu-nu-ko",
         "ref": "nixos-jellyfin-dirs",
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "mountain": {
@@ -379,18 +379,18 @@
     },
     "qbit": {
       "locked": {
-        "lastModified": 1706237430,
-        "narHash": "sha256-MUbGlwyk5/uzZ1fX6klGoX5h2WCyc8C4GVMAi/4BF9E=",
-        "ref": "nixos/qbittorrent-init",
-        "rev": "c6bf4d231b5e6492134f7f76bd4bf412c90a434d",
-        "revCount": 562978,
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs"
+        "lastModified": 1704188289,
+        "narHash": "sha256-i2IAhY7RBWsmSCxRAV94HEURj80YpBi9Ps3K/AjOfvQ=",
+        "owner": "nu-nu-ko",
+        "repo": "nixpkgs",
+        "rev": "9db3ad22fb58972acdf5fec64b13d15cdb372b91",
+        "type": "github"
       },
       "original": {
+        "owner": "nu-nu-ko",
         "ref": "nixos/qbittorrent-init",
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {

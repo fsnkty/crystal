@@ -71,16 +71,9 @@
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"];
     };
   };
-  home.file =
-    lib.genAttrs [
-      "Documents"
-      "Downloads"
-      "Pictures"
-      "Videos"
-      "crystal"
-    ] (name: {
-      source = "/storage/${name}";
-    });
+  home.file = lib.genAttrs ["Documents" "Downloads" "Pictures" "Videos" "crystal"] (name: {
+    source = "/storage/${name}";
+  });
   ### hardware
   networking = {
     hostName = "factory";

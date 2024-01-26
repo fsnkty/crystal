@@ -13,7 +13,6 @@
         nvim-treesitter
         nvim-tree-lua
         nvim-web-devicons
-        lualine-nvim
         inputs.mountain.packages.${pkgs.system}.nvim
       ];
       withPython3 = false;
@@ -67,14 +66,6 @@
           },
           filters = {
             dotfiles = true,
-          },
-        }
-        require('lualine').setup {
-          options = {
-            icons_enabled = true,
-            component_separators = { left = '>', right = '<'},
-            section_separators = { left = '|', right = '|'},
-            globalstatus = true,
           },
         }
         require('lspconfig').nil_ls.setup {
