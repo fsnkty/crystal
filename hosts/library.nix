@@ -31,24 +31,18 @@
     fail2ban = true;
     postgres = true;
     mailserver = true;
+    openssh = true;
   };
   program = {
     htop = true;
     neovim = true;
+    git = true;
   };
-  ### misc ###
+  ### misc
   time.timeZone = "NZ";
   i18n.defaultLocale = "en_NZ.UTF-8";
   security.sudo.execWheelOnly = true;
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-  ### management user stuff ###
+  ### management user stuff
   age.secrets.user = {
     file = ../shhh/user.age;
     owner = config.users.users.main.name;
@@ -62,13 +56,7 @@
         isNormalUser = true;
         extraGroups = ["wheel"];
         hashedPasswordFile = config.age.secrets.user.path;
-        packages = with pkgs; [
-          wget
-          git
-          rsync
-          eza
-          yazi
-        ];
+        packages = with pkgs; [wget rsync eza yazi];
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIrSQqI/X+I9fcQGOxgvTzZ2p/9SG4abc4xXkrAdRxBc" # lunar
@@ -77,7 +65,7 @@
       };
     };
   };
-  ### hardware ###
+  ### hardware
   networking = {
     hostName = "library";
     hostId = "9a350e7b";

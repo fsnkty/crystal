@@ -32,16 +32,18 @@
     htop = true;
     neovim = true;
     prism = true;
+    git = true;
+    steam = true;
   };
-  ### misc ###
+  service.openssh = true;
+  ### misc
   time.timeZone = "NZ";
   i18n.defaultLocale = "en_NZ.UTF-8";
   security = {
     sudo.execWheelOnly = true;
     tpm2.enable = true;
   };
-  services.openssh.enable = true;
-  ### user stuff ###
+  ### user stuff
   age.secrets.user = {
     file = ../shhh/user.age;
     owner = config.users.users.main.name;
@@ -56,26 +58,17 @@
       hashedPasswordFile = config.age.secrets.user.path;
       packages = with pkgs; [
         krita
-        imv
-        mpv
-        alacritty
         obs-studio
         element-desktop
         protontricks
         r2modman
-        git
+        imv
+        mpv
         eza
         yazi
         ueberzugpp
       ];
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"];
-    };
-  };
-  programs.steam = {
-    enable = true;
-    package = pkgs.steam.override {
-      # required for source1 games.
-      extraLibraries = pkgs: [pkgs.wqy_zenhei pkgs.pkgsi686Linux.gperftools];
     };
   };
   home.file =
@@ -88,29 +81,32 @@
     ] (name: {
       source = "/storage/${name}";
     });
-  systemd.services.systemd-udev-settle.enable = false;
-  ### hardware ###
+  ### hardware
   networking = {
     hostName = "factory";
     hostId = "007f0200";
     enableIPv6 = false;
     useDHCP = false;
   };
-  systemd.network = {
-    enable = true;
-    networks.enp39s0 = {
+  systemd = {
+    services.systemd-udev-settle.enable = false;
+    network = {
       enable = true;
-      name = "enp39s0";
-      networkConfig = {
-        DHCP = "no";
-        DNSSEC = "yes";
-        DNSOverTLS = "yes";
-        DNS = ["1.1.1.1" "1.1.0.0"];
+      networks.enp39s0 = {
+        enable = true;
+        name = "enp39s0";
+        networkConfig = {
+          DHCP = "no";
+          DNSSEC = "yes";
+          DNSOverTLS = "yes";
+          DNS = ["1.1.1.1" "1.1.0.0"];
+        };
+        address = ["192.168.0.4/24"];
+        routes = [{routeConfig.Gateway = "192.168.0.1";}];
       };
-      address = ["192.168.0.4/24"];
-      routes = [{routeConfig.Gateway = "192.168.0.1";}];
     };
   };
+  powerManagement.cpuFreqGovernor = "schedutil";
   hardware = {
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
@@ -125,7 +121,6 @@
     enable = true;
     motherboard = "amd";
   };
-  powerManagement.cpuFreqGovernor = "schedutil";
   boot = {
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
     loader = {
