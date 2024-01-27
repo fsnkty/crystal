@@ -74,11 +74,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706242335,
-        "narHash": "sha256-5czjowFV80FGSTVgsjBlCt8slZhgZ/8ERcdXISTpaGc=",
+        "lastModified": 1706334908,
+        "narHash": "sha256-WyXjMf2gD9RUPvXquiHbxJS9ISFV4KCaXqjT/9xOoH0=",
         "owner": "famedly",
         "repo": "conduit",
-        "rev": "bf48c10d28d16df6e33027150a24d4b4a32ebeac",
+        "rev": "4da8c7e28211ca1bc31f97155dffb110e1575746",
         "type": "gitlab"
       },
       "original": {
@@ -348,11 +348,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1705856552,
-        "narHash": "sha256-JXfnuEf5Yd6bhMs/uvM67/joxYKoysyE3M2k6T3eWbg=",
+        "lastModified": 1706191920,
+        "narHash": "sha256-eLihrZAPZX0R6RyM5fYAWeKVNuQPYjAkCUBr+JNvtdE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "612f97239e2cc474c13c9dafa0df378058c5ad8d",
+        "rev": "ae5c332cbb5827f6b1f02572496b141021de335f",
         "type": "github"
       },
       "original": {
@@ -379,16 +379,16 @@
     },
     "qbit": {
       "locked": {
-        "lastModified": 1704188289,
-        "narHash": "sha256-i2IAhY7RBWsmSCxRAV94HEURj80YpBi9Ps3K/AjOfvQ=",
+        "lastModified": 1706310742,
+        "narHash": "sha256-heAOxt0KRYDzBtxhafjFl6f4v+sMujvE/qI5LhgjA8A=",
         "owner": "nu-nu-ko",
         "repo": "nixpkgs",
-        "rev": "9db3ad22fb58972acdf5fec64b13d15cdb372b91",
+        "rev": "26044dea5c62551fe342074711a0fb98cae84eb0",
         "type": "github"
       },
       "original": {
         "owner": "nu-nu-ko",
-        "ref": "nixos/qbittorrent-init",
+        "ref": "init-nixos-qbittorrent",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -401,6 +401,7 @@
         "mountain": "mountain",
         "nixpkgs": "nixpkgs_3",
         "qbit": "qbit",
+        "rwp": "rwp",
         "snms": "snms"
       }
     },
@@ -418,6 +419,22 @@
         "owner": "rust-lang",
         "ref": "nightly",
         "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "rwp": {
+      "locked": {
+        "lastModified": 1706334519,
+        "narHash": "sha256-Tld/QY1ihw9BD5dPWy2YjVCwZpp7b0c1w2BNm2o3Hlo=",
+        "owner": "nu-nu-ko",
+        "repo": "nixpkgs",
+        "rev": "327af85fb4697dcc544e55c3e212288bbf2da0bb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nu-nu-ko",
+        "ref": "init-rwpspread",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },

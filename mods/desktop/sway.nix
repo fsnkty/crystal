@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
 }: {
   options.desktop.sway = lib.mkEnableOption "";
@@ -21,7 +22,7 @@
           wl-clipboard
           swaylock
           swayidle
-          (pkgs.callPackage ../../pkgs/rwpspread.nix {})
+          inputs.rwp.legacyPackages.${pkgs.system}.rwpspread
           wpaperd
         ];
         extraSessionCommands = ''
@@ -48,6 +49,7 @@
         wpaperd
         waybar
         swayidle -w before-sleep '${lock}'
+        openrgb -p default
       }
       input "5426:132:Razer_Razer_DeathAdder_V2" accel_profile flat
       output ${d1} {

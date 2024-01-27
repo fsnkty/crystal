@@ -17,7 +17,7 @@
         (pkgs.callPackage ../../pkgs/sfFonts.nix {})
         noto-fonts-emoji
         noto-fonts-extra
-        # fallsbacks.
+        # extras.
         noto-fonts
         noto-fonts-cjk
         dejavu_fonts
@@ -55,10 +55,6 @@
         gtk-font-name=SF Pro Text 12
         gtk-icon-theme-name=Flat-Remix-Purple-Dark
         gtk-theme-name=phocus-mountain
-      '';
-      # qt compat mode is gtk2 based.
-      "xdg/gtk-2.0/gtkrc".text = ''
-        gtk-theme-name = "phocus-mountain"
       '';
     };
     qt = {
