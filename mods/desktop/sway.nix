@@ -16,18 +16,19 @@
       sway = {
         enable = true;
         wrapperFeatures.gtk = true;
-        extraPackages = with pkgs; [
-          vulkan-validation-layers # upstream might remove this dep soon.
+        extraPackages = builtins.attrValues {
+          rwpspread = inputs.rwp.legacyPackages.${pkgs.stdenv.hostPlatform.system}.rwpspread;
+          inherit (pkgs)
+          #vulkan-validation-layers # upstream might remove this dep soon.
           autotiling-rs
           wl-clipboard
           swaylock
           swayidle
-          inputs.rwp.legacyPackages.${pkgs.system}.rwpspread
-          wpaperd
-        ];
+          wpaperd;
+        };
+        # export WLR_RENDERER=vulkan
         extraSessionCommands = ''
           export LIBSEAT_BACKEND=logind
-          export WLR_RENDERER=vulkan
           export SDL_VIDEODRIVER=wayland
           export _JAVA_AWT_WM_NONREPARENTING=1
         '';

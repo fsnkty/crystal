@@ -74,11 +74,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706334908,
-        "narHash": "sha256-WyXjMf2gD9RUPvXquiHbxJS9ISFV4KCaXqjT/9xOoH0=",
+        "lastModified": 1706412064,
+        "narHash": "sha256-8QRoLP20gbjlTVYJJp8khOypQE/Uhc0hBzyOT5M6f1E=",
         "owner": "famedly",
         "repo": "conduit",
-        "rev": "4da8c7e28211ca1bc31f97155dffb110e1575746",
+        "rev": "5787a70bab33b6549772027b466e3c529d66f629",
         "type": "gitlab"
       },
       "original": {
@@ -424,18 +424,18 @@
     },
     "rwp": {
       "locked": {
-        "lastModified": 1706334519,
-        "narHash": "sha256-Tld/QY1ihw9BD5dPWy2YjVCwZpp7b0c1w2BNm2o3Hlo=",
-        "owner": "nu-nu-ko",
-        "repo": "nixpkgs",
-        "rev": "327af85fb4697dcc544e55c3e212288bbf2da0bb",
-        "type": "github"
+        "lastModified": 1706402384,
+        "narHash": "sha256-l2oLgIXqLQ+Mvk+3YFU8pCAivl4VF4lPvwyWpEdGrnc=",
+        "ref": "init-rwpspread",
+        "rev": "2fbef4e3faf8d1478c76346ff71f7305cf75ec4b",
+        "revCount": 575823,
+        "type": "git",
+        "url": "file:/storage/repos/nixpkgs"
       },
       "original": {
-        "owner": "nu-nu-ko",
         "ref": "init-rwpspread",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "git",
+        "url": "file:/storage/repos/nixpkgs"
       }
     },
     "snms": {

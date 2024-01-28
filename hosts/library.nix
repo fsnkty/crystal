@@ -56,7 +56,7 @@
         isNormalUser = true;
         extraGroups = ["wheel"];
         hashedPasswordFile = config.age.secrets.user.path;
-        packages = with pkgs; [wget rsync eza yazi];
+        packages = builtins.attrValues { inherit (pkgs) wget rsync eza yazi;};
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIrSQqI/X+I9fcQGOxgvTzZ2p/9SG4abc4xXkrAdRxBc" # lunar

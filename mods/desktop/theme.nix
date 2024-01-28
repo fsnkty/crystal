@@ -13,15 +13,16 @@
       pkgs.flat-remix-icon-theme
     ];
     fonts = {
-      packages = with pkgs; [
-        (pkgs.callPackage ../../pkgs/sfFonts.nix {})
+      packages = builtins.attrValues {
+        sfFonts = (pkgs.callPackage ../../pkgs/sfFonts.nix {});
+        inherit (pkgs)
         noto-fonts-emoji
         noto-fonts-extra
         # extras.
         noto-fonts
         noto-fonts-cjk
-        dejavu_fonts
-      ];
+        dejavu_fonts;
+      };
       fontconfig = {
         defaultFonts = {
           sansSerif = ["SF Pro Text"];

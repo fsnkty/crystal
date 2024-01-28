@@ -30,7 +30,7 @@
       command-not-found.enable = false;
     };
     environment.defaultPackages = mkIf cleanDefaults [];
-    documentation = {
+    documentation = mkIf cleanDefaults {
       # online pages are easier to navigate.
       enable = false;
       doc.enable = false;
@@ -38,6 +38,6 @@
       man.enable = false;
       nixos.enable = false;
     };
-    boot.enableContainers = false;
+    boot.enableContainers = mkIf cleanDefaults false;
   };
 }
