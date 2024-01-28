@@ -6,9 +6,7 @@
   ...
 }: {
   #### awaiting pr
-  imports = [
-    "${inputs.qbit}/nixos/modules/services/torrent/qbittorrent.nix"
-  ];
+  imports = ["${inputs.qbit}/nixos/modules/services/torrent/qbittorrent.nix"];
   ####
   options.service.web.qbit = lib.mkEnableOption "";
   config = let
@@ -22,15 +20,13 @@
           profileDir = "/storage/volumes/qbit";
           package = pkgs.qbittorrent-nox.overrideAttrs {meta.mainProgram = "qbittorrent-nox";};
           serverConfig = {
-            LegalNotice = {
-              Accepted = true;
-            };
+            LegalNotice.Accepted = true;
             BitTorrent.Session = {
               Port = 43862;
-              DefaultSavePath = "/storage/torrents/";
-              TorrentExportDirectory = "/storage/torrents/sources/";
+              DefaultSavePath = "/storage/media/torrents/";
+              TorrentExportDirectory = "/storage/media/torrents/sources/";
               TempPathEnabled = true;
-              TempPath = "/storage/torrents/incomplete/";
+              TempPath = "/storage/media/torrents/incomplete/";
               QueueingSystemEnabled = true;
               GlobalMaxInactiveSeedingMinutes = 43800;
               GlobalMaxSeedingMinutes = 10080;
@@ -40,8 +36,8 @@
               MaxActiveUploads = 15;
               MaxActiveTorrents = 20;
               IgnoreSlowTorrentsForQueueing = true;
-              SlowTorrentsDownloadRate = 20; #kbps
-              SlowTorrentsUploadRate = 20; # kbps
+              SlowTorrentsDownloadRate = 30; #kbps
+              SlowTorrentsUploadRate = 30; # kbps
               MaxConnections = 600;
               MaxUploads = 200;
             };

@@ -1,5 +1,4 @@
 {
-  description = "a";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     agenix = {

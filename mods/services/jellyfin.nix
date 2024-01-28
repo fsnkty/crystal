@@ -7,12 +7,8 @@
   ...
 }: {
   #### awaiting PR
-  disabledModules = [
-    "${modulesPath}/services/misc/jellyfin.nix"
-  ];
-  imports = [
-    "${inputs.jelly}/nixos/modules/services/misc/jellyfin.nix"
-  ];
+  disabledModules = ["${modulesPath}/services/misc/jellyfin.nix"];
+  imports = ["${inputs.jelly}/nixos/modules/services/misc/jellyfin.nix"];
   ####
   options.service.web.jellyfin = lib.mkEnableOption "";
   config = let
@@ -33,7 +29,7 @@
           locations."/".proxyPass = "http://127.0.0.1:8096";
         };
       };
-      boot.kernelParams = [ "i915.enable_guc=2" ];
+      boot.kernelParams = ["i915.enable_guc=2"];
       hardware.opengl = {
         enable = true;
         extraPackages = [

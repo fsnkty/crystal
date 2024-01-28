@@ -14,14 +14,17 @@
     ];
     fonts = {
       packages = builtins.attrValues {
-        sfFonts = (pkgs.callPackage ../../pkgs/sfFonts.nix {});
-        inherit (pkgs)
-        noto-fonts-emoji
-        noto-fonts-extra
-        # extras.
-        noto-fonts
-        noto-fonts-cjk
-        dejavu_fonts;
+        sfFonts = pkgs.callPackage ../../pkgs/sfFonts.nix {};
+        inherit
+          (pkgs)
+          noto-fonts-emoji
+          noto-fonts-extra
+          # extras.
+          
+          noto-fonts
+          noto-fonts-cjk
+          dejavu_fonts
+          ;
       };
       fontconfig = {
         defaultFonts = {

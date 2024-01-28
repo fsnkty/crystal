@@ -57,17 +57,19 @@
       extraGroups = ["wheel"];
       hashedPasswordFile = config.age.secrets.user.path;
       packages = builtins.attrValues {
-        inherit (pkgs)
-        krita
-        obs-studio
-        element-desktop
-        protontricks
-        r2modman
-        imv
-        mpv
-        eza
-        yazi
-        ueberzugpp;
+        inherit
+          (pkgs)
+          krita
+          obs-studio
+          element-desktop
+          protontricks
+          r2modman
+          imv
+          mpv
+          eza
+          yazi
+          ueberzugpp
+          ;
       };
       openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"];
     };

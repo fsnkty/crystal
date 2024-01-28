@@ -18,13 +18,16 @@
         wrapperFeatures.gtk = true;
         extraPackages = builtins.attrValues {
           rwpspread = inputs.rwp.legacyPackages.${pkgs.stdenv.hostPlatform.system}.rwpspread;
-          inherit (pkgs)
-          #vulkan-validation-layers # upstream might remove this dep soon.
-          autotiling-rs
-          wl-clipboard
-          swaylock
-          swayidle
-          wpaperd;
+          inherit
+            (pkgs)
+            #vulkan-validation-layers # upstream might remove this dep soon.
+            
+            autotiling-rs
+            wl-clipboard
+            swaylock
+            swayidle
+            wpaperd
+            ;
         };
         # export WLR_RENDERER=vulkan
         extraSessionCommands = ''

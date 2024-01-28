@@ -7,13 +7,15 @@
 }: let
   mynv = let
     con = pkgs.neovimUtils.makeNeovimConfig {
-      plugins = builtins.attrValues{
-        inherit (pkgs.vimPlugins)
-        nvim-lspconfig
-        null-ls-nvim
-        nvim-treesitter
-        nvim-tree-lua
-        nvim-web-devicons;
+      plugins = builtins.attrValues {
+        inherit
+          (pkgs.vimPlugins)
+          nvim-lspconfig
+          null-ls-nvim
+          nvim-treesitter
+          nvim-tree-lua
+          nvim-web-devicons
+          ;
         mountain = inputs.mountain.packages.${pkgs.system}.nvim;
       };
       withPython3 = false;
