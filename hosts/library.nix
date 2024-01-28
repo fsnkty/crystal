@@ -48,6 +48,7 @@
     owner = config.users.users.main.name;
   };
   users = {
+    groups.media = {};
     mutableUsers = false;
     users = {
       main = {

@@ -18,6 +18,7 @@
       services = {
         qbittorrent = {
           enable = true;
+          group = "media";
           profileDir = "/storage/volumes/qbit";
           package = pkgs.qbittorrent-nox.overrideAttrs {meta.mainProgram = "qbittorrent-nox";};
           serverConfig = {

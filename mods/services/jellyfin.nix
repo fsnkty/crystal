@@ -22,7 +22,8 @@
       services = {
         jellyfin = {
           enable = true;
-          package = inputs.jelly.legacyPackages.x86_64-linux.jellyfin;
+          group = "media";
+          #package = inputs.jelly.legacyPackages.x86_64-linux.jellyfin;
           openFirewall = true;
           dataDir = "/storage/volumes/jellyfin";
         };
@@ -32,10 +33,12 @@
           locations."/".proxyPass = "http://127.0.0.1:8096";
         };
       };
+      boot.kernelParams = [ "i915.enable_guc=2" ];
       hardware.opengl = {
         enable = true;
         extraPackages = [
           pkgs.intel-media-driver
+          pkgs.intel-compute-runtime
         ];
       };
     };
