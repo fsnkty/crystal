@@ -48,6 +48,8 @@
                 Password_PBKDF2 = "\"@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)\"";
                 ReverseProxySupportEnabled = true;
                 TrustedReverseProxiesList = "qbit.nuko.city";
+                AlternativeUIEnabled = true;
+                RootFolder = "/etc/vuetorrent/";
               };
               General.Locale = "en";
             };
@@ -63,5 +65,11 @@
         allowedTCPPorts = [8077 43862];
         allowedUDPPorts = [42862];
       };
+      environment.etc."vuetorrent" = let
+        vue = pkgs.fetchzip {
+          url = "https://github.com/VueTorrent/VueTorrent/releases/download/v2.5.0/vuetorrent.zip";
+          hash = "sha256-ys9CrbpOPYu8xJsCnqYKyC4IFD/SSAF8j+T+USqvGA8=";
+        };
+      in {source = vue;};
     };
 }

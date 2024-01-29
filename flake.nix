@@ -16,10 +16,10 @@
     };
     mountain.url = "github:nu-nu-ko/mountain-nix";
     # awaiting pr's
-    rwp.url = "git+file:/storage/repos/nixpkgs?ref=init-rwpspread";
+    rwp.url = "github:nu-nu-ko/nixpkgs?ref=init-rwpspread";
     jelly.url = "github:nu-nu-ko/nixpkgs?ref=nixos-jellyfin-dirs";
-    qbit.url = "github:nu-nu-ko/nixpkgs?ref=init-nixos-qbittorrent";
-    #qbit.url = "git+file:/storage/repos/nixpkgs?ref=nixos/qbittorrent-init";
+    #qbit.url = "github:nu-nu-ko/nixpkgs?ref=init-nixos-qbittorrent";
+    qbit.url = "git+file:/storage/repos/nixpkgs?ref=init-nixos-qbittorrent";
   };
   outputs = inputs: let
     inherit (inputs.nixpkgs.lib) hasSuffix filesystem genAttrs nixosSystem;
