@@ -55,7 +55,7 @@
         name = "nuko";
         uid = 1000;
         isNormalUser = true;
-        extraGroups = ["wheel"];
+        extraGroups = ["wheel" "media"];
         hashedPasswordFile = config.age.secrets.user.path;
         packages = builtins.attrValues {inherit (pkgs) wget rsync eza yazi;};
         openssh.authorizedKeys.keys = [

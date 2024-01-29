@@ -74,11 +74,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706412064,
-        "narHash": "sha256-8QRoLP20gbjlTVYJJp8khOypQE/Uhc0hBzyOT5M6f1E=",
+        "lastModified": 1706478878,
+        "narHash": "sha256-IRO9vNImZi2ECXSjvHMuC4rfEKlAWVxGn6PdkZGfSSo=",
         "owner": "famedly",
         "repo": "conduit",
-        "rev": "5787a70bab33b6549772027b466e3c529d66f629",
+        "rev": "10542a1d70c4936b08e515ea00463edc9a30c2c5",
         "type": "gitlab"
       },
       "original": {
@@ -118,16 +118,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1706070683,
-        "narHash": "sha256-iQoXIFviH5QbSKDkWyFJKKUtTcSiCvl1tW18ax+pKfI=",
-        "owner": "CobaltCause",
+        "lastModified": 1706473964,
+        "narHash": "sha256-Fq6xleee/TsX6NbtoRuI96bBuDHMU57PrcK9z1QEKbk=",
+        "owner": "ipetkov",
         "repo": "crane",
-        "rev": "8060686afabc5b042e8982200cb2cc3fd22cf416",
+        "rev": "c798790eabec3e3da48190ae3698ac227aab770c",
         "type": "github"
       },
       "original": {
-        "owner": "CobaltCause",
-        "ref": "crimes-for-cross",
+        "owner": "ipetkov",
+        "ref": "master",
         "repo": "crane",
         "type": "github"
       }

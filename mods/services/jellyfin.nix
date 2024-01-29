@@ -19,7 +19,6 @@
         jellyfin = {
           enable = true;
           group = "media";
-          #package = inputs.jelly.legacyPackages.x86_64-linux.jellyfin;
           openFirewall = true;
           dataDir = "/storage/volumes/jellyfin";
         };
