@@ -11,6 +11,8 @@
   options.service.web.qbit = lib.mkEnableOption "";
   config = let
     domain = "qbit.${config.service.web.domain}";
+    webport = 8077;
+    tport = 43862;
   in
     lib.mkIf config.service.web.qbit {
       services = {
@@ -22,7 +24,7 @@
           serverConfig = {
             LegalNotice.Accepted = true;
             BitTorrent.Session = {
-              Port = 43862;
+              Port = tport;
               DefaultSavePath = "/storage/media/torrents/";
               TorrentExportDirectory = "/storage/media/torrents/sources/";
               TempPathEnabled = true;
@@ -36,8 +38,8 @@
               MaxActiveUploads = 15;
               MaxActiveTorrents = 20;
               IgnoreSlowTorrentsForQueueing = true;
-              SlowTorrentsDownloadRate = 30; #kbps
-              SlowTorrentsUploadRate = 30; # kbps
+              SlowTorrentsDownloadRate = 20; #kbps
+              SlowTorrentsUploadRate = 20; # kbps
               MaxConnections = 600;
               MaxUploads = 200;
             };
@@ -50,11 +52,11 @@
               in {
                 AlternativeUIEnabled = true;
                 RootFolder = vue;
-                Port = 8077;
+                Port = webport;
                 Username = "nuko";
                 Password_PBKDF2 = "\"@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)\"";
                 ReverseProxySupportEnabled = true;
-                TrustedReverseProxiesList = "qbit.nuko.city";
+                TrustedReverseProxiesList = "${domain}";
               };
               General.Locale = "en";
             };
@@ -63,12 +65,12 @@
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;
           enableACME = true;
-          locations."/".proxyPass = "http://127.0.0.1:8077";
+          locations."/".proxyPass = "http://localhost:${toString webport}";
         };
       };
       networking.firewall = {
-        allowedTCPPorts = [8077 43862];
-        allowedUDPPorts = [42862];
+        allowedTCPPorts = [webport tport];
+        allowedUDPPorts = [tport];
       };
     };
 }
