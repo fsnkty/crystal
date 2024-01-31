@@ -18,7 +18,6 @@
       services = {
         qbittorrent = {
           enable = true;
-          group = "media";
           profileDir = "/storage/volumes/qbit";
           package = pkgs.qbittorrent-nox.overrideAttrs {meta.mainProgram = "qbittorrent-nox";};
           serverConfig = {
@@ -65,9 +64,10 @@
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;
           enableACME = true;
-          locations."/".proxyPass = "http://localhost:${toString webport}";
+          locations."/".proxyPass = "0.0.0.0:${toString webport}";
         };
       };
+      users.users.qbittorrent.extraGroups = ["media"];
       networking.firewall = {
         allowedTCPPorts = [webport tport];
         allowedUDPPorts = [tport];

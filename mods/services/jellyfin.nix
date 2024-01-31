@@ -18,16 +18,16 @@
       services = {
         jellyfin = {
           enable = true;
-          group = "media";
           openFirewall = true;
           dataDir = "/storage/volumes/jellyfin";
         };
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;
           enableACME = true;
-          locations."/".proxyPass = "http://127.0.0.1:8096";
+          locations."/".proxyPass = "0.0.0.0:8096";
         };
       };
+      users.users.jellyfin.extraGroups = ["media"];
       boot.kernelParams = ["i915.enable_guc=2"];
       hardware.opengl = {
         enable = true;

@@ -25,5 +25,6 @@
         locations."/".proxyPass = "0.0.0.0:4533";
       };
     };
+    users.users.navidrome.extraGroups = ["media"];
   };
 }

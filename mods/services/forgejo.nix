@@ -26,7 +26,7 @@
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;
           enableACME = true;
-          locations."/".proxyPass = "http://127.0.0.1:${toString config.services.forgejo.settings.server.HTTP_PORT}";
+          locations."/".proxyPass = "0.0.0.0:3001";
         };
       };
     };

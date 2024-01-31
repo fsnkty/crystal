@@ -10,13 +10,13 @@
     services = let
       server_name = "${config.service.web.domain}";
       matrix_hostname = "matrix.${server_name}";
+      address = "0.0.0.0";
     in {
       matrix-conduit = {
         enable = true;
         package = inputs.conduit.packages.${pkgs.system}.default;
         settings.global = {
-          inherit server_name;
-          address = "0.0.0.0";
+          inherit server_name address;
         };
       };
       nginx = {
@@ -26,7 +26,7 @@
             enableACME = true;
             listen = [
               {
-                addr = "0.0.0.0";
+                addr = address;
                 port = 443;
                 ssl = true;
               }
@@ -43,15 +43,16 @@
           };
           "${server_name}".locations = let
             formatJson = pkgs.formats.json {};
+            extraConfig = ''
+              default_type application/json;
+              add_header Access-Control-Allow-Origin "*";
+            '';
           in {
             "=/.well-known/matrix/server" = {
               alias = formatJson.generate "well-known-matrix-server" {
                 "m.server" = "${matrix_hostname}:443";
               };
-              extraConfig = ''
-                default_type application/json;
-                add_header Access-Control-Allow-Origin "*";
-              '';
+              inherit extraConfig;
             };
             "=/.well-known/matrix/client" = {
               alias = formatJson.generate "well-known-matrix-client" {
@@ -62,15 +63,12 @@
                   "url" = "https://${matrix_hostname}";
                 };
               };
-              extraConfig = ''
-                default_type application/json;
-                add_header Access-Control-Allow-Origin "*";
-              '';
+              inherit extraConfig;
             };
           };
         };
         upstreams."backend_conduit".servers = {
-          "0.0.0.0:${toString config.services.matrix-conduit.settings.global.port}" = {};
+          "${address}:${toString config.services.matrix-conduit.settings.global.port}" = {};
         };
       };
     };
