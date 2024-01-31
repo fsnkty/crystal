@@ -22,9 +22,9 @@
       nginx.virtualHosts."${domain}" = {
         forceSSL = true;
         enableACME = true;
-        locations."/".proxyPass = "0.0.0.0:4533";
+        locations."/".proxyPass = "http://localhost:4533";
       };
     };
-    users.users.navidrome.extraGroups = ["media"];
+    #users.users.navidrome.extraGroups = ["media"];
   };
 }

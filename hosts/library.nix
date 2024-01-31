@@ -27,6 +27,8 @@
       nextcloud = true;
       vaultwarden = true;
       matrixhome = true;
+      #navidrome = true;
+      komga = true;
     };
     fail2ban = true;
     postgres = true;

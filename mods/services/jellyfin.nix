@@ -24,7 +24,7 @@
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;
           enableACME = true;
-          locations."/".proxyPass = "0.0.0.0:8096";
+          locations."/".proxyPass = "http://localhost:8096";
         };
       };
       users.users.jellyfin.extraGroups = ["media"];

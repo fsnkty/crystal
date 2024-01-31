@@ -26,7 +26,7 @@
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;
           enableACME = true;
-          locations."/".proxyPass = "0.0.0.0:3001";
+          locations."/".proxyPass = "http://localhost:3001";
         };
       };
     };

@@ -64,7 +64,7 @@
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;
           enableACME = true;
-          locations."/".proxyPass = "0.0.0.0:${toString webport}";
+          locations."/".proxyPass = "http://localhost:${toString webport}";
         };
       };
       users.users.qbittorrent.extraGroups = ["media"];

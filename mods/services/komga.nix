@@ -10,15 +10,16 @@
     services = {
       komga = {
         enable = true;
-        stateDir = "/storage/volumes/komga";
-        port = 5654;
+        #stateDir = "/storage/volumes/komga";
+        port = 8097;
+        openFirewall = true;
       };
-      nginx.virtualHost."${domain}" = {
+      nginx.virtualHosts."${domain}" = {
         forceSSL = true;
         enableACME = true;
-        locations."/".proxyPass = "0.0.0.0:5654";
+        locations."/".proxyPass = "http://127.0.0.1:8097";
       };
     };
-    users.users.komga.extraGroups = ["media"];
+    #users.users.komga.extraGroups = ["media"];
   };
 }

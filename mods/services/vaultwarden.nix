@@ -18,7 +18,7 @@
           config = {
             DOMAIN = "https://${domain}";
             SIGNUPS_ALLOWED = false;
-            ROCKET_ADDRESS = "0.0.0.0";
+            #ROCKET_ADDRESS = "0.0.0.0";
             ROCKET_PORT = 8222;
             ROCKET_LOG = "critical";
             SMTP_HOST = "mail.nuko.city";
@@ -34,7 +34,7 @@
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "0.0.0.0:8222";
+            proxyPass = "http://localhost:8222";
             extraConfig = "proxy_pass_header Authorization;";
           };
         };
