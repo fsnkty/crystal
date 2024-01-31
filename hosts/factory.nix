@@ -62,8 +62,6 @@
           krita
           obs-studio
           element-desktop
-          protontricks
-          r2modman
           imv
           mpv
           eza
@@ -106,12 +104,6 @@
   hardware = {
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
-    opengl = {
-      enable = true;
-      driSupport32Bit = true;
-      extraPackages = [pkgs.vaapiVdpau pkgs.libvdpau-va-gl];
-    };
-    xone.enable = true;
   };
   services.hardware.openrgb = {
     enable = true;

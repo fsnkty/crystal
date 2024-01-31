@@ -3,21 +3,25 @@
   pkgs,
   config,
   ...
-}: {
+}: let
+  inherit (lib) mkEnableOption mkIf;
+in {
   options.desktop = {
-    waybar = lib.mkEnableOption "";
-    wofi = lib.mkEnableOption "";
+    waybar = mkEnableOption "";
+    wofi = mkEnableOption "";
   };
-  config = {
+  config = let
+    inherit (config.desktop) wofi waybar;
+  in {
     users.users.main.packages =
-      lib.optionals (config.desktop.wofi) [pkgs.wofi]
-      ++ lib.optionals (config.desktop.waybar) [pkgs.waybar];
+      lib.optionals wofi [pkgs.wofi]
+      ++ lib.optionals waybar [pkgs.waybar];
     home.file = let
       d1 = "DP-1";
       d2 = "HDMI-A-1";
       inherit (config.colours) primary alpha;
     in {
-      ".config/wofi/style.css" = lib.mkIf config.desktop.wofi {
+      ".config/wofi/style.css" = mkIf wofi {
         text = ''
           #window { border: 3px solid #${primary.main}; }
           #input { margin: 15px; }
@@ -26,7 +30,7 @@
           #entry:selected { color: #${primary.main}; }
         '';
       };
-      ".config/waybar/config" = lib.mkIf config.desktop.waybar {
+      ".config/waybar/config" = mkIf waybar {
         text = let
           workspaces = ''
             "sway/workspaces": {
@@ -101,7 +105,7 @@
           ]
         '';
       };
-      ".config/waybar/style.css" = lib.mkIf config.desktop.waybar {
+      ".config/waybar/style.css" = mkIf waybar {
         text = ''
           * {
               font-family: 'Liga SFMono Nerd Font';

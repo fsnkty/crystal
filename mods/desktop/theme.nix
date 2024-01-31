@@ -19,11 +19,7 @@
           (pkgs)
           noto-fonts-emoji
           noto-fonts-extra
-          # extras.
-          
-          noto-fonts
           noto-fonts-cjk
-          dejavu_fonts
           ;
       };
       fontconfig = {
