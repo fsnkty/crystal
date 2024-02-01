@@ -27,18 +27,14 @@
   outputs =
     inputs:
     let
-      inherit (inputs.nixpkgs.lib)
-        hasSuffix
-        filesystem
-        genAttrs
-        nixosSystem
-        ;
+      inherit (inputs.nixpkgs.lib.filesystem) listFilesRecursive;
+      inherit (inputs.nixpkgs.lib) hasSuffix genAttrs nixosSystem;
+      inherit (builtins) filter;
     in
     {
       nixosConfigurations =
         let
-          importAll =
-            path: builtins.filter (hasSuffix ".nix") (map toString (filesystem.listFilesRecursive path));
+          importAll = path: filter (hasSuffix ".nix") (map toString (listFilesRecursive path));
         in
         genAttrs
           [
