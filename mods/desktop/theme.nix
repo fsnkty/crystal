@@ -4,7 +4,8 @@
   inputs,
   config,
   ...
-}: {
+}:
+{
   options.desktop.theme = lib.mkEnableOption "";
   config = lib.mkIf config.desktop.theme {
     users.users.main.packages = [
@@ -14,19 +15,14 @@
     ];
     fonts = {
       packages = builtins.attrValues {
-        sfFonts = pkgs.callPackage ../../pkgs/sfFonts.nix {};
-        inherit
-          (pkgs)
-          noto-fonts-emoji
-          noto-fonts-extra
-          noto-fonts-cjk
-          ;
+        sfFonts = pkgs.callPackage ../../pkgs/sfFonts.nix { };
+        inherit (pkgs) noto-fonts-emoji noto-fonts-extra noto-fonts-cjk;
       };
       fontconfig = {
         defaultFonts = {
-          sansSerif = ["SF Pro Text"];
-          serif = ["SF Pro Text"];
-          monospace = ["Liga SFMono Nerd Font"];
+          sansSerif = [ "SF Pro Text" ];
+          serif = [ "SF Pro Text" ];
+          monospace = [ "Liga SFMono Nerd Font" ];
         };
         antialias = true;
         subpixel.rgba = "rgb";

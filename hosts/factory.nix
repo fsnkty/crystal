@@ -3,7 +3,8 @@
   lib,
   config,
   ...
-}: {
+}:
+{
   misc = {
     nix = {
       config = true;
@@ -54,11 +55,10 @@
       name = "nuko";
       uid = 1000;
       isNormalUser = true;
-      extraGroups = ["wheel"];
+      extraGroups = [ "wheel" ];
       hashedPasswordFile = config.age.secrets.user.path;
       packages = builtins.attrValues {
-        inherit
-          (pkgs)
+        inherit (pkgs)
           krita
           obs-studio
           element-desktop
@@ -69,12 +69,21 @@
           ueberzugpp
           ;
       };
-      openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"
+      ];
     };
   };
-  home.file = lib.genAttrs ["Documents" "Downloads" "Pictures" "Videos" "crystal"] (name: {
-    source = "/storage/${name}";
-  });
+  home.file =
+    lib.genAttrs
+      [
+        "Documents"
+        "Downloads"
+        "Pictures"
+        "Videos"
+        "crystal"
+      ]
+      (name: { source = "/storage/${name}"; });
   ### hardware
   networking = {
     hostName = "factory";
@@ -86,6 +95,7 @@
     services.systemd-udev-settle.enable = false;
     network = {
       enable = true;
+      wait-online.enable = false;
       networks.enp39s0 = {
         enable = true;
         name = "enp39s0";
@@ -93,10 +103,13 @@
           DHCP = "no";
           DNSSEC = "yes";
           DNSOverTLS = "yes";
-          DNS = ["1.1.1.1" "1.1.0.0"];
+          DNS = [
+            "1.1.1.1"
+            "1.1.0.0"
+          ];
         };
-        address = ["192.168.0.4/24"];
-        routes = [{routeConfig.Gateway = "192.168.0.1";}];
+        address = [ "192.168.0.4/24" ];
+        routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
       };
     };
   };
@@ -119,23 +132,37 @@
     initrd = {
       verbose = false;
       systemd.enable = true;
-      kernelModules = ["amdgpu"];
-      availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
+      kernelModules = [ "amdgpu" ];
+      availableKernelModules = [
+        "nvme"
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
     };
-    kernelModules = ["kvm-amd" "amd_pstate"];
-    supportedFilesystems = ["zfs"];
+    kernelModules = [
+      "kvm-amd"
+      "amd_pstate"
+    ];
+    supportedFilesystems = [ "zfs" ];
     kernelParams = [
       "quiet"
       "splash"
       "amd_pstate=guided"
-      "amd_pstate.shared_mem=1"
+      "video=DP-1:1920x1080@144"
     ];
   };
   fileSystems = {
     "/boot" = {
       device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part1";
       fsType = "vfat";
-      options = ["rw" "noatime"];
+      options = [
+        "rw"
+        "noatime"
+        "x-systemd.automount"
+      ];
     };
     "/" = {
       device = "rpool/root";
@@ -146,7 +173,7 @@
       fsType = "zfs";
     };
   };
-  swapDevices = [{device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part2";}];
+  swapDevices = [ { device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part2"; } ];
   ### remember the warning.. ###
   system.stateVersion = "23.11";
 }

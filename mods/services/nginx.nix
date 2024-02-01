@@ -1,17 +1,19 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  ...
-}: {
   options.service.web = {
     enable = lib.mkEnableOption "";
-    domain = lib.mkOption {type = lib.types.str;};
+    domain = lib.mkOption { type = lib.types.str; };
   };
-  config = let
-    domain = "${config.service.web.domain}";
-  in
+  config =
+    let
+      domain = "${config.service.web.domain}";
+    in
     lib.mkIf config.service.web.enable {
-      networking.firewall.allowedTCPPorts = [80 443 8080];
+      networking.firewall.allowedTCPPorts = [
+        80
+        443
+        8080
+      ];
       security.acme = {
         acceptTerms = true;
         defaults.email = "acme@${domain}";
@@ -37,6 +39,6 @@
           root = "/storage/volumes/website/wires";
         };
       };
-      users.users.nginx.extraGroups = ["acme"];
+      users.users.nginx.extraGroups = [ "acme" ];
     };
 }

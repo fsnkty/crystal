@@ -1,12 +1,10 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  ...
-}: {
   options.service.web.forgejo = lib.mkEnableOption "";
-  config = let
-    domain = "tea.${config.service.web.domain}";
-  in
+  config =
+    let
+      domain = "tea.${config.service.web.domain}";
+    in
     lib.mkIf config.service.web.forgejo {
       services = {
         forgejo = {

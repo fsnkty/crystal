@@ -3,20 +3,26 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   options.service.web.nextcloud = lib.mkEnableOption "";
-  config = let
-    domain = "cloud.${config.service.web.domain}";
-  in
+  config =
+    let
+      domain = "cloud.${config.service.web.domain}";
+    in
     lib.mkIf config.service.web.nextcloud {
       age.secrets =
-        lib.genAttrs [
-          "user_cloud"
-          "cloud_env"
-        ] (name: {
-          file = ../../shhh + "/${name}.age";
-          owner = "nextcloud";
-        });
+        lib.genAttrs
+          [
+            "user_cloud"
+            "cloud_env"
+          ]
+          (
+            name: {
+              file = ../../shhh + "/${name}.age";
+              owner = "nextcloud";
+            }
+          );
       services = {
         nextcloud = {
           enable = true;
@@ -38,8 +44,8 @@
           configureRedis = true;
           extraOptions = {
             overwriteprotocol = "https";
-            trusted_proxies = ["https://${domain}"];
-            trusted_domains = ["https://${domain}"];
+            trusted_proxies = [ "https://${domain}" ];
+            trusted_domains = [ "https://${domain}" ];
             default_phone_region = "NZ";
             mail_smtpmode = "smtp";
             mail_sendmailmode = "smtp";
@@ -56,10 +62,17 @@
           appstoreEnable = false;
           autoUpdateApps.enable = true;
           extraAppsEnable = true;
-          extraApps = {inherit (pkgs.nextcloud28Packages.apps) mail calendar bookmarks notes;};
+          extraApps = {
+            inherit (pkgs.nextcloud28Packages.apps)
+              mail
+              calendar
+              bookmarks
+              notes
+              ;
+          };
         };
         postgresql = {
-          ensureDatabases = [config.services.nextcloud.config.dbname];
+          ensureDatabases = [ config.services.nextcloud.config.dbname ];
           ensureUsers = [
             {
               name = config.services.nextcloud.config.dbuser;
@@ -74,8 +87,8 @@
         };
       };
       systemd.services."nextcloud-setup" = {
-        requires = ["postgresql.service"];
-        after = ["postgresql.service"];
+        requires = [ "postgresql.service" ];
+        after = [ "postgresql.service" ];
       };
     };
 }

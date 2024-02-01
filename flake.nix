@@ -9,7 +9,10 @@
         home-manager.follows = "";
       };
     };
-    snms.url = "gitlab:/simple-nixos-mailserver/nixos-mailserver";
+    snms = {
+      url = "gitlab:/simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     conduit = {
       url = "gitlab:famedly/conduit?ref=next";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,24 +24,35 @@
     qbit.url = "github:nu-nu-ko/nixpkgs?ref=init-nixos-qbittorrent";
     #qbit.url = "git+file:/storage/repos/nixpkgs?ref=init-nixos-qbittorrent";
   };
-  outputs = inputs: let
-    inherit (inputs.nixpkgs.lib) hasSuffix filesystem genAttrs nixosSystem;
-  in {
-    nixosConfigurations = let
-      importAll = path:
-        builtins.filter (hasSuffix ".nix")
-        (map toString (filesystem.listFilesRecursive path));
+  outputs =
+    inputs:
+    let
+      inherit (inputs.nixpkgs.lib)
+        hasSuffix
+        filesystem
+        genAttrs
+        nixosSystem
+        ;
     in
-      genAttrs [
-        "factory"
-        "library"
-      ] (name:
-        nixosSystem {
-          specialArgs = {inherit inputs;};
-          modules =
-            [./hosts/${name}.nix]
-            ++ importAll ./libs
-            ++ importAll ./mods;
-        });
-  };
+    {
+      nixosConfigurations =
+        let
+          importAll =
+            path: builtins.filter (hasSuffix ".nix") (map toString (filesystem.listFilesRecursive path));
+        in
+        genAttrs
+          [
+            "factory"
+            "library"
+          ]
+          (
+            name:
+            nixosSystem {
+              specialArgs = {
+                inherit inputs;
+              };
+              modules = [ ./hosts/${name}.nix ] ++ importAll ./libs ++ importAll ./mods;
+            }
+          );
+    };
 }

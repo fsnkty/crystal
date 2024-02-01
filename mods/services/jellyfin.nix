@@ -5,15 +5,17 @@
   inputs,
   modulesPath,
   ...
-}: {
+}:
+{
   #### awaiting PR
-  disabledModules = ["${modulesPath}/services/misc/jellyfin.nix"];
-  imports = ["${inputs.jelly}/nixos/modules/services/misc/jellyfin.nix"];
+  disabledModules = [ "${modulesPath}/services/misc/jellyfin.nix" ];
+  imports = [ "${inputs.jelly}/nixos/modules/services/misc/jellyfin.nix" ];
   ####
   options.service.web.jellyfin = lib.mkEnableOption "";
-  config = let
-    domain = "jelly.${config.service.web.domain}";
-  in
+  config =
+    let
+      domain = "jelly.${config.service.web.domain}";
+    in
     lib.mkIf config.service.web.jellyfin {
       services = {
         jellyfin = {
@@ -27,8 +29,8 @@
           locations."/".proxyPass = "http://localhost:8096";
         };
       };
-      users.users.jellyfin.extraGroups = ["media"];
-      boot.kernelParams = ["i915.enable_guc=2"];
+      users.users.jellyfin.extraGroups = [ "media" ];
+      boot.kernelParams = [ "i915.enable_guc=2" ];
       hardware.opengl = {
         enable = true;
         extraPackages = [

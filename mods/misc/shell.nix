@@ -3,21 +3,22 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   options.misc.shell = {
     enable = lib.mkEnableOption "";
-    prompt = lib.mkOption {type = lib.types.lines;};
+    prompt = lib.mkOption { type = lib.types.lines; };
   };
   config = lib.mkIf config.misc.shell.enable {
     users.users.main.shell = lib.mkForce pkgs.zsh;
     environment = {
-      shells = [pkgs.zsh];
+      shells = [ pkgs.zsh ];
       binsh = lib.getExe pkgs.dash;
       variables = {
-        XDG_DATA_HOME = "\"$HOME\"/.local/share";
-        XDG_CONFIG_HOME = "\"$HOME\"/.config";
-        XDG_STATE_HOME = "\"$HOME\"/.local/state";
-        XDG_CACHE_HOME = "\"$HOME\"/.cache";
+        XDG_DATA_HOME = ''"$HOME"/.local/share'';
+        XDG_CONFIG_HOME = ''"$HOME"/.config'';
+        XDG_STATE_HOME = ''"$HOME"/.local/state'';
+        XDG_CACHE_HOME = ''"$HOME"/.cache'';
       };
     };
     programs.zsh = {

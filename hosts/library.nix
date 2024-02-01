@@ -1,8 +1,5 @@
+{ pkgs, config, ... }:
 {
-  pkgs,
-  config,
-  ...
-}: {
   misc = {
     nix = {
       config = true;
@@ -50,16 +47,26 @@
     owner = config.users.users.main.name;
   };
   users = {
-    groups.media = {};
+    groups.media = { };
     mutableUsers = false;
     users = {
       main = {
         name = "nuko";
         uid = 1000;
         isNormalUser = true;
-        extraGroups = ["wheel" "media"];
+        extraGroups = [
+          "wheel"
+          "media"
+        ];
         hashedPasswordFile = config.age.secrets.user.path;
-        packages = builtins.attrValues {inherit (pkgs) wget rsync eza yazi;};
+        packages = builtins.attrValues {
+          inherit (pkgs)
+            wget
+            rsync
+            eza
+            yazi
+            ;
+        };
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIrSQqI/X+I9fcQGOxgvTzZ2p/9SG4abc4xXkrAdRxBc" # lunar
@@ -85,10 +92,13 @@
         DHCP = "no";
         DNSSEC = "yes";
         DNSOverTLS = "yes";
-        DNS = ["1.1.1.1" "1.1.0.0"];
+        DNS = [
+          "1.1.1.1"
+          "1.1.0.0"
+        ];
       };
-      address = ["192.168.0.3/24"];
-      routes = [{routeConfig.Gateway = "192.168.0.1";}];
+      address = [ "192.168.0.3/24" ];
+      routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
     };
   };
   hardware = {
@@ -102,9 +112,13 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    initrd.availableKernelModules = ["xhci_pci" "ahci" "sd_mod"];
-    kernelModules = ["kvm-intel"];
-    supportedFilesystems = ["zfs"];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "sd_mod"
+    ];
+    kernelModules = [ "kvm-intel" ];
+    supportedFilesystems = [ "zfs" ];
   };
   fileSystems = {
     "/boot" = {
@@ -120,7 +134,7 @@
       fsType = "zfs";
     };
   };
-  swapDevices = [{device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part2";}];
+  swapDevices = [ { device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part2"; } ];
   ### remember the warning.. ###
   system.stateVersion = "23.11";
 }

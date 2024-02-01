@@ -1,8 +1,5 @@
+{ lib, config, ... }:
 {
-  lib,
-  config,
-  ...
-}: {
   options.desktop.audio = lib.mkEnableOption "";
   config = lib.mkIf config.desktop.audio {
     services.pipewire = {

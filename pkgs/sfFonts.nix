@@ -1,4 +1,4 @@
-{pkgs}:
+{ pkgs }:
 pkgs.stdenv.mkDerivation {
   pname = "sf-fonts";
   version = "1";
@@ -12,7 +12,7 @@ pkgs.stdenv.mkDerivation {
     rev = "dc5a3e6fcc2e16ad476b7be3c3c17c2273b260ea";
     sha256 = "sha256-AYjKrVLISsJWXN6Cj74wXmbJtREkFDYOCRw1t2nVH2w=";
   };
-  buildInputs = [pkgs.p7zip];
+  buildInputs = [ pkgs.p7zip ];
   dontUnpack = true;
   installPhase = ''
     mkdir -p $out/usr/share/fonts/OTF $out/usr/share/fonts/TTF

@@ -4,10 +4,11 @@
   lib,
   config,
   ...
-}: {
+}:
+{
   options.misc.nix = {
     config = lib.mkEnableOption "";
-    flakePath = lib.mkOption {type = lib.types.str;};
+    flakePath = lib.mkOption { type = lib.types.str; };
     nh = lib.mkEnableOption "";
   };
   config = lib.mkIf config.misc.nix.config {
@@ -20,7 +21,7 @@
           "flakes"
         ];
         auto-optimise-store = true;
-        allowed-users = ["@wheel"];
+        allowed-users = [ "@wheel" ];
         use-xdg-base-directories = true;
       };
       gc = {
@@ -28,7 +29,7 @@
         dates = "weekly";
         options = "--delete-older-than 7d";
       };
-      nixPath = ["nixpkgs=/etc/nix/inputs/nixpkgs"];
+      nixPath = [ "nixpkgs=/etc/nix/inputs/nixpkgs" ];
       registry.nixpkgs.flake = inputs.nixpkgs;
     };
     nixpkgs = {
@@ -40,6 +41,6 @@
       sessionVariables.FLAKE = config.misc.nix.flakePath;
     };
     documentation.enable = false;
-    users.users.main.packages = lib.optionals (config.misc.nix.nh) [pkgs.nh];
+    users.users.main.packages = lib.optionals (config.misc.nix.nh) [ pkgs.nh ];
   };
 }

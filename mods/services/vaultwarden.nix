@@ -1,12 +1,10 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  ...
-}: {
   options.service.web.vaultwarden = lib.mkEnableOption "";
-  config = let
-    domain = "vault.${config.service.web.domain}";
-  in
+  config =
+    let
+      domain = "vault.${config.service.web.domain}";
+    in
     lib.mkIf config.service.web.vaultwarden {
       age.secrets.vault_env = {
         file = ../../shhh/vault_env.age;
@@ -18,7 +16,6 @@
           config = {
             DOMAIN = "https://${domain}";
             SIGNUPS_ALLOWED = false;
-            #ROCKET_ADDRESS = "0.0.0.0";
             ROCKET_PORT = 8222;
             ROCKET_LOG = "critical";
             SMTP_HOST = "mail.nuko.city";

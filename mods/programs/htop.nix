@@ -3,10 +3,11 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   options.program.htop = lib.mkEnableOption "";
   config = lib.mkIf config.program.htop {
-    users.users.main.packages = [pkgs.htop];
+    users.users.main.packages = [ pkgs.htop ];
     home.file.".config/htop/htoprc".text = ''
       htop_version=3.2.2
       config_reader_min_version=3
