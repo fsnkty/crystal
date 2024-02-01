@@ -12,8 +12,6 @@
           settings = {
             MusicFolder = "/storage/media/Music";
             DataFolder = "/storage/volumes/navidrome";
-            CacheFolder = "/var/cache/navidrome";
-            BaseUrl = domain;
             EnableDownloads = true;
             EnableSharing = true;
           };
@@ -24,6 +22,5 @@
           locations."/".proxyPass = "http://localhost:4533";
         };
       };
-      #users.users.navidrome.extraGroups = ["media"];
     };
 }

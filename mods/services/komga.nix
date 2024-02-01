@@ -9,7 +9,7 @@
       services = {
         komga = {
           enable = true;
-          #stateDir = "/storage/volumes/komga";
+          stateDir = "/storage/volumes/komga";
           port = 8097;
           openFirewall = true;
         };
