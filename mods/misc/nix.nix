@@ -24,6 +24,7 @@
         allowed-users = [ "@wheel" ];
         use-xdg-base-directories = true;
       };
+      optimise.automatic = true;
       gc = {
         automatic = true;
         dates = "weekly";
@@ -31,6 +32,7 @@
       };
       nixPath = [ "nixpkgs=/etc/nix/inputs/nixpkgs" ];
       registry.nixpkgs.flake = inputs.nixpkgs;
+      channel.enable = false;
     };
     nixpkgs = {
       hostPlatform = "x86_64-linux";
@@ -40,7 +42,6 @@
       etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
       sessionVariables.FLAKE = config.misc.nix.flakePath;
     };
-    documentation.enable = false;
     users.users.main.packages = lib.optionals (config.misc.nix.nh) [ pkgs.nh ];
   };
 }

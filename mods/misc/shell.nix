@@ -37,8 +37,11 @@
         ZSH_HIGHLIGHT_STYLES[path]=none
         ZSH_HIGHLIGHT_STYLES[path_prefix]=none
         zsh-newuser-install() { :; }
-        runix() {
-            nix run nixpkgs#$1 -- "''${@:2}"
+        nr() {
+          nix run nixpkgs#$1 -- ''${@:2}
+        }
+        ns() {
+          nix shell nixpkgs#''${^@}
         }
       '';
       shellAliases = {

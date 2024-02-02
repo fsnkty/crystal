@@ -62,6 +62,7 @@
           krita
           obs-studio
           element-desktop
+          vesktop
           imv
           mpv
           eza

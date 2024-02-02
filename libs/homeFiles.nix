@@ -1,4 +1,3 @@
-# originally written by lv.cha on discord, ive sinced mangled it a tad.
 {
   config,
   lib,

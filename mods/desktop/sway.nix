@@ -10,12 +10,9 @@
   config = lib.mkIf config.desktop.sway {
     services.greetd = {
       enable = true;
-      settings = rec {
-        initial_session = {
-          command = "${pkgs.sway}/bin/sway";
-          user = "nuko";
-        };
-        default_session = initial_session;
+      settings.default_session = {
+        command = "${pkgs.sway}/bin/sway";
+        user = config.users.users.main.name;
       };
     };
     programs = {
@@ -29,6 +26,7 @@
             autotiling-rs
             wl-clipboard
             swaylock-effects
+            swaynotificationcenter
             swayidle
             wpaperd
             ;
@@ -43,6 +41,15 @@
     };
     home.file.".config/sway/config".text =
       let
+        inherit (lib)
+          replicate
+          range
+          getExe
+          concatMapStringsSep
+          concatStrings
+          ;
+        inherit (pkgs) grim slurp;
+        inherit (config.colours) primary;
         d1 = "DP-1";
         d2 = "HDMI-A-1";
         m = "Mod4";
@@ -53,15 +60,6 @@
           "right"
         ];
         lock = "swaylock -f -c 000000 --clock --indicator";
-        inherit (lib)
-          replicate
-          range
-          getExe
-          concatMapStringsSep
-          concatStrings
-          ;
-        inherit (pkgs) grim slurp;
-        inherit (config.colours) primary;
       in
       ''
         xwayland enable
@@ -69,6 +67,7 @@
           ${lock}
           autotiling-rs
           wpaperd
+          swaync
           waybar
           swayidle -w \
             timeout 300 '${lock}' \
@@ -92,13 +91,12 @@
         client.focused_inactive ${concatStrings (replicate 4 "#${primary.bg} ")}
         ${concatMapStringsSep "\n" (n: "bindsym ${m}+${n}") [
           "Return exec alacritty"
-          "Shift+q kill"
           "d exec wofi --show drun -a -W 15% -H 35%"
           ''Shift+s exec ${getExe grim} -g "$(${getExe slurp} -d)" - | wl-copy -t image/png''
-          "Shift+e exec swaynag -t warning -m 'confirm quit sway' -B 'confirm' 'swaymsg exit'"
-          "Shift+a floating toggle"
-          "Shift+z fullscreen toggle"
           "l exec ${lock}"
+          "Shift+q kill"
+          "z floating toggle"
+          "Shift+z fullscreen toggle"
         ]}
         floating_modifier ${m} normal
         ${concatMapStringsSep "\n" (n: "bindsym ${m}+${n} focus ${n}") directions}
