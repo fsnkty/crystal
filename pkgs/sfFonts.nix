@@ -15,12 +15,12 @@ pkgs.stdenv.mkDerivation {
   buildInputs = [ pkgs.p7zip ];
   dontUnpack = true;
   installPhase = ''
-    mkdir -p $out/usr/share/fonts/OTF $out/usr/share/fonts/TTF
+    mkdir -p $out/share/fonts/OTF $out/share/fonts/TTF
     7z x $pro
     7z x SFProFonts/SF\ Pro\ Fonts.pkg
     7z x Payload~
     mkdir -p $out/fontfiles
-    mv Library/Fonts/* $out/usr/share/fonts/OTF
-    cp -R $mono/*.otf $out/usr/share/fonts/OTF
+    mv Library/Fonts/* $out/share/fonts/OTF
+    cp -R $mono/*.otf $out/share/fonts/OTF
   '';
 }
