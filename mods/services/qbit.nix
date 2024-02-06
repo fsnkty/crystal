@@ -39,8 +39,8 @@
               MaxActiveUploads = 15;
               MaxActiveTorrents = 20;
               IgnoreSlowTorrentsForQueueing = true;
-              SlowTorrentsDownloadRate = 20; # kbps
-              SlowTorrentsUploadRate = 20; # kbps
+              SlowTorrentsDownloadRate = 30; # kbps
+              SlowTorrentsUploadRate = 30; # kbps
               MaxConnections = 600;
               MaxUploads = 200;
             };
