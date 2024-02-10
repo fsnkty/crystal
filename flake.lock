@@ -238,16 +238,16 @@
       "locked": {
         "lastModified": 1707170853,
         "narHash": "sha256-KWVbahJKTfA72GL7DF2BXG12F9XAyV6N1lfD0hNp2zA=",
-        "ref": "nixos-jellyfin-dirs",
+        "owner": "nu-nu-ko",
+        "repo": "nixpkgs",
         "rev": "42d8301efefe34650c3c08da96c823881b218525",
-        "revCount": 562966,
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs"
+        "type": "github"
       },
       "original": {
+        "owner": "nu-nu-ko",
         "ref": "nixos-jellyfin-dirs",
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "mountain": {
@@ -379,11 +379,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1706913249,
-        "narHash": "sha256-x3M7iV++CsvRXI1fpyFPduGELUckZEhSv0XWnUopAG8=",
+        "lastModified": 1707092692,
+        "narHash": "sha256-ZbHsm+mGk/izkWtT4xwwqz38fdlwu7nUUKXTOmm4SyE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e92b6015881907e698782c77641aa49298330223",
+        "rev": "faf912b086576fd1a15fca610166c98d47bc667e",
         "type": "github"
       },
       "original": {
@@ -410,18 +410,18 @@
     },
     "qbit": {
       "locked": {
-        "lastModified": 1707174957,
-        "narHash": "sha256-YQFGVdo6yBypoU3zezP3g6UP9S6JTIKnZ0M0Ju3Hpa4=",
-        "ref": "init-nixos-qbittorrent",
-        "rev": "2b8e28bc0e5ddd1f44ca067d5bd40b62e75ffa8e",
-        "revCount": 562970,
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs"
+        "lastModified": 1707207031,
+        "narHash": "sha256-Wb+T4iiNweKqMX6dprswzbI0fRU7SDpHZ9K3Pp5JQIs=",
+        "owner": "nu-nu-ko",
+        "repo": "nixpkgs",
+        "rev": "0f85bab97347b423b31915caa7f508591dc401e7",
+        "type": "github"
       },
       "original": {
+        "owner": "nu-nu-ko",
         "ref": "init-nixos-qbittorrent",
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {

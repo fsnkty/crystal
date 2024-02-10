@@ -26,3 +26,7 @@ hosts the following..
 - `home.file` - replaced with `lib/homeFiles.nix` yoinked from [eclairevoyant](https://github.com/eclairevoyant)
 - `importAll` - yoinked from [Gerg-L](https://github.com/Gerg-L/)
 - fonts - Apple's [San Francisco](https://developer.apple.com/fonts/), packaged under `pkgs/sfFonts.nix` as I dont think it belongs in nixpkgs
+
+### misc
+- tf2 - [DeerHud](https://tf2huds.dev/hud/DeerHud), [master comfig](https://comfig.app/app/) launch options `LD_PRELOAD=/usr/lib32/libtcmalloc_minimal.so  SDL_VIDEODRIVER=x11 %command% +exec autoexec -vulkan -full -novid -nojoy -nosteamcontroller -nohltv -particles 1 -precachefontchars -noquicktime`
+

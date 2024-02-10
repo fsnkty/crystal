@@ -15,10 +15,10 @@
     mountain.url = "github:nu-nu-ko/mountain-nix";
     # awaiting pr's
     rwp.url = "github:nu-nu-ko/nixpkgs?ref=init-rwpspread";
-    #jelly.url = "github:nu-nu-ko/nixpkgs?ref=nixos-jellyfin-dirs";
-    #qbit.url = "github:nu-nu-ko/nixpkgs?ref=init-nixos-qbittorrent";
-    qbit.url = "git+file:/storage/repos/nixpkgs?ref=init-nixos-qbittorrent";
-    jelly.url = "git+file:/storage/repos/nixpkgs?ref=nixos-jellyfin-dirs";
+    jelly.url = "github:nu-nu-ko/nixpkgs?ref=nixos-jellyfin-dirs";
+    qbit.url = "github:nu-nu-ko/nixpkgs?ref=init-nixos-qbittorrent";
+    #qbit.url = "git+file:/storage/repos/nixpkgs?ref=init-nixos-qbittorrent";
+    #jelly.url = "git+file:/storage/repos/nixpkgs?ref=nixos-jellyfin-dirs";
   };
   outputs =
     inputs:
