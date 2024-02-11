@@ -379,11 +379,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1707092692,
-        "narHash": "sha256-ZbHsm+mGk/izkWtT4xwwqz38fdlwu7nUUKXTOmm4SyE=",
+        "lastModified": 1707268954,
+        "narHash": "sha256-2en1kvde3cJVc3ZnTy8QeD2oKcseLFjYPLKhIGDanQ0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "faf912b086576fd1a15fca610166c98d47bc667e",
+        "rev": "f8e2ebd66d097614d51a56a755450d4ae1632df1",
         "type": "github"
       },
       "original": {
@@ -410,18 +410,18 @@
     },
     "qbit": {
       "locked": {
-        "lastModified": 1707207031,
-        "narHash": "sha256-Wb+T4iiNweKqMX6dprswzbI0fRU7SDpHZ9K3Pp5JQIs=",
-        "owner": "nu-nu-ko",
-        "repo": "nixpkgs",
-        "rev": "0f85bab97347b423b31915caa7f508591dc401e7",
-        "type": "github"
+        "lastModified": 1707619837,
+        "narHash": "sha256-v1C8tFQeRQwr7HrUp9cl7iOKDYtREYr1p2Ys7mrLieY=",
+        "ref": "init-nixos-qbittorrent",
+        "rev": "f9bb0fc778050b53b6726366d413b0f3896278aa",
+        "revCount": 562959,
+        "type": "git",
+        "url": "file:/storage/repos/nixpkgs"
       },
       "original": {
-        "owner": "nu-nu-ko",
         "ref": "init-nixos-qbittorrent",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "git",
+        "url": "file:/storage/repos/nixpkgs"
       }
     },
     "root": {
