@@ -20,6 +20,7 @@
           package = inputs.conduit.packages.${pkgs.system}.default;
           settings.global = {
             inherit server_name address;
+            enable_lightning_bolt = false;
           };
         };
         nginx = {

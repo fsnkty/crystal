@@ -1,5 +1,7 @@
-{ config, lib, ... }:
+{ config, lib, modulesPath, inputs, ... }:
 {
+  disabledModules = [ "${modulesPath}/services/audio/navidrome.nix" ];
+  imports = [ "${inputs.navi}/nixos/modules/services/audio/navidrome.nix" ];
   options.service.web.navidrome = lib.mkEnableOption "";
   config =
     let
@@ -9,9 +11,10 @@
       services = {
         navidrome = {
           enable = true;
+          group = "media";
           settings = {
             MusicFolder = "/storage/media/Music";
-            DataFolder = "/storage/volumes/navidrome";
+            CacheFolder = "/var/cache/navidrome";
             EnableDownloads = true;
             EnableSharing = true;
           };

@@ -19,7 +19,6 @@
               LANDING_PAGE = "/explore/repos";
             };
           };
-          stateDir = "/storage/volumes/forgejo";
         };
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;

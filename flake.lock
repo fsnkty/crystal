@@ -10,11 +10,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1703433843,
-        "narHash": "sha256-nmtA4KqFboWxxoOAA6Y1okHbZh+HsXaMPFkYHsoDRDw=",
+        "lastModified": 1707830867,
+        "narHash": "sha256-PAdwm5QqdlwIqGrfzzvzZubM+FXtilekQ/FA0cI49/o=",
         "owner": "ryantm",
         "repo": "agenix",
-        "rev": "417caa847f9383e111d1397039c9d4337d024bf0",
+        "rev": "8cb01a0e717311680e0cbca06a76cbceba6f3ed6",
         "type": "github"
       },
       "original": {
@@ -234,22 +234,6 @@
         "type": "github"
       }
     },
-    "jelly": {
-      "locked": {
-        "lastModified": 1707170853,
-        "narHash": "sha256-KWVbahJKTfA72GL7DF2BXG12F9XAyV6N1lfD0hNp2zA=",
-        "owner": "nu-nu-ko",
-        "repo": "nixpkgs",
-        "rev": "42d8301efefe34650c3c08da96c823881b218525",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nu-nu-ko",
-        "ref": "nixos-jellyfin-dirs",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "mountain": {
       "inputs": {
         "nixpkgs": "nixpkgs_3"
@@ -266,6 +250,22 @@
         "owner": "nu-nu-ko",
         "repo": "mountain-nix",
         "type": "github"
+      }
+    },
+    "navi": {
+      "locked": {
+        "lastModified": 1707865639,
+        "narHash": "sha256-Sg8+fUAY4j0JQMI8O5+/31sQPIdCKsqT4QlCVupl1q0=",
+        "ref": "nixos-navidrome-cleanup",
+        "rev": "934d7510fcdcc03a14ebcfdcd91bc25540681022",
+        "revCount": 584043,
+        "type": "git",
+        "url": "file:/storage/repos/nixpkgs"
+      },
+      "original": {
+        "ref": "nixos-navidrome-cleanup",
+        "type": "git",
+        "url": "file:/storage/repos/nixpkgs"
       }
     },
     "nix-filter": {
@@ -379,11 +379,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1707268954,
-        "narHash": "sha256-2en1kvde3cJVc3ZnTy8QeD2oKcseLFjYPLKhIGDanQ0=",
+        "lastModified": 1707689078,
+        "narHash": "sha256-UUGmRa84ZJHpGZ1WZEBEUOzaPOWG8LZ0yPg1pdDF/yM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f8e2ebd66d097614d51a56a755450d4ae1632df1",
+        "rev": "f9d39fb9aff0efee4a3d5f4a6d7c17701d38a1d8",
         "type": "github"
       },
       "original": {
@@ -395,17 +395,32 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1707268954,
-        "narHash": "sha256-2en1kvde3cJVc3ZnTy8QeD2oKcseLFjYPLKhIGDanQ0=",
+        "lastModified": 1705856552,
+        "narHash": "sha256-JXfnuEf5Yd6bhMs/uvM67/joxYKoysyE3M2k6T3eWbg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f8e2ebd66d097614d51a56a755450d4ae1632df1",
+        "rev": "612f97239e2cc474c13c9dafa0df378058c5ad8d",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
         "ref": "nixos-unstable",
         "type": "indirect"
+      }
+    },
+    "npmaster": {
+      "locked": {
+        "lastModified": 1707863367,
+        "narHash": "sha256-LdBbCSSP7VHaHA4KXcPGKqkvsowT2+7W4jlEHJj6rPg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "35ff7e87ee05199a8003f438ec11a174bcbd98ea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "qbit": {
@@ -428,11 +443,11 @@
       "inputs": {
         "agenix": "agenix",
         "conduit": "conduit",
-        "jelly": "jelly",
         "mountain": "mountain",
+        "navi": "navi",
         "nixpkgs": "nixpkgs_4",
+        "npmaster": "npmaster",
         "qbit": "qbit",
-        "rwp": "rwp",
         "snms": "snms"
       }
     },
@@ -450,22 +465,6 @@
         "owner": "rust-lang",
         "ref": "nightly",
         "repo": "rust-analyzer",
-        "type": "github"
-      }
-    },
-    "rwp": {
-      "locked": {
-        "lastModified": 1706402384,
-        "narHash": "sha256-l2oLgIXqLQ+Mvk+3YFU8pCAivl4VF4lPvwyWpEdGrnc=",
-        "owner": "nu-nu-ko",
-        "repo": "nixpkgs",
-        "rev": "2fbef4e3faf8d1478c76346ff71f7305cf75ec4b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nu-nu-ko",
-        "ref": "init-rwpspread",
-        "repo": "nixpkgs",
         "type": "github"
       }
     },

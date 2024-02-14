@@ -19,10 +19,7 @@
             factor = "16";
           };
         };
-        postgresql = mkIf postgres {
-          enable = true;
-          dataDir = "/storage/volumes/postgres";
-        };
+        postgresql = mkIf postgres { enable = true; };
         openssh = mkIf openssh {
           enable = true;
           openFirewall = true;

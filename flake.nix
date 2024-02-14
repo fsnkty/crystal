@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    npmaster.url = "github:NixOS/nixpkgs";
     agenix = {
       url = "github:ryantm/agenix";
       inputs = {
@@ -14,11 +15,8 @@
     
     mountain.url = "github:nu-nu-ko/mountain-nix";
     # awaiting pr's
-    rwp.url = "github:nu-nu-ko/nixpkgs?ref=init-rwpspread";
-    jelly.url = "github:nu-nu-ko/nixpkgs?ref=nixos-jellyfin-dirs";
-    #qbit.url = "github:nu-nu-ko/nixpkgs?ref=init-nixos-qbittorrent";
     qbit.url = "git+file:/storage/repos/nixpkgs?ref=init-nixos-qbittorrent";
-    #jelly.url = "git+file:/storage/repos/nixpkgs?ref=nixos-jellyfin-dirs";
+    navi.url = "git+file:/storage/repos/nixpkgs?ref=nixos-navidrome-cleanup";
   };
   outputs =
     inputs:

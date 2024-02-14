@@ -20,7 +20,7 @@
         enable = true;
         wrapperFeatures.gtk = true;
         extraPackages = builtins.attrValues {
-          rwpspread = inputs.rwp.legacyPackages.${pkgs.stdenv.hostPlatform.system}.rwpspread;
+          rwpspread = inputs.npmaster.legacyPackages.${pkgs.stdenv.hostPlatform.system}.rwpspread;
           inherit (pkgs)
             vulkan-validation-layers
             autotiling-rs

@@ -127,11 +127,18 @@
             # cache both metadata and sufficently small blocks.
             secondarycache = "all";
           };
-          datasets."storage" = {
-            type = "zfs_fs";
-            options.mountpoint = "legacy";
-            mountpoint = "/storage";
-            postCreateHook = "zpool add spool -f cache ${arc}-part1";
+          datasets = {
+            "storage" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/storage";
+              postCreateHook = "zpool add spool -f cache ${arc}-part1";
+            };
+            "state" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/var/lib";
+            };
           };
         };
       };

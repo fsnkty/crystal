@@ -9,7 +9,7 @@
 {
   #### awaiting PR
   disabledModules = [ "${modulesPath}/services/misc/jellyfin.nix" ];
-  imports = [ "${inputs.jelly}/nixos/modules/services/misc/jellyfin.nix" ];
+  imports = [ "${inputs.npmaster}/nixos/modules/services/misc/jellyfin.nix" ];
   ####
   options.service.web.jellyfin = lib.mkEnableOption "";
   config =
@@ -21,7 +21,6 @@
         jellyfin = {
           enable = true;
           openFirewall = true;
-          dataDir = "/storage/volumes/jellyfin";
         };
         nginx.virtualHosts."${domain}" = {
           forceSSL = true;

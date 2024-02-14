@@ -9,7 +9,6 @@
       services = {
         komga = {
           enable = true;
-          stateDir = "/storage/volumes/komga";
           port = 8097;
           openFirewall = true;
         };
@@ -19,6 +18,5 @@
           locations."/".proxyPass = "http://127.0.0.1:8097";
         };
       };
-      #users.users.komga.extraGroups = ["media"];
     };
 }

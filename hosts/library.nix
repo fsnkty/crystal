@@ -133,6 +133,10 @@
       device = "spool/storage";
       fsType = "zfs";
     };
+    "/var/lib" = {
+      device = "spool/state";
+      fsType = "zfs";
+    };
   };
   swapDevices = [ { device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part2"; } ];
   ### remember the warning.. ###
