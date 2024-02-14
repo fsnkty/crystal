@@ -5,8 +5,8 @@
   ...
 }:
 {
-  options.service.web.matrixhome = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.matrixhome {
+  options.service.web.conduit = lib.mkEnableOption "";
+  config = lib.mkIf config.service.web.conduit {
     services = {
       matrix-conduit = {
         enable = true;

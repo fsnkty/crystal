@@ -8,7 +8,6 @@
     networking.firewall.allowedTCPPorts = [
       80
       443
-      8080
     ];
     security.acme = {
       acceptTerms = true;
@@ -27,12 +26,12 @@
       virtualHosts."${config.service.web.domain}" = {
         forceSSL = true;
         enableACME = true;
-        root = "/storage/volumes/website/public";
+        root = "/storage/web/public";
       };
       virtualHosts."wires.${config.service.web.domain}" = {
         forceSSL = true;
         enableACME = true;
-        root = "/storage/volumes/website/wires";
+        root = "/storage/web/wires";
       };
     };
     users.users.nginx.extraGroups = [ "acme" ];

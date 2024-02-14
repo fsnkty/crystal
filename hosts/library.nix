@@ -23,7 +23,7 @@
       qbit = true;
       nextcloud = true;
       vaultwarden = true;
-      matrixhome = true;
+      conduit = true;
       navidrome = true;
       komga = true;
     };
