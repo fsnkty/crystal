@@ -6,9 +6,8 @@
   ...
 }:
 {
-  #### awaiting pr
   imports = [ "${inputs.qbit}/nixos/modules/services/torrent/qbittorrent.nix" ];
-
+  #### awaiting pr ####
   options.service.web.qbit = lib.mkEnableOption "";
   config = lib.mkIf config.service.web.qbit {
     services = {
@@ -40,22 +39,18 @@
             MaxUploads = 200;
           };
           Preferences = {
-            WebUI =
-              let
-                vue = pkgs.fetchzip {
-                  url = "https://github.com/VueTorrent/VueTorrent/releases/download/v2.5.0/vuetorrent.zip";
-                  hash = "sha256-ys9CrbpOPYu8xJsCnqYKyC4IFD/SSAF8j+T+USqvGA8=";
-                };
-              in
-              {
-                AlternativeUIEnabled = true;
-                RootFolder = vue;
-                Port = 8077;
-                Username = "nuko";
-                Password_PBKDF2 = ''"@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
-                ReverseProxySupportEnabled = true;
-                TrustedReverseProxiesList = "qbit.${config.service.web.domain}";
+            WebUI = {
+              AlternativeUIEnabled = true;
+              RootFolder = pkgs.fetchzip {
+                url = "https://github.com/VueTorrent/VueTorrent/releases/download/v2.5.0/vuetorrent.zip";
+                hash = "sha256-ys9CrbpOPYu8xJsCnqYKyC4IFD/SSAF8j+T+USqvGA8=";
               };
+              Port = 8077;
+              Username = "nuko";
+              Password_PBKDF2 = ''"@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
+              ReverseProxySupportEnabled = true;
+              TrustedReverseProxiesList = "qbit.${config.service.web.domain}";
+            };
             General.Locale = "en";
           };
         };

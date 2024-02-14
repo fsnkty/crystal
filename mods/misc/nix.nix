@@ -23,7 +23,7 @@
         auto-optimise-store = true;
         allowed-users = [ "@wheel" ];
         use-xdg-base-directories = true;
-        nix-path = ["nixpkgs=flake:nixpkgs"];
+        nix-path = [ "nixpkgs=flake:nixpkgs" ];
       };
       optimise.automatic = true;
       gc = {

@@ -1,43 +1,32 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    npmaster.url = "github:NixOS/nixpkgs";
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        darwin.follows = "";
-        home-manager.follows = "";
-      };
-    };
+    master.url = "github:NixOS/nixpkgs";
+    agenix.url = "github:ryantm/agenix";
     snms.url = "gitlab:/simple-nixos-mailserver/nixos-mailserver";
-    conduit.url = "gitlab:famedly/conduit?ref=next";
-    
     mountain.url = "github:nu-nu-ko/mountain-nix";
-    # awaiting pr's
-    qbit.url = "git+file:/storage/repos/nixpkgs?ref=init-nixos-qbittorrent";
-    navi.url = "git+file:/storage/repos/nixpkgs?ref=nixos-navidrome-cleanup";
+    # awaiting pr's # git+file/path/?ref=branch
+    qbit.url = "github:nu-nu-ko/nixpkgs?ref=init-nixos-qbittorrent";
+    navi.url = "github:nu-nu-ko/nixpkgs?ref=nixos-navidrome-cleanup";
   };
   outputs =
     inputs:
     let
-      inherit (inputs.nixpkgs.lib.filesystem) listFilesRecursive;
-      inherit (inputs.nixpkgs.lib) hasSuffix genAttrs nixosSystem;
-      inherit (builtins) filter;
+      inherit (inputs.nixpkgs) lib;
+      importAll =
+        path:
+        builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive path));
     in
     {
       nixosConfigurations =
-        let
-          importAll = path: filter (hasSuffix ".nix") (map toString (listFilesRecursive path));
-        in
-        genAttrs
+        lib.genAttrs
           [
             "factory"
             "library"
           ]
           (
             name:
-            nixosSystem {
+            lib.nixosSystem {
               specialArgs = {
                 inherit inputs;
               };

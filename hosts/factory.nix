@@ -61,7 +61,7 @@
         inherit (pkgs)
           krita
           obs-studio
-          element-desktop
+          cinny-desktop
           vesktop
           imv
           mpv
