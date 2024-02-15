@@ -24,7 +24,6 @@
           serif = [ "SF Pro Text" ];
           monospace = [ "Liga SFMono Nerd Font" ];
         };
-        antialias = true;
         subpixel.rgba = "rgb";
       };
     };

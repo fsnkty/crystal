@@ -8,10 +8,7 @@
   options.desktop.console = lib.mkEnableOption "";
   config = lib.mkIf config.desktop.console {
     console = {
-      earlySetup = true;
       font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
-      packages = [ pkgs.terminus_font ];
-      keyMap = "us";
       colors =
         let
           inherit (config.colours) alpha accent primary;

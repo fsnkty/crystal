@@ -23,6 +23,7 @@
           rwpspread = inputs.master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.rwpspread;
           inherit (pkgs)
             vulkan-validation-layers
+            xdg-utils
             autotiling-rs
             wl-clipboard
             swaylock-effects
@@ -66,6 +67,7 @@
         exec {
           ${lock}
           autotiling-rs
+          openrgb -p default
           wpaperd
           swaync
           waybar
@@ -73,7 +75,6 @@
             timeout 300 '${lock}' \
             timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
             before-sleep '${lock}'
-          openrgb -p default
         }
         input "5426:132:Razer_Razer_DeathAdder_V2" accel_profile flat
         output ${d1} {

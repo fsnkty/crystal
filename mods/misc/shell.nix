@@ -25,7 +25,6 @@
       enable = true;
       autosuggestions.enable = true;
       syntaxHighlighting.enable = true;
-      enableGlobalCompInit = false;
       histSize = 10000;
       histFile = "$HOME/.cache/zsh_history";
       shellInit = ''
