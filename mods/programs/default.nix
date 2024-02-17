@@ -23,7 +23,10 @@ in {
         user = {
           name = "nuko";
           email = "nuko@shimeji.cafe";
+          signingkey = "/home/${config.users.users.main.name}/.ssh/id_ed25519.pub";
         };
+        gpg.format = "ssh";
+        commit.gpgsign = true;
       };
     };
     ### steam
