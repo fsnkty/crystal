@@ -1,11 +1,4 @@
-{
-  lib,
-  pkgs,
-  inputs,
-  config,
-  ...
-}:
-{
+{ lib, pkgs, inputs, config, ... }: {
   options.desktop.theme = lib.mkEnableOption "";
   config = lib.mkIf config.desktop.theme {
     users.users.main.packages = [
@@ -29,19 +22,17 @@
     };
     programs.dconf = {
       enable = true;
-      profiles.user.databases = [
-        {
-          settings."org/gnome/desktop/interface" = {
-            color-scheme = "prefer-dark";
-            gtk-theme = "phocus-mountain";
-            icon-theme = "Flat-Remix-Purple-Dark";
-            cursor-theme = "phinger-cursors";
-            font-name = "SF Pro Text 12";
-            monospace-font-name = "Liga SFMono Nerd Font";
-            document-font-name = "SF Pro Text 12";
-          };
-        }
-      ];
+      profiles.user.databases = [{
+        settings."org/gnome/desktop/interface" = {
+          color-scheme = "prefer-dark";
+          gtk-theme = "phocus-mountain";
+          icon-theme = "Flat-Remix-Purple-Dark";
+          cursor-theme = "phinger-cursors";
+          font-name = "SF Pro Text 12";
+          monospace-font-name = "Liga SFMono Nerd Font";
+          document-font-name = "SF Pro Text 12";
+        };
+      }];
     };
     environment.etc = {
       "xdg/gtk-3.0/settings.ini".text = ''

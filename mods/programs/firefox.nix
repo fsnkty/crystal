@@ -1,10 +1,4 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}:
-{
+{ lib, pkgs, config, ... }: {
   options.program.firefox = lib.mkEnableOption "";
   config = lib.mkIf config.program.firefox {
     home.file = {
@@ -19,10 +13,8 @@
       '';
       #https://github.com/crambaud/waterfall
       ".mozilla/firefox/${config.users.users.main.name}/chrome/userChrome.css".text =
-        let
-          inherit (config.colours) primary alpha accent;
-        in
-        ''
+        let inherit (config.colours) primary alpha accent;
+        in ''
           :root {
              --window-colour:               #${primary.bg};
              --secondary-colour:            #${alpha.black};
@@ -213,7 +205,8 @@
           .identity-color-pink      { --identity-tab-color: var(--uc-identity-color-pink)      !important; --identity-icon-color: var(--uc-identity-color-pink)      !important; }
           .identity-color-purple    { --identity-tab-color: var(--uc-identity-color-purple)    !important; --identity-icon-color: var(--uc-identity-color-purple)    !important; }
         '';
-      ".mozilla/firefox/${config.users.users.main.name}/chrome/userContent.css".text = "";
+      ".mozilla/firefox/${config.users.users.main.name}/chrome/userContent.css".text =
+        "";
     };
     programs.firefox = {
       enable = true;
@@ -261,19 +254,23 @@
         ExtensionSettings = {
           "uBlock0@raymondhill.net" = {
             installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/file/4188488/ublock_origin-1.53.0.xpi";
+            install_url =
+              "https://addons.mozilla.org/firefox/downloads/file/4188488/ublock_origin-1.53.0.xpi";
           };
           "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
             installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/file/4180072/bitwarden_password_manager-2023.9.2.xpi";
+            install_url =
+              "https://addons.mozilla.org/firefox/downloads/file/4180072/bitwarden_password_manager-2023.9.2.xpi";
           };
           "sponsorBlocker@ajay.app" = {
             installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/file/4178444/sponsorblock-5.4.23.xpi";
+            install_url =
+              "https://addons.mozilla.org/firefox/downloads/file/4178444/sponsorblock-5.4.23.xpi";
           };
           "Tab-Session-Manager@sienori" = {
             installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/file/4165190/tab_session_manager-6.12.2.xpi";
+            install_url =
+              "https://addons.mozilla.org/firefox/downloads/file/4165190/tab_session_manager-6.12.2.xpi";
           };
         };
       };

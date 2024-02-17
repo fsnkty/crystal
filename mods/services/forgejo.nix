@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+{ config, lib, ... }: {
   options.service.web.forgejo = lib.mkEnableOption "";
   config = lib.mkIf config.service.web.forgejo {
     services = {

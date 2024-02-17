@@ -1,18 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ config, lib, pkgs, ... }: {
   options.program.alacritty = lib.mkEnableOption "";
   config = lib.mkIf config.program.alacritty {
     users.users.main.packages = [ pkgs.alacritty ];
     home.file.".config/alacritty/alacritty.toml".text =
-      let
-        inherit (config.colours) primary alpha accent;
-      in
-      ''
+      let inherit (config.colours) primary alpha accent;
+      in ''
         [colors.bright]
         black = '#${accent.black}'
         red = '#${accent.red}'

@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
-{
+{ pkgs, lib, config, ... }: {
   misc = {
     nix = {
       config = true;
@@ -59,16 +53,7 @@
       hashedPasswordFile = config.age.secrets.user.path;
       packages = builtins.attrValues {
         inherit (pkgs)
-          krita
-          obs-studio
-          cinny-desktop
-          vesktop
-          imv
-          mpv
-          eza
-          yazi
-          ueberzugpp
-          ;
+          krita obs-studio cinny-desktop vesktop imv mpv eza yazi ueberzugpp;
       };
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"
@@ -76,15 +61,8 @@
     };
   };
   home.file =
-    lib.genAttrs
-      [
-        "Documents"
-        "Downloads"
-        "Pictures"
-        "Videos"
-        "crystal"
-      ]
-      (name: { source = "/storage/${name}"; });
+    lib.genAttrs [ "Documents" "Downloads" "Pictures" "Videos" "crystal" ]
+    (name: { source = "/storage/${name}"; });
   ### hardware
   networking = {
     hostName = "factory";
@@ -104,13 +82,10 @@
           DHCP = "no";
           DNSSEC = "yes";
           DNSOverTLS = "yes";
-          DNS = [
-            "1.1.1.1"
-            "1.1.0.0"
-          ];
+          DNS = [ "1.1.1.1" "1.1.0.0" ];
         };
         address = [ "192.168.0.4/24" ];
-        routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
+        routes = [{ routeConfig.Gateway = "192.168.0.1"; }];
       };
     };
   };
@@ -134,36 +109,20 @@
       verbose = false;
       systemd.enable = true;
       kernelModules = [ "amdgpu" ];
-      availableKernelModules = [
-        "nvme"
-        "xhci_pci"
-        "ahci"
-        "usbhid"
-        "usb_storage"
-        "sd_mod"
-      ];
+      availableKernelModules =
+        [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
     };
-    kernelModules = [
-      "kvm-amd"
-      "amd_pstate"
-    ];
+    kernelModules = [ "kvm-amd" "amd_pstate" ];
     supportedFilesystems = [ "zfs" ];
-    kernelParams = [
-      "quiet"
-      "splash"
-      "amd_pstate=guided"
-      "video=DP-1:1920x1080@144"
-    ];
+    kernelParams =
+      [ "quiet" "splash" "amd_pstate=guided" "video=DP-1:1920x1080@144" ];
   };
   fileSystems = {
     "/boot" = {
-      device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part1";
+      device =
+        "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part1";
       fsType = "vfat";
-      options = [
-        "rw"
-        "noatime"
-        "x-systemd.automount"
-      ];
+      options = [ "rw" "noatime" "x-systemd.automount" ];
     };
     "/" = {
       device = "rpool/root";
@@ -174,7 +133,9 @@
       fsType = "zfs";
     };
   };
-  swapDevices = [ { device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part2"; } ];
+  swapDevices = [{
+    device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part2";
+  }];
   ### remember the warning.. ###
   system.stateVersion = "23.11";
 }

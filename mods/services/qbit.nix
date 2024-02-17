@@ -1,11 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
-}:
-{
+{ config, pkgs, lib, inputs, ... }: {
   imports = [ "${inputs.qbit}/nixos/modules/services/torrent/qbittorrent.nix" ];
   #### awaiting pr ####
   options.service.web.qbit = lib.mkEnableOption "";
@@ -15,11 +8,12 @@
         enable = true;
         openFirewall = true;
         group = "media";
-        package = pkgs.qbittorrent-nox.overrideAttrs { meta.mainProgram = "qbittorrent-nox"; };
+        package = pkgs.qbittorrent-nox.overrideAttrs {
+          meta.mainProgram = "qbittorrent-nox";
+        };
         serverConfig = {
           LegalNotice.Accepted = true;
           BitTorrent.Session = {
-            Port = 43862;
             DefaultSavePath = "/storage/media/torrents/";
             TorrentExportDirectory = "/storage/media/torrents/sources/";
             TempPathEnabled = true;
@@ -45,9 +39,9 @@
                 url = "https://github.com/VueTorrent/VueTorrent/releases/download/v2.5.0/vuetorrent.zip";
                 hash = "sha256-ys9CrbpOPYu8xJsCnqYKyC4IFD/SSAF8j+T+USqvGA8=";
               };
-              Port = 8077;
               Username = "nuko";
-              Password_PBKDF2 = ''"@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
+              Password_PBKDF2 = ''
+                "@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
               ReverseProxySupportEnabled = true;
               TrustedReverseProxiesList = "qbit.${config.service.web.domain}";
             };

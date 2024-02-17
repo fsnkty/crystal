@@ -1,10 +1,4 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
-{
+{ lib, config, pkgs, ... }: {
   options.misc.shell = {
     enable = lib.mkEnableOption "";
     prompt = lib.mkOption { type = lib.types.lines; };

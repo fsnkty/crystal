@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+{ config, lib, ... }: {
   options.service.web.vaultwarden = lib.mkEnableOption "";
   config = lib.mkIf config.service.web.vaultwarden {
     age.secrets.vault_env = {
@@ -14,12 +13,12 @@
           SIGNUPS_ALLOWED = false;
           ROCKET_PORT = 8222;
           ROCKET_LOG = "critical";
-          SMTP_HOST = "mail.nuko.city";
+          SMTP_HOST = "mail.${config.service.web.domain}";
           SMPT_PORT = 465;
           SMTP_SECURITY = "starttls";
-          SMTP_FROM = "vault@nuko.city";
-          SMTP_FROM_NAME = "vault.nuko.city Vaultwarden server";
-          SMTP_USERNAME = "vault@nuko.city";
+          SMTP_FROM = "vault@${config.service.web.domain}";
+          SMTP_FROM_NAME = "vault.${config.service.web.domain} Vaultwarden server";
+          SMTP_USERNAME = "vault@${config.service.web.domain}";
         };
         environmentFile = config.age.secrets.vault_env.path;
       };

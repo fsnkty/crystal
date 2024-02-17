@@ -2,8 +2,7 @@
 let
   inherit (lib) mkIf mkEnableOption;
   inherit (config.service) fail2ban postgres openssh;
-in
-{
+in {
   options.service = {
     fail2ban = mkEnableOption "";
     postgres = mkEnableOption "";

@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ config, lib, pkgs, ... }: {
   options.program.htop = lib.mkEnableOption "";
   config = lib.mkIf config.program.htop {
     users.users.main.packages = [ pkgs.htop ];

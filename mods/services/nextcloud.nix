@@ -1,24 +1,10 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-{
+{ config, pkgs, lib, ... }: {
   options.service.web.nextcloud = lib.mkEnableOption "";
   config = lib.mkIf config.service.web.nextcloud {
-    age.secrets =
-      lib.genAttrs
-        [
-          "user_cloud"
-          "cloud_env"
-        ]
-        (
-          name: {
-            file = ../../shhh + "/${name}.age";
-            owner = "nextcloud";
-          }
-        );
+    age.secrets = lib.genAttrs [ "user_cloud" "cloud_env" ] (name: {
+      file = ../../shhh + "/${name}.age";
+      owner = "nextcloud";
+    });
     services = {
       nextcloud = {
         enable = true;
@@ -28,7 +14,8 @@
         https = true;
         config = {
           adminuser = "nuko";
-          adminpassFile = config.age.secrets.user_cloud.path; # only set on setup.
+          adminpassFile =
+            config.age.secrets.user_cloud.path; # only set on setup.
           dbtype = "pgsql";
           dbhost = "/run/postgresql";
         };
@@ -45,12 +32,12 @@
           mail_smtpmode = "smtp";
           mail_sendmailmode = "smtp";
           mail_smtpsecure = "ssl";
-          mail_smtphost = "mail.nuko.city";
+          mail_smtphost = "mail.${config.service.web.domain}";
           mail_smtpport = "465";
           mail_smtpauth = 1;
-          mail_smtpname = "cloud@nuko.city";
+          mail_smtpname = "cloud@${config.service.web.domain}";
           mail_from_address = "cloud";
-          mail_domain = "nuko.city";
+          mail_domain = config.service.web.domain;
         };
         # just the smtp pass.
         secretFile = config.age.secrets.cloud_env.path;
@@ -58,22 +45,15 @@
         autoUpdateApps.enable = true;
         extraAppsEnable = true;
         extraApps = {
-          inherit (pkgs.nextcloud28Packages.apps)
-            mail
-            calendar
-            bookmarks
-            notes
-            ;
+          inherit (pkgs.nextcloud28Packages.apps) mail calendar bookmarks notes;
         };
       };
       postgresql = {
         ensureDatabases = [ config.services.nextcloud.config.dbname ];
-        ensureUsers = [
-          {
-            name = config.services.nextcloud.config.dbuser;
-            ensureDBOwnership = true;
-          }
-        ];
+        ensureUsers = [{
+          name = config.services.nextcloud.config.dbuser;
+          ensureDBOwnership = true;
+        }];
       };
       nginx.virtualHosts."cloud.${config.service.web.domain}" = {
         forceSSL = true;

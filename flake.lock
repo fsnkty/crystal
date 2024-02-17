@@ -96,21 +96,6 @@
         "type": "github"
       }
     },
-    "master": {
-      "locked": {
-        "lastModified": 1707891787,
-        "narHash": "sha256-ksxxr4lfZ3iGO6qb1LcOlOFe/tzZ1pBCkHDar8FH3PM=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "647b06d51cca7a502d27a206d7454b5a8e0a1545",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "mountain": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -209,11 +194,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1707689078,
-        "narHash": "sha256-UUGmRa84ZJHpGZ1WZEBEUOzaPOWG8LZ0yPg1pdDF/yM=",
+        "lastModified": 1707956935,
+        "narHash": "sha256-ZL2TrjVsiFNKOYwYQozpbvQSwvtV/3Me7Zwhmdsfyu4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f9d39fb9aff0efee4a3d5f4a6d7c17701d38a1d8",
+        "rev": "a4d4fe8c5002202493e87ec8dbc91335ff55552c",
         "type": "github"
       },
       "original": {
@@ -240,24 +225,23 @@
     },
     "qbit": {
       "locked": {
-        "lastModified": 1707622942,
-        "narHash": "sha256-x98BprSdhqz0YOJem3y+ZAsZ7LQzmaBuUTqRUxDCjjQ=",
-        "owner": "nu-nu-ko",
-        "repo": "nixpkgs",
-        "rev": "dc84cc2aa83b3f4e29528c4f63e170a0c124920b",
-        "type": "github"
+        "lastModified": 1708143127,
+        "narHash": "sha256-cX3jg8HJaznSBY6PzpzDLYnBQIQHqguGEVKimxnv8OI=",
+        "ref": "init-nixos-qbittorrent",
+        "rev": "59798637942f27c8386b10f3201a394160e4ad8c",
+        "revCount": 562957,
+        "type": "git",
+        "url": "file:/storage/repos/nixpkgs/"
       },
       "original": {
-        "owner": "nu-nu-ko",
         "ref": "init-nixos-qbittorrent",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "git",
+        "url": "file:/storage/repos/nixpkgs/"
       }
     },
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "master": "master",
         "mountain": "mountain",
         "navi": "navi",
         "nixpkgs": "nixpkgs_3",

@@ -1,14 +1,10 @@
-{ config, lib, ... }:
-{
+{ config, lib, ... }: {
   options.service.web = {
     enable = lib.mkEnableOption "";
     domain = lib.mkOption { type = lib.types.str; };
   };
   config = lib.mkIf config.service.web.enable {
-    networking.firewall.allowedTCPPorts = [
-      80
-      443
-    ];
+    networking.firewall.allowedTCPPorts = [ 80 443 ];
     security.acme = {
       acceptTerms = true;
       defaults.email = "acme@${config.service.web.domain}";

@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+{ config, lib, ... }: {
   options.service.web.komga = lib.mkEnableOption "";
   config = lib.mkIf config.service.web.komga {
     services = {

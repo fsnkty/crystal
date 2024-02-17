@@ -1,11 +1,4 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  config,
-  ...
-}:
-{
+{ inputs, pkgs, lib, config, ... }: {
   options.misc.nix = {
     config = lib.mkEnableOption "";
     flakePath = lib.mkOption { type = lib.types.str; };
@@ -14,12 +7,8 @@
   config = lib.mkIf config.misc.nix.config {
     nix = {
       settings = {
-        experimental-features = [
-          "auto-allocate-uids"
-          "no-url-literals"
-          "nix-command"
-          "flakes"
-        ];
+        experimental-features =
+          [ "auto-allocate-uids" "no-url-literals" "nix-command" "flakes" ];
         auto-optimise-store = true;
         allowed-users = [ "@wheel" ];
         use-xdg-base-directories = true;
