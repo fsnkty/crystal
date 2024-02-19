@@ -20,6 +20,8 @@
           max_upload_size = "10G";
           registration_shared_secret_path = config.age.secrets.synapse_shared.path;
           registration_requires_token = true;
+          presence.enabled = false;
+          withJemalloc = true;
         };
       };
       nginx = {
