@@ -17,7 +17,8 @@
           SMPT_PORT = 465;
           SMTP_SECURITY = "starttls";
           SMTP_FROM = "vault@${config.service.web.domain}";
-          SMTP_FROM_NAME = "vault.${config.service.web.domain} Vaultwarden server";
+          SMTP_FROM_NAME =
+            "vault.${config.service.web.domain} Vaultwarden server";
           SMTP_USERNAME = "vault@${config.service.web.domain}";
         };
         environmentFile = config.age.secrets.vault_env.path;

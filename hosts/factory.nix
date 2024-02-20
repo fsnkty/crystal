@@ -2,7 +2,7 @@
   misc = {
     nix = {
       config = true;
-      flakePath = "/storage/crystal";
+      flakePath = "/storage/Repos/crystal";
       nh = true;
     };
     shell = {
@@ -53,7 +53,7 @@
       hashedPasswordFile = config.age.secrets.user.path;
       packages = builtins.attrValues {
         inherit (pkgs)
-          krita obs-studio cinny-desktop vesktop imv mpv eza yazi ueberzugpp;
+          krita obs-studio element-desktop vesktop imv mpv eza yazi ueberzugpp;
       };
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"
@@ -61,7 +61,7 @@
     };
   };
   home.file =
-    lib.genAttrs [ "Documents" "Downloads" "Pictures" "Videos" "crystal" ]
+    lib.genAttrs [ "Documents" "Downloads" "Pictures" "Videos" "Repos" ]
     (name: { source = "/storage/${name}"; });
   ### hardware
   networking = {
@@ -114,8 +114,7 @@
     };
     kernelModules = [ "kvm-amd" "amd_pstate" ];
     supportedFilesystems = [ "zfs" ];
-    kernelParams =
-      [ "quiet" "splash" "amd_pstate=guided" "video=DP-1:1920x1080@144" ];
+    kernelParams = [ "quiet" "splash" "amd_pstate=guided" ];
   };
   fileSystems = {
     "/boot" = {

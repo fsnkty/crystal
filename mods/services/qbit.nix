@@ -36,7 +36,8 @@
             WebUI = {
               AlternativeUIEnabled = true;
               RootFolder = pkgs.fetchzip {
-                url = "https://github.com/VueTorrent/VueTorrent/releases/download/v2.5.0/vuetorrent.zip";
+                url =
+                  "https://github.com/VueTorrent/VueTorrent/releases/download/v2.5.0/vuetorrent.zip";
                 hash = "sha256-ys9CrbpOPYu8xJsCnqYKyC4IFD/SSAF8j+T+USqvGA8=";
               };
               Username = "nuko";

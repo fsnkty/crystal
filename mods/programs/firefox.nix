@@ -23,7 +23,7 @@
              --uc-identity-color-turquoise: #${alpha.cyan};
              --uc-identity-color-green:     #${alpha.green};
              --uc-identity-color-yellow:    #${alpha.yellow};
-             --uc-identity-color-orange:    #${alpha.orange};
+             --uc-identity-color-orange:    #${alpha.yellow};
              --uc-identity-color-red:       #${alpha.red};
              --uc-identity-color-pink:      #${accent.red};
              --uc-identity-color-purple:    #${alpha.magenta};
@@ -252,21 +252,22 @@
           Locked = false;
         };
         ExtensionSettings = {
-          "uBlock0@raymondhill.net" = {
+          "uBlock0@raymondhill.net" = { # ublock
             installation_mode = "force_installed";
             install_url =
-              "https://addons.mozilla.org/firefox/downloads/file/4188488/ublock_origin-1.53.0.xpi";
+              "https://addons.mozilla.org/firefox/downloads/file/4188488/ublock_origin-1.55.0.xpi";
           };
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = { # bitwarden
             installation_mode = "force_installed";
             install_url =
-              "https://addons.mozilla.org/firefox/downloads/file/4180072/bitwarden_password_manager-2023.9.2.xpi";
+              "https://addons.mozilla.org/firefox/downloads/file/4180072/bitwarden_password_manager-2024.2.0.xpi";
           };
-          "sponsorBlocker@ajay.app" = {
+          "sponsorBlocker@ajay.app" = { # sponsorblock
             installation_mode = "force_installed";
             install_url =
-              "https://addons.mozilla.org/firefox/downloads/file/4178444/sponsorblock-5.4.23.xpi";
+              "https://addons.mozilla.org/firefox/downloads/file/4178444/sponsorblock-5.5.4.xpi";
           };
+
           "Tab-Session-Manager@sienori" = {
             installation_mode = "force_installed";
             install_url =

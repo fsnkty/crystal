@@ -227,16 +227,16 @@
       "locked": {
         "lastModified": 1708143215,
         "narHash": "sha256-cX3jg8HJaznSBY6PzpzDLYnBQIQHqguGEVKimxnv8OI=",
-        "ref": "init-nixos-qbittorrent",
+        "owner": "nu-nu-ko",
+        "repo": "nixpkgs",
         "rev": "a17d772a26289a734eca7f33d982c5435c77b377",
-        "revCount": 562955,
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs/"
+        "type": "github"
       },
       "original": {
+        "owner": "nu-nu-ko",
         "ref": "init-nixos-qbittorrent",
-        "type": "git",
-        "url": "file:/storage/repos/nixpkgs/"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {

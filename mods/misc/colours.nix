@@ -53,7 +53,6 @@
       blue = alpha.ume;
       magenta = alpha.kosumosu;
       cyan = alpha.shinkai;
-      orange = alpha.aki;
       black = alpha.iwa;
       white = alpha.usagi;
     };
@@ -64,7 +63,6 @@
       blue = accent.ajisai;
       magenta = accent.sakura;
       cyan = accent.kori;
-      orange = accent.yuyake;
       black = accent.amagumo;
       white = accent.yuki;
     };
