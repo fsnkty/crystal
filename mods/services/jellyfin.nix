@@ -13,6 +13,20 @@
         locations."/".proxyPass = "http://localhost:8096";
       };
     };
+    systemd.services.jellyfin.serviceConfig = {
+      ProtectClock = true;
+      DeviceAllow = ["/dev/dri/renderD128"];
+      ProtectSystem = "strict";
+      ReadWritePaths = [
+        "/var/lib/jellyfin"
+        "/var/cache/jellyfin"
+        "/storage/media"
+      ];
+      ProtectHome = "yes";
+      ProtectProc = "invisible";
+      ProcSubset = "pid";
+      CapabilityBoundingSet = "";
+    };
     boot.kernelParams = [ "i915.enable_guc=2" ];
     hardware.opengl = {
       enable = true;

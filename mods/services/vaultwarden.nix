@@ -32,5 +32,30 @@
         };
       };
     };
+    systemd.services.vaultwarden.serviceConfig = {
+      RemoveIPC = true;
+      NoNewPrivileges = true;
+      CapabilityBoundingSet = "";
+      SystemCallFilter = ["@system-service"];
+      UMask = "0077";
+      ProtectSystem = "strict";
+      ReadWritePaths = ["/var/lib/bitwarden_rs"];
+      ProtectProc = "invisible";
+      ProtectClock = true;
+      ProcSubset = "pid";
+      PrivateUsers = true;
+      ProtectHostname = true;
+      ProtectKernelTunables = true;
+      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_NETLINK" ];
+      LockPersonality = true;
+      RestrictNamespaces = true;
+      ProtectKernelLogs = true;
+      ProtectControlGroups = true;
+      ProtectKernelModules = true;
+      SystemCallArchitectures = "native";
+      MemoryDenyWriteExecute = true;
+      RestrictSUIDSGID = true;
+      RestrictRealtime = true;
+    };
   };
 }
