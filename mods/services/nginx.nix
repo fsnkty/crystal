@@ -1,10 +1,6 @@
 { config, lib, ... }: {
-  options.service.web = {
-    enable = lib.mkEnableOption "";
-    domain = lib.mkOption { type = lib.types.str; };
-  };
+  options.service.web.enable = lib.mkEnableOption "";
   config = lib.mkIf config.service.web.enable {
-    networking.firewall.allowedTCPPorts = [ 80 443 9090 ];
     security.acme = {
       acceptTerms = true;
       defaults.email = "acme@${config.networking.domain}";
@@ -23,52 +19,33 @@
       recommendedBrotliSettings = true;
       virtualHosts = let
         inherit (config.networking) domain;
+        genHosts = lib.mapAttrs' (name: set: {
+          name = "${name}.${domain}";
+          value = lib.mkIf config.service.web.${name} ({
+            locations."/".proxyPass = "http://localhost:${toString set.port}";
+          } // ssl);
+        });
         ssl = {
           forceSSL = true;
           enableACME = true;
         };
-        genHosts = lib.mapAttrs' (name: set: {
-          name = "${name}.${domain}";
-          value = lib.mkIf set.opt ({
-            locations."/".proxyPass = "http://localhost:${toString set.port}";
-          } // ssl);
-        });
       in {
         "${domain}" = { root = "/storage/web/public"; } // ssl;
         "wires.${domain}" = { root = "/storage/web/wires"; } // ssl;
         "cloud.${domain}" = { http2 = true; } // ssl;
-        "vault.${domain}".locations."/".extraConfig = "proxy_pass_header Authorization;";
+        "vault.${domain}".locations."/".extraConfig =
+          "proxy_pass_header Authorization;";
       } // genHosts {
-        vault = {
-          opt = config.service.web.vaultwarden;
-          port = config.services.vaultwarden.config.ROCKET_PORT;
-        };
-        tea = {
-          opt = config.service.web.forgejo;
-          port = config.services.forgejo.settings.server.HTTP_PORT;
-        };
-        ana = {
-          opt = config.service.web.grafana;
-          port = config.services.grafana.settings.server.http_port;
-        };
-        navi = {
-          opt = config.service.web.navidrome;
-          port = config.services.navidrome.settings.Port;
-        };
-        komga = {
-          opt = config.service.web.komga;
-          port = config.services.komga.port;
-        };
-        qbit = {
-          opt = config.service.web.qbit;
-          port = config.services.qbittorrent.webuiPort;
-        };
-        jelly = {
-          opt = config.service.web.jellyfin;
-          port = 8096;
-        };
+        tea = { port = config.services.forgejo.settings.server.HTTP_PORT; };
+        ana = { port = config.services.grafana.settings.server.http_port; };
+        vault = { port = config.services.vaultwarden.config.ROCKET_PORT; };
+        navi = { port = config.services.navidrome.settings.Port; };
+        qbit = { port = config.services.qbittorrent.webuiPort; };
+        komga = { port = config.services.komga.port; };
+        jelly = { port = 8096; };
       };
     };
+    networking.firewall.allowedTCPPorts = [ 80 443 ];
     users.users.nginx.extraGroups = [ "acme" ];
   };
 }

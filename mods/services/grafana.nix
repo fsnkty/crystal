@@ -1,6 +1,6 @@
 { config, lib, ... }: {
-  options.service.web.grafana = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.grafana {
+  options.service.web.ana = lib.mkEnableOption "";
+  config = lib.mkIf config.service.web.ana {
     age.secrets."user_cloud_pom" = {
       file = ../../shhh/user_cloud_pom.age;
       owner = "nextcloud-exporter";
@@ -35,44 +35,24 @@
         scrapeConfigs = [
           {
             job_name = "library";
-            static_configs = [
-              {
-                targets = ["127.0.0.1:9100"];
-              }
-            ];
+            static_configs = [{ targets = [ "127.0.0.1:9100" ]; }];
           }
           {
             job_name = "nextcloud";
-            static_configs = [
-              {
-                targets = ["127.0.0.1:9205"];
-              }
-            ];
+            static_configs = [{ targets = [ "127.0.0.1:9205" ]; }];
           }
           {
             job_name = "zfs";
-            static_configs = [
-              {
-                targets = ["127.0.0.1:9134"];
-              }
-            ];
+            static_configs = [{ targets = [ "127.0.0.1:9134" ]; }];
           }
           {
             job_name = "nginx";
-            static_configs = [
-              {
-                targets = ["127.0.0.1:9113"];
-              }
-            ];
+            static_configs = [{ targets = [ "127.0.0.1:9113" ]; }];
           }
           {
             job_name = "synapse";
             metrics_path = "/_synapse/metrics";
-            static_configs = [
-              {
-                targets = ["127.0.0.1:9118"];
-              }
-            ];
+            static_configs = [{ targets = [ "127.0.0.1:9118" ]; }];
           }
         ];
       };

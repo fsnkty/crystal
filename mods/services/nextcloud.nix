@@ -6,8 +6,7 @@
       owner = "nextcloud";
     });
     services = {
-      nextcloud = let
-        inherit (config.networking) domain;
+      nextcloud = let inherit (config.networking) domain;
       in {
         enable = true;
         package = pkgs.nextcloud28;

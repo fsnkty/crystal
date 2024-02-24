@@ -2,8 +2,8 @@
   disabledModules = [ "${modulesPath}/services/audio/navidrome.nix" ];
   imports = [ "${inputs.navi}/nixos/modules/services/audio/navidrome.nix" ];
   #### awaiting PR ####
-  options.service.web.navidrome = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.navidrome {
+  options.service.web.navi = lib.mkEnableOption "";
+  config = lib.mkIf config.service.web.navi {
     services = {
       navidrome = {
         enable = true;

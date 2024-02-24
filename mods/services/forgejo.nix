@@ -1,6 +1,6 @@
 { config, lib, ... }: {
-  options.service.web.forgejo = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.forgejo {
+  options.service.web.tea = lib.mkEnableOption "";
+  config = lib.mkIf config.service.web.tea {
     services = {
       forgejo = {
         enable = true;

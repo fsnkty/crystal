@@ -12,10 +12,10 @@
       RemoveIPC = true;
       NoNewPrivileges = true;
       CapabilityBoundingSet = "";
-      SystemCallFilter = ["@system-service"];
+      SystemCallFilter = [ "@system-service" ];
       UMask = "0077";
       ProtectSystem = "strict";
-      ReadWritePaths = ["/var/lib/komga" "/tmp"];
+      ReadWritePaths = [ "/var/lib/komga" "/tmp" ];
       ProtectHome = true;
       PrivateTmp = true;
       ProtectProc = "invisible";

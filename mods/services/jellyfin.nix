@@ -1,19 +1,16 @@
 { config, pkgs, lib, ... }: {
-  options.service.web.jellyfin = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.jellyfin {
+  options.service.web.jelly = lib.mkEnableOption "";
+  config = lib.mkIf config.service.web.jelly {
     services.jellyfin = {
       enable = true;
       group = "media";
     };
     systemd.services.jellyfin.serviceConfig = {
       ProtectClock = true;
-      DeviceAllow = ["/dev/dri/renderD128"];
+      DeviceAllow = [ "/dev/dri/renderD128" ];
       ProtectSystem = "strict";
-      ReadWritePaths = [
-        "/var/lib/jellyfin"
-        "/var/cache/jellyfin"
-        "/storage/media"
-      ];
+      ReadWritePaths =
+        [ "/var/lib/jellyfin" "/var/cache/jellyfin" "/storage/media" ];
       ProtectHome = "yes";
       ProtectProc = "invisible";
       ProcSubset = "pid";

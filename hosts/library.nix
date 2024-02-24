@@ -16,15 +16,15 @@
   service = {
     web = {
       enable = true;
-      forgejo = true;
-      jellyfin = true;
+      tea = true;
+      jelly = true;
       qbit = true;
       nextcloud = true;
-      vaultwarden = true;
+      vault = true;
       synapse = true;
-      navidrome = true;
+      navi = true;
       komga = true;
-      grafana = true;
+      ana = true;
     };
     fail2ban = true;
     postgres = true;

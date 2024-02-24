@@ -18,30 +18,31 @@
           presence.enabled = false;
           withJemalloc = true;
           enable_metrics = true;
-          listeners = [{
-            bind_addresses = [ "127.0.0.1" ];
-            port = 8008;
-            resources = [
-              {
-                compress = true;
-                names = [ "client" ];
-              }
-              {
-                compress = false;
-                names = [ "federation" ];
-              }
-            ];
-            tls = false;
-            type = "http";
-            x_forwarded = true;
-          }
-          {
-            bind_addresses = [ "127.0.0.1" ];
-            port = 9118;
-            type = "metrics";
-            tls = false;
-            resources = [];
-          }
+          listeners = [
+            {
+              bind_addresses = [ "127.0.0.1" ];
+              port = 8008;
+              resources = [
+                {
+                  compress = true;
+                  names = [ "client" ];
+                }
+                {
+                  compress = false;
+                  names = [ "federation" ];
+                }
+              ];
+              tls = false;
+              type = "http";
+              x_forwarded = true;
+            }
+            {
+              bind_addresses = [ "127.0.0.1" ];
+              port = 9118;
+              type = "metrics";
+              tls = false;
+              resources = [ ];
+            }
           ];
         };
       };
