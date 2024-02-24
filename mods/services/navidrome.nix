@@ -13,12 +13,8 @@
           CacheFolder = "/var/cache/navidrome";
           EnableDownloads = true;
           EnableSharing = true;
+          Port = 8093;
         };
-      };
-      nginx.virtualHosts."navi.${config.service.web.domain}" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/".proxyPass = "http://localhost:4533";
       };
     };
   };

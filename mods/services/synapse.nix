@@ -1,21 +1,15 @@
 { config, pkgs, lib, ... }: {
   options.service.web.synapse = lib.mkEnableOption "";
   config = lib.mkIf config.service.web.synapse {
-    age.secrets = {
-      discord_bridge = {
-        file = ../../shhh/discord_bridge.age;
-        owner = "matrix-appservice-discord";
-      };
-      synapse_shared = {
-        file = ../../shhh/synapse_shared.age;
-        owner = "matrix-synapse";
-      };
+    age.secrets.synapse_shared = {
+      file = ../../shhh/synapse_shared.age;
+      owner = "matrix-synapse";
     };
     services = {
       matrix-synapse = {
         enable = true;
         settings = {
-          server_name = config.service.web.domain;
+          server_name = config.networking.domain;
           url_preview_enabled = true;
           max_upload_size = "10G";
           registration_shared_secret_path =
@@ -23,11 +17,37 @@
           registration_requires_token = true;
           presence.enabled = false;
           withJemalloc = true;
+          enable_metrics = true;
+          listeners = [{
+            bind_addresses = [ "127.0.0.1" ];
+            port = 8008;
+            resources = [
+              {
+                compress = true;
+                names = [ "client" ];
+              }
+              {
+                compress = false;
+                names = [ "federation" ];
+              }
+            ];
+            tls = false;
+            type = "http";
+            x_forwarded = true;
+          }
+          {
+            bind_addresses = [ "127.0.0.1" ];
+            port = 9118;
+            type = "metrics";
+            tls = false;
+            resources = [];
+          }
+          ];
         };
       };
       nginx = {
         virtualHosts = {
-          "matrix.${config.service.web.domain}" = {
+          "matrix.${config.networking.domain}" = {
             forceSSL = true;
             enableACME = true;
             locations = {
@@ -35,8 +55,8 @@
               "/_synapse".proxyPass = "http://127.0.0.1:8008";
             };
           };
-          "${config.service.web.domain}".locations = let
-            mhost = "matrix.${config.service.web.domain}";
+          "${config.networking.domain}".locations = let
+            mhost = "matrix.${config.networking.domain}";
             formatJson = pkgs.formats.json { };
             extraConfig = ''
               default_type application/json;

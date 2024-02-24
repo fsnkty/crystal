@@ -16,7 +16,6 @@
   service = {
     web = {
       enable = true;
-      domain = "shimeji.cafe";
       forgejo = true;
       jellyfin = true;
       qbit = true;
@@ -25,11 +24,13 @@
       synapse = true;
       navidrome = true;
       komga = true;
+      grafana = true;
     };
     fail2ban = true;
     postgres = true;
     mailserver = true;
     openssh = true;
+    blocky = false;
   };
   program = {
     htop = true;
@@ -66,6 +67,7 @@
   };
   ### hardware
   networking = {
+    domain = "shimeji.cafe";
     hostName = "library";
     hostId = "9a350e7b";
     firewall.enable = true;

@@ -6,7 +6,7 @@
       file = ../../shhh + "/${name}_mail.age";
       owner = "dovecot2";
     });
-    mailserver = let inherit (config.service.web) domain;
+    mailserver = let inherit (config.networking) domain;
     in {
       enable = true;
       fqdn = "mail.${domain}";

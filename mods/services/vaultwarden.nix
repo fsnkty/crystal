@@ -8,28 +8,22 @@
     services = {
       vaultwarden = {
         enable = true;
-        config = {
-          DOMAIN = "https://vault.${config.service.web.domain}";
+        config = let
+          inherit (config.networking) domain;
+        in {
+          DOMAIN = "https://vault.${domain}";
           SIGNUPS_ALLOWED = false;
-          ROCKET_PORT = 8222;
+          ROCKET_PORT = 8092;
           ROCKET_LOG = "critical";
-          SMTP_HOST = "mail.${config.service.web.domain}";
+          SMTP_HOST = "mail.${domain}";
           SMPT_PORT = 465;
           SMTP_SECURITY = "starttls";
-          SMTP_FROM = "vault@${config.service.web.domain}";
+          SMTP_FROM = "vault@${domain}";
           SMTP_FROM_NAME =
-            "vault.${config.service.web.domain} Vaultwarden server";
-          SMTP_USERNAME = "vault@${config.service.web.domain}";
+            "vault.${domain} Vaultwarden server";
+          SMTP_USERNAME = "vault@${domain}";
         };
         environmentFile = config.age.secrets.vault_env.path;
-      };
-      nginx.virtualHosts."vault.${config.service.web.domain}" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/" = {
-          proxyPass = "http://localhost:8222";
-          extraConfig = "proxy_pass_header Authorization;";
-        };
       };
     };
     systemd.services.vaultwarden.serviceConfig = {

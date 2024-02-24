@@ -7,11 +7,6 @@
         port = 8097;
         openFirewall = true;
       };
-      nginx.virtualHosts."komga.${config.service.web.domain}" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/".proxyPass = "http://127.0.0.1:8097";
-      };
     };
     systemd.services.komga.serviceConfig = {
       RemoveIPC = true;

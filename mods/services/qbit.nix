@@ -6,6 +6,8 @@
     services = {
       qbittorrent = {
         enable = true;
+        webuiPort = 8098;
+        torrentingPort = 43862;
         openFirewall = true;
         group = "media";
         package = pkgs.qbittorrent-nox.overrideAttrs {
@@ -44,16 +46,11 @@
               Password_PBKDF2 = ''
                 "@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
               ReverseProxySupportEnabled = true;
-              TrustedReverseProxiesList = "qbit.${config.service.web.domain}";
+              TrustedReverseProxiesList = "qbit.${config.networking.domain}";
             };
             General.Locale = "en";
           };
         };
-      };
-      nginx.virtualHosts."qbit.${config.service.web.domain}" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/".proxyPass = "http://localhost:8077";
       };
     };
   };

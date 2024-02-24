@@ -6,10 +6,12 @@
       owner = "nextcloud";
     });
     services = {
-      nextcloud = {
+      nextcloud = let
+        inherit (config.networking) domain;
+      in {
         enable = true;
         package = pkgs.nextcloud28;
-        hostName = "cloud.${config.service.web.domain}";
+        hostName = "cloud.${domain}";
         nginx.recommendedHttpHeaders = true;
         https = true;
         config = {
@@ -26,18 +28,18 @@
         configureRedis = true;
         extraOptions = {
           overwriteprotocol = "https";
-          trusted_proxies = [ "https://cloud.${config.service.web.domain}" ];
-          trusted_domains = [ "https://cloud.${config.service.web.domain}" ];
+          trusted_proxies = [ "https://cloud.${domain}" ];
+          trusted_domains = [ "https://cloud.${domain}" ];
           default_phone_region = "NZ";
           mail_smtpmode = "smtp";
           mail_sendmailmode = "smtp";
           mail_smtpsecure = "ssl";
-          mail_smtphost = "mail.${config.service.web.domain}";
+          mail_smtphost = "mail.${domain}";
           mail_smtpport = "465";
           mail_smtpauth = 1;
-          mail_smtpname = "cloud@${config.service.web.domain}";
+          mail_smtpname = "cloud@${domain}";
           mail_from_address = "cloud";
-          mail_domain = config.service.web.domain;
+          mail_domain = domain;
         };
         # just the smtp pass.
         secretFile = config.age.secrets.cloud_env.path;
@@ -54,11 +56,6 @@
           name = config.services.nextcloud.config.dbuser;
           ensureDBOwnership = true;
         }];
-      };
-      nginx.virtualHosts."cloud.${config.service.web.domain}" = {
-        forceSSL = true;
-        enableACME = true;
-        http2 = true;
       };
     };
     systemd.services."nextcloud-setup" = {
