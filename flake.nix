@@ -5,7 +5,6 @@
     snms.url = "gitlab:/simple-nixos-mailserver/nixos-mailserver";
     mountain.url = "github:nu-nu-ko/mountain-nix";
     # awaiting pr's # git+file/path/?ref=branch
-    #qbit.url = "git+file:/storage/repos/nixpkgs/?ref=init-nixos-qbittorrent";
     qbit.url = "github:nu-nu-ko/nixpkgs?ref=init-nixos-qbittorrent";
     navi.url = "github:nu-nu-ko/nixpkgs?ref=nixos-navidrome-cleanup";
   };

@@ -41,6 +41,7 @@
         ls = "eza";
         grep = "grep --color=auto";
         ssh-library = "ssh 192.168.0.3";
+        pass = "wl-copy < /home/${config.users.users.main.name}Documents/vault";
       };
       promptInit = "PROMPT=${config.misc.shell.prompt}";
     };
