@@ -27,7 +27,7 @@
       "grafana"
     ] (_: { enable = true; });
     fail2ban = true;
-    postgres = true;
+    postgresql = true;
     mailserver = true;
     openssh = true;
     blocky = false;

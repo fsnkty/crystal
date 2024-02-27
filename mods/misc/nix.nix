@@ -1,8 +1,8 @@
-{ inputs, pkgs, lib, config, ... }: {
+{ inputs, pkgs, lib, nuke, config, ... }: {
   options.misc.nix = {
-    config = lib.mkEnableOption "";
+    config = nuke.mkEnable;
     flakePath = lib.mkOption { type = lib.types.str; };
-    nh = lib.mkEnableOption "";
+    nh = nuke.mkEnable;
   };
   config = lib.mkIf config.misc.nix.config {
     nix = {

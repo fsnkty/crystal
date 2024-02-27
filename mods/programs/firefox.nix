@@ -1,5 +1,5 @@
-{ lib, pkgs, config, ... }: {
-  options.program.firefox = lib.mkEnableOption "";
+{ lib, nuke, pkgs, config, ... }: {
+  options.program.firefox = nuke.mkEnable;
   config = lib.mkIf config.program.firefox {
     home.file = {
       ".mozilla/firefox/profiles.ini".text = ''

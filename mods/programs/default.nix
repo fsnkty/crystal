@@ -1,10 +1,10 @@
-{ config, lib, pkgs, ... }:
-let inherit (lib) mkEnableOption mkIf optionals;
+{ config, lib, nuke, pkgs, ... }:
+let inherit (lib) mkIf optionals;
 in {
   options.program = {
-    prism = mkEnableOption "";
-    git = mkEnableOption "";
-    steam = mkEnableOption "";
+    prism = nuke.mkEnable;
+    git = nuke.mkEnable;
+    steam = nuke.mkEnable;
   };
   config = let inherit (config.program) prism git steam;
   in {

@@ -1,5 +1,5 @@
-{ config, pkgs, lib, ... }: {
-  options.service.web.nextcloud.enable = lib.mkEnableOption "";
+{ config, pkgs, lib, nuke, ... }: {
+  options.service.web.nextcloud.enable = nuke.mkEnable;
   config = lib.mkIf config.service.web.nextcloud.enable {
     age.secrets = lib.genAttrs [ "user_cloud" "cloud_env" ] (name: {
       file = ../../shhh + "/${name}.age";

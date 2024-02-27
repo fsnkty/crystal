@@ -3,7 +3,7 @@
   imports = [ "${inputs.navi}/nixos/modules/services/audio/navidrome.nix" ];
   #### awaiting PR ####
   options.service.web.navidrome = {
-    enable = lib.mkEnableOption "";
+    enable = nuke.mkEnable;
     port = nuke.mkDefaultInt 8093;
   };
   config.services.navidrome = lib.mkIf config.service.web.navidrome.enable {

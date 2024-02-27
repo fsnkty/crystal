@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, nuke, pkgs, inputs, ... }:
 let
   mynv = let
     con = pkgs.neovimUtils.makeNeovimConfig {
@@ -89,7 +89,7 @@ let
   in pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped
   (con // { inherit wrapperArgs; });
 in {
-  options.program.neovim = lib.mkEnableOption "";
+  options.program.neovim = nuke.mkEnable;
   config = lib.mkIf config.program.neovim {
     users.users.main.packages = [ mynv pkgs.alejandra ];
     environment.variables = {

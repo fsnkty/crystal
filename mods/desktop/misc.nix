@@ -1,9 +1,9 @@
-{ lib, pkgs, config, ... }:
-let inherit (lib) mkEnableOption mkIf;
+{ lib, nuke, pkgs, config, ... }:
+let inherit (lib) mkIf;
 in {
   options.desktop = {
-    waybar = mkEnableOption "";
-    wofi = mkEnableOption "";
+    waybar = nuke.mkEnable;
+    wofi = nuke.mkEnable;
   };
   config = let inherit (config.desktop) wofi waybar;
   in {

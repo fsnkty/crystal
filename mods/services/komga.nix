@@ -1,6 +1,6 @@
 { config, lib, nuke, ... }: {
   options.service.web.komga = {
-    enable = lib.mkEnableOption "";
+    enable = nuke.mkEnable;
     port = nuke.mkDefaultInt 8097;
   };
   config = lib.mkIf config.service.web.komga.enable {

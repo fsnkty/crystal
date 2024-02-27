@@ -1,5 +1,5 @@
-{ config, lib, ... }: {
-  options.service.web.nginx.enable = lib.mkEnableOption "";
+{ config, lib, nuke, ... }: {
+  options.service.web.nginx.enable = nuke.mkEnable;
   config = lib.mkIf config.service.web.nginx.enable {
     security.acme = {
       acceptTerms = true;

@@ -1,5 +1,5 @@
-{ lib, pkgs, inputs, config, ... }: {
-  options.desktop.theme = lib.mkEnableOption "";
+{ lib, nuke, pkgs, inputs, config, ... }: {
+  options.desktop.theme = nuke.mkEnable;
   config = lib.mkIf config.desktop.theme {
     users.users.main.packages = [
       pkgs.phinger-cursors

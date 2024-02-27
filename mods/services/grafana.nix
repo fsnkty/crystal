@@ -1,6 +1,6 @@
 { config, lib, nuke, ... }: {
   options.service.web.grafana = {
-    enable = lib.mkEnableOption "";
+    enable = nuke.mkEnable;
     port = nuke.mkDefaultInt 8094;
   };
   config = lib.mkIf config.service.web.grafana.enable {

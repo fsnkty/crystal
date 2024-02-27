@@ -1,5 +1,5 @@
-{ config, lib, pkgs, ... }: {
-  options.program.htop = lib.mkEnableOption "";
+{ config, lib, nuke, pkgs, ... }: {
+  options.program.htop = nuke.mkEnable;
   config = lib.mkIf config.program.htop {
     users.users.main.packages = [ pkgs.htop ];
     home.file.".config/htop/htoprc".text = ''

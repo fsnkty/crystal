@@ -1,5 +1,5 @@
-{ config, lib, pkgs, ... }: {
-  options.program.alacritty = lib.mkEnableOption "";
+{ config, lib, nuke, pkgs, ... }: {
+  options.program.alacritty = nuke.mkEnable;
   config = lib.mkIf config.program.alacritty {
     users.users.main.packages = [ pkgs.alacritty ];
     home.file.".config/alacritty/alacritty.toml".source =

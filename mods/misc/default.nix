@@ -1,9 +1,9 @@
-{ pkgs, lib, config, inputs, ... }: {
+{ pkgs, lib, nuke, config, inputs, ... }: {
   imports = [ inputs.agenix.nixosModules.default ];
   options.misc = {
-    ageSetup = lib.mkEnableOption "";
-    disableRoot = lib.mkEnableOption "";
-    cleanDefaults = lib.mkEnableOption "";
+    ageSetup = nuke.mkEnable;
+    disableRoot = nuke.mkEnable;
+    cleanDefaults = nuke.mkEnable;
   };
   config = let
     inherit (lib) mkIf;

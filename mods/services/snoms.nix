@@ -1,6 +1,6 @@
-{ inputs, config, lib, ... }: {
+{ inputs, config, lib, nuke, ... }: {
   imports = [ inputs.snms.nixosModules.default ];
-  options.service.mailserver = lib.mkEnableOption "";
+  options.service.mailserver = nuke.mkEnable;
   config = lib.mkIf config.service.mailserver {
     age.secrets = lib.genAttrs [ "personal" "services" ] (name: {
       file = ../../shhh + "/${name}_mail.age";

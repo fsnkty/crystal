@@ -1,12 +1,12 @@
-{ config, lib, ... }:
+{ config, lib, nuke, ... }:
 let
-  inherit (lib) mkIf mkEnableOption;
-  inherit (config.service) fail2ban postgres openssh;
+  inherit (lib) mkIf;
+  inherit (config.service) fail2ban postgresql openssh;
 in {
   options.service = {
-    fail2ban = mkEnableOption "";
-    postgres = mkEnableOption "";
-    openssh = mkEnableOption "";
+    fail2ban = nuke.mkEnable;
+    postgresql = nuke.mkEnable;
+    openssh = nuke.mkEnable;
   };
   config = {
     services = {
@@ -17,7 +17,7 @@ in {
           factor = "16";
         };
       };
-      postgresql = mkIf postgres { enable = true; };
+      postgresql = mkIf postgresql { enable = true; };
       openssh = mkIf openssh {
         enable = true;
         openFirewall = true;

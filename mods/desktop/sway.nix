@@ -1,5 +1,5 @@
-{ pkgs, lib, config, ... }: {
-  options.desktop.sway = lib.mkEnableOption "";
+{ pkgs, lib, nuke, config, ... }: {
+  options.desktop.sway = nuke.mkEnable;
   config = lib.mkIf config.desktop.sway {
     services.greetd = {
       enable = true;

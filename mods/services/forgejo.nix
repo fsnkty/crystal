@@ -1,6 +1,6 @@
 { config, lib, nuke, ... }: {
   options.service.web.forgejo = {
-    enable = lib.mkEnableOption "forgejo";
+    enable = nuke.mkEnable;
     port = nuke.mkDefaultInt 8095; 
   };
   config.services.forgejo = lib.mkIf config.service.web.forgejo.enable {

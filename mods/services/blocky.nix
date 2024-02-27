@@ -1,5 +1,5 @@
-{ config, lib, ... }: {
-  options.service.blocky = lib.mkEnableOption "";
+{ config, lib, nuke, ... }: {
+  options.service.blocky = nuke.mkEnable;
   config = lib.mkIf config.service.blocky {
     services.blocky = {
       enable = true;

@@ -1,6 +1,6 @@
 { config, lib, nuke, ... }: {
   options.service.web.vaultwarden = {
-    enable = lib.mkEnableOption "";
+    enable = nuke.mkEnable;
     port = nuke.mkDefaultInt 8092;
   };
   config = lib.mkIf config.service.web.vaultwarden.enable {

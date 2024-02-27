@@ -1,6 +1,6 @@
-{ lib, config, pkgs, ... }: {
+{ lib, nuke, config, pkgs, ... }: {
   options.misc.shell = {
-    enable = lib.mkEnableOption "";
+    enable = nuke.mkEnable;
     prompt = lib.mkOption { type = lib.types.lines; };
   };
   config = lib.mkIf config.misc.shell.enable {

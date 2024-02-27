@@ -2,7 +2,7 @@
   imports = [ "${inputs.qbit}/nixos/modules/services/torrent/qbittorrent.nix" ];
   #### awaiting pr ####
   options.service.web.qbittorrent = {
-    enable = lib.mkEnableOption "";
+    enable = nuke.mkEnable;
     port = nuke.mkDefaultInt 8098;
   };
   config.services.qbittorrent = lib.mkIf config.service.web.qbittorrent.enable {

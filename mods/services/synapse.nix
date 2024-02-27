@@ -1,5 +1,5 @@
-{ config, pkgs, lib, ... }: {
-  options.service.web.synapse.enable = lib.mkEnableOption "";
+{ config, pkgs, lib, nuke, ... }: {
+  options.service.web.synapse.enable = nuke.mkEnable;
   config = lib.mkIf config.service.web.synapse.enable {
     age.secrets.synapse_shared = {
       file = ../../shhh/synapse_shared.age;

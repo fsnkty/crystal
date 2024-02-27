@@ -1,5 +1,5 @@
-{ pkgs, config, lib, ... }: {
-  options.desktop.console = lib.mkEnableOption "";
+{ pkgs, config, lib, nuke, ... }: {
+  options.desktop.console = nuke.mkEnable;
   config = lib.mkIf config.desktop.console {
     console = {
       font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
