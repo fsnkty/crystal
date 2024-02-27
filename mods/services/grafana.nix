@@ -1,6 +1,12 @@
 { config, lib, ... }: {
-  options.service.web.ana = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.ana {
+  options.service.web.grafana = {
+    enable = lib.mkEnableOption "";
+    port = lib.mkOption {
+      type = lib.types.int;
+      default = 8094;
+    };
+  };
+  config = lib.mkIf config.service.web.grafana.enable {
     age.secrets."user_cloud_pom" = {
       file = ../../shhh/user_cloud_pom.age;
       owner = "nextcloud-exporter";
@@ -11,7 +17,7 @@
         settings = {
           server = {
             http_addr = "127.0.0.1";
-            http_port = 8094;
+            http_port = config.service.web.grafana.port;
             domain = "ana.shimeji.cafe";
           };
         };

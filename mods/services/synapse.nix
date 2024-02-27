@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
-  options.service.web.synapse = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.synapse {
+  options.service.web.synapse.enable = lib.mkEnableOption "";
+  config = lib.mkIf config.service.web.synapse.enable {
     age.secrets.synapse_shared = {
       file = ../../shhh/synapse_shared.age;
       owner = "matrix-synapse";

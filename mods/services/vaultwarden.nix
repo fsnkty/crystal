@@ -1,6 +1,12 @@
 { config, lib, ... }: {
-  options.service.web.vault = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.vault {
+  options.service.web.vaultwarden = {
+    enable = lib.mkEnableOption "";
+    port = lib.mkOption {
+      type = lib.types.int;
+      default = 8092;
+    };
+  };
+  config = lib.mkIf config.service.web.vaultwarden.enable {
     age.secrets.vault_env = {
       file = ../../shhh/vault_env.age;
       owner = "vaultwarden";
@@ -12,7 +18,7 @@
         in {
           DOMAIN = "https://vault.${domain}";
           SIGNUPS_ALLOWED = false;
-          ROCKET_PORT = 8092;
+          ROCKET_PORT = config.service.web.vaultwarden.port;
           ROCKET_LOG = "critical";
           SMTP_HOST = "mail.${domain}";
           SMPT_PORT = 465;

@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
-  options.service.web.nextcloud = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.nextcloud {
+  options.service.web.nextcloud.enable = lib.mkEnableOption "";
+  config = lib.mkIf config.service.web.nextcloud.enable {
     age.secrets = lib.genAttrs [ "user_cloud" "cloud_env" ] (name: {
       file = ../../shhh + "/${name}.age";
       owner = "nextcloud";

@@ -1,10 +1,16 @@
 { config, lib, ... }: {
-  options.service.web.komga = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.komga {
+  options.service.web.komga = {
+    enable = lib.mkEnableOption "";
+    port = lib.mkOption {
+      type = lib.types.int;
+      default = 8097;
+    };
+  };
+  config = lib.mkIf config.service.web.komga.enable {
     services = {
       komga = {
         enable = true;
-        port = 8097;
+        port = config.service.web.komga.port;
         openFirewall = true;
       };
     };

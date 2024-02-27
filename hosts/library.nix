@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, lib, config, ... }: {
   misc = {
     nix = {
       config = true;
@@ -14,18 +14,18 @@
     disableRoot = true;
   };
   service = {
-    web = {
-      enable = true;
-      tea = true;
-      jelly = true;
-      qbit = true;
-      nextcloud = true;
-      vault = true;
-      synapse = true;
-      navi = true;
-      komga = true;
-      ana = true;
-    };
+    web = lib.genAttrs [
+      "nginx"
+      "forgejo"
+      "jellyfin"
+      "qbittorrent"
+      "nextcloud"
+      "vaultwarden"
+      "synapse"
+      "navidrome"
+      "komga"
+      "grafana"
+    ] (_: { enable = true; });
     fail2ban = true;
     postgres = true;
     mailserver = true;

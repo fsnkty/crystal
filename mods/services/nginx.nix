@@ -1,6 +1,6 @@
 { config, lib, ... }: {
-  options.service.web.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.service.web.enable {
+  options.service.web.nginx.enable = lib.mkEnableOption "";
+  config = lib.mkIf config.service.web.nginx.enable {
     security.acme = {
       acceptTerms = true;
       defaults.email = "acme@${config.networking.domain}";
@@ -19,30 +19,31 @@
       recommendedBrotliSettings = true;
       virtualHosts = let
         inherit (config.networking) domain;
-        genHosts = lib.mapAttrs' (name: set: {
-          name = "${name}.${domain}";
-          value = lib.mkIf config.service.web.${name} ({
-            locations."/".proxyPass = "http://localhost:${toString set.port}";
-          } // ssl);
-        });
         ssl = {
           forceSSL = true;
           enableACME = true;
         };
+        genHosts = lib.mapAttrs' (name: value: {
+          name = "${name}.${domain}";
+          value = lib.mkIf config.service.web.${value}.enable ({
+            locations."/".proxyPass =
+              "http://localhost:${toString config.service.web.${value}.port}";
+          } // ssl);
+        });
       in {
         "${domain}" = { root = "/storage/web/public"; } // ssl;
         "wires.${domain}" = { root = "/storage/web/wires"; } // ssl;
-        "cloud.${domain}" = { http2 = true; } // ssl;
         "vault.${domain}".locations."/".extraConfig =
           "proxy_pass_header Authorization;";
+        "cloud.${domain}" = { http2 = true; } // ssl;
       } // genHosts {
-        tea = { port = config.services.forgejo.settings.server.HTTP_PORT; };
-        ana = { port = config.services.grafana.settings.server.http_port; };
-        vault = { port = config.services.vaultwarden.config.ROCKET_PORT; };
-        navi = { port = config.services.navidrome.settings.Port; };
-        qbit = { port = config.services.qbittorrent.webuiPort; };
-        komga = { port = config.services.komga.port; };
-        jelly = { port = 8096; };
+        tea = "forgejo";
+        ana = "grafana";
+        vault = "vaultwarden";
+        navi = "navidrome";
+        qbit = "qbittorrent";
+        komga = "komga";
+        jelly = "jellyfin";
       };
     };
     networking.firewall.allowedTCPPorts = [ 80 443 ];
