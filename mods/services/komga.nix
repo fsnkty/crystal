@@ -1,10 +1,7 @@
-{ config, lib, ... }: {
+{ config, lib, nuke, ... }: {
   options.service.web.komga = {
     enable = lib.mkEnableOption "";
-    port = lib.mkOption {
-      type = lib.types.int;
-      default = 8097;
-    };
+    port = nuke.mkDefaultInt 8097;
   };
   config = lib.mkIf config.service.web.komga.enable {
     services = {

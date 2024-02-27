@@ -1,10 +1,7 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, nuke, ... }: {
   options.service.web.jellyfin = {
     enable = lib.mkEnableOption "";
-    port = lib.mkOption {
-      type = lib.types.int;
-      default = 8096;
-    };
+    port = nuke.mkDefaultInt 8096;
   };
   # yet to find a way to make jellyfin take a webui port.. *sigh*
   config = lib.mkIf config.service.web.jellyfin.enable {

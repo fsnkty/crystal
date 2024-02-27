@@ -1,10 +1,7 @@
-{ config, lib, ... }: {
+{ config, lib, nuke, ... }: {
   options.service.web.vaultwarden = {
     enable = lib.mkEnableOption "";
-    port = lib.mkOption {
-      type = lib.types.int;
-      default = 8092;
-    };
+    port = nuke.mkDefaultInt 8092;
   };
   config = lib.mkIf config.service.web.vaultwarden.enable {
     age.secrets.vault_env = {

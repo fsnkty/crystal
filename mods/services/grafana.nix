@@ -1,10 +1,7 @@
-{ config, lib, ... }: {
+{ config, lib, nuke, ... }: {
   options.service.web.grafana = {
     enable = lib.mkEnableOption "";
-    port = lib.mkOption {
-      type = lib.types.int;
-      default = 8094;
-    };
+    port = nuke.mkDefaultInt 8094;
   };
   config = lib.mkIf config.service.web.grafana.enable {
     age.secrets."user_cloud_pom" = {
