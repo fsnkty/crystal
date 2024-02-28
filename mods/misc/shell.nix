@@ -22,6 +22,7 @@
       histSize = 10000;
       histFile = "$HOME/.cache/zsh_history";
       shellInit = ''
+        zsh-newuser-install() { :; }
         bindkey "^[[1;5C" forward-word
         bindkey "^[[1;5D" backward-word
         bindkey '^H' backward-kill-word
@@ -29,7 +30,6 @@
         (( ''${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
         ZSH_HIGHLIGHT_STYLES[path]=none
         ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-        zsh-newuser-install() { :; }
         nr() {
           nix run nixpkgs#$1 -- ''${@:2}
         }
@@ -39,6 +39,9 @@
       '';
       shellAliases = {
         ls = "eza";
+        lg = "eza -lag";
+        nf = "nix flake";
+        no = "nh os";
         grep = "grep --color=auto";
         ssh-library = "ssh 192.168.0.3";
         pass = "wl-copy < /home/${config.users.users.main.name}Documents/vault";

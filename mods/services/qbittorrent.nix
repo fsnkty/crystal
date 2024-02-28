@@ -17,10 +17,10 @@
     serverConfig = {
       LegalNotice.Accepted = true;
       BitTorrent.Session = {
-        DefaultSavePath = "/storage/media/torrents/";
-        TorrentExportDirectory = "/storage/media/torrents/sources/";
         TempPathEnabled = true;
         TempPath = "/storage/media/torrents/incomplete/";
+        DefaultSavePath = "/storage/media/torrents/";
+        TorrentExportDirectory = "/storage/media/torrents/sources/";
         QueueingSystemEnabled = true;
         GlobalMaxInactiveSeedingMinutes = 43800;
         GlobalMaxSeedingMinutes = 10080;
@@ -38,10 +38,11 @@
       Preferences = {
         WebUI = {
           AlternativeUIEnabled = true;
-          RootFolder = pkgs.fetchzip {
-            url =
-              "https://github.com/VueTorrent/VueTorrent/releases/download/v2.5.0/vuetorrent.zip";
-            hash = "sha256-ys9CrbpOPYu8xJsCnqYKyC4IFD/SSAF8j+T+USqvGA8=";
+          RootFolder = pkgs.fetchFromGitHub {
+            owner = "VueTorrent";
+            repo = "VueTorrent";
+            rev = "v2.7.1";
+            hash = "sha256-ZkeDhXDBjakTmJYN9LZtSRMSkaySt1MhS9QDEujBdYI=";
           };
           Username = "nuko";
           Password_PBKDF2 = ''

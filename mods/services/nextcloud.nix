@@ -43,11 +43,9 @@
         # just the smtp pass.
         secretFile = config.age.secrets.cloud_env.path;
         appstoreEnable = false;
-        autoUpdateApps.enable = true;
+        autoUpdateApps.enable = false;
         extraAppsEnable = true;
-        extraApps = {
-          inherit (pkgs.nextcloud28Packages.apps) mail calendar bookmarks notes;
-        };
+        extraApps = { inherit (pkgs.nextcloud28Packages.apps) mail calendar; };
       };
       postgresql = {
         ensureDatabases = [ config.services.nextcloud.config.dbname ];

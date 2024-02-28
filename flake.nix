@@ -18,8 +18,8 @@
       nixosConfigurations = lib.genAttrs [ "factory" "library" ] (name:
         lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/${name}.nix ] ++ importAll ./libs
-            ++ importAll ./mods;
+          modules = [ ./hosts/${name}.nix ]
+            ++ builtins.concatMap (x: importAll x) [ ./libs ./mods ];
         });
     };
 }

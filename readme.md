@@ -24,6 +24,7 @@ hosts the following..
 ### extras
 - colours: [mountain](https://github.com/mountain-theme/Mountain), [my themes](https://github.com/nu-nu-ko/mountain-nix)
 - `lib/homeFiles.nix`: thanks [eclairevoyant](https://github.com/eclairevoyant)
+- `lib/nuke.nix`: I strongly recomend against using anything in here :3
 - `importAll`: thanks [Gerg-L](https://github.com/Gerg-L/)
 - `pkgs/sfFonts.nix`: [San Francisco](https://developer.apple.com/fonts/)
 

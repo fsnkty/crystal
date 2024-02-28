@@ -21,7 +21,7 @@
         };
         customDNS = { mapping = { "router.lan" = "192.168.0.1"; }; };
         ports = {
-          dns = 52;
+          dns = 53;
           http = 4000;
         };
       };

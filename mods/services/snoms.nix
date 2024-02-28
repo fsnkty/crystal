@@ -17,6 +17,10 @@
           hashedPasswordFile = personal.path;
           aliases = [ "host@${domain}" "acme@${domain}" "admin@${domain}" ];
         };
+        "all@${domain}" = {
+          hashedPasswordFile = personal.path;
+          aliases = [ "@${domain}" ];
+        };
         "cloud@${domain}".hashedPasswordFile = services.path;
         "vault@${domain}".hashedPasswordFile = services.path;
       };

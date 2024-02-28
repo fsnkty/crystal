@@ -1,14 +1,13 @@
 { lib, ... }: {
   _module.args.nuke = {
-    mkDefaultInt =
-      port: lib.mkOption {
+    mkDefaultInt = port:
+      lib.mkOption {
         default = port;
         type = lib.types.int;
       };
-    mkEnable =
-      lib.mkOption {
+    mkEnable = lib.mkOption {
       default = false;
       type = lib.types.bool;
-      };
+    };
   };
 }

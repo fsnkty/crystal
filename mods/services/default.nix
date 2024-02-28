@@ -16,6 +16,16 @@ in {
           enable = true;
           factor = "16";
         };
+        jails = {
+          dovecot.settings = {
+            filter = "dovecot[mode=aggressive]";
+            maxretry = 3;
+          };
+          nginx-botsearch.settings = {
+            maxretry = 5;
+            findtime = 30;
+          };
+        };
       };
       postgresql = mkIf postgresql { enable = true; };
       openssh = mkIf openssh {
@@ -24,6 +34,7 @@ in {
         settings = {
           PermitRootLogin = "no";
           PasswordAuthentication = false;
+          LogLevel = "VERBOSE";
         };
       };
     };
