@@ -14,10 +14,10 @@
         wrapperFeatures.gtk = true;
         extraPackages = builtins.attrValues {
           inherit (pkgs)
-            vulkan-validation-layers xdg-utils autotiling-rs wl-clipboard
-            swaylock-effects swaynotificationcenter swayidle rwpspread wpaperd;
+            xdg-utils autotiling-rs wl-clipboard swaylock-effects
+            swaynotificationcenter swayidle swaybg;
         };
-        # export WLR_RENDERER=vulkan
+        # export WLR_RENDERER=vulkan # vulkan validation-layers
         extraSessionCommands = ''
           export LIBSEAT_BACKEND=logind
           export SDL_VIDEODRIVER=wayland
@@ -27,7 +27,7 @@
     };
     home.file.".config/sway/config".text = let
       inherit (lib) replicate range getExe concatMapStringsSep concatStrings;
-      inherit (pkgs) grim slurp;
+      inherit (pkgs) grim slurp rwpspread;
       inherit (config.colours) primary;
       d1 = "DP-1";
       d2 = "HDMI-A-1";
@@ -40,7 +40,9 @@
         ${lock}
         autotiling-rs
         openrgb -p default
-        wpaperd
+        ${
+          getExe rwpspread
+        } -b swaybg -i /home/${config.users.users.main.name}/.config/sway/wallpaper
         swaync
         waybar
         swayidle -w \

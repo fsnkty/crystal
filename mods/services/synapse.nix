@@ -5,11 +5,12 @@
       file = ../../shhh/synapse_shared.age;
       owner = "matrix-synapse";
     };
-    services = {
+    services = let inherit (config.networking) domain;
+    in {
       matrix-synapse = {
         enable = true;
         settings = {
-          server_name = config.networking.domain;
+          server_name = domain;
           url_preview_enabled = true;
           max_upload_size = "10G";
           registration_shared_secret_path =
@@ -46,37 +47,37 @@
           ];
         };
       };
-      nginx = {
-        virtualHosts = {
-          "matrix.${config.networking.domain}" = {
-            forceSSL = true;
-            enableACME = true;
-            locations = {
-              "/_matrix".proxyPass = "http://127.0.0.1:8008";
-              "/_synapse".proxyPass = "http://127.0.0.1:8008";
-            };
+      nginx.virtualHosts = {
+        "matrix.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations = {
+            "/_matrix".proxyPass = "http://127.0.0.1:8008";
+            "/_synapse".proxyPass = "http://127.0.0.1:8008";
           };
-          "${config.networking.domain}".locations = let
-            mhost = "matrix.${config.networking.domain}";
-            formatJson = pkgs.formats.json { };
-            extraConfig = ''
-              default_type application/json;
-              add_header Access-Control-Allow-Origin "*";
-            '';
-          in {
-            "=/.well-known/matrix/server" = {
-              alias = formatJson.generate "well-known-matrix-server" {
-                "m.server" = "${mhost}:443";
+        };
+        "${domain}".locations = let
+          extraConfig = ''
+            default_type application/json;
+            add_header Access-Control-Allow-Origin "*";
+          '';
+        in {
+          "=/.well-known/matrix/server" = {
+            alias =
+              (pkgs.formats.json { }).generate "well-known-matrix-server" {
+                "m.server" = "matrix.${domain}:443";
               };
-              inherit extraConfig;
-            };
-            "=/.well-known/matrix/client" = {
-              alias = formatJson.generate "well-known-matrix-client" {
-                "m.homeserver" = { "base_url" = "https://${mhost}"; };
-                "org.matrix.msc3575.proxy" = { "url" = "https://${mhost}"; };
+            inherit extraConfig;
+          };
+          "=/.well-known/matrix/client" = {
+            alias =
+              (pkgs.formats.json { }).generate "well-known-matrix-client" {
+                "m.homeserver" = { "base_url" = "https://matrix.${domain}"; };
+                "org.matrix.msc3575.proxy" = {
+                  "url" = "https://matrix.${domain}";
+                };
               };
-              inherit extraConfig;
-            };
+            inherit extraConfig;
           };
         };
       };

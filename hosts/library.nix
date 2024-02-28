@@ -7,7 +7,7 @@
     };
     shell = {
       enable = true;
-      prompt = "'%F{magenta}圖書館%F{reset_color} %~ %% '";
+      prompt = "'%F{magenta}圖書館%F{reset_color} %~ %# '";
     };
     ageSetup = true;
     cleanDefaults = true;

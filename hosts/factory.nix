@@ -7,7 +7,7 @@
     };
     shell = {
       enable = true;
-      prompt = "'%~ %% '";
+      prompt = "'%~ %# '";
     };
     ageSetup = true;
     cleanDefaults = true;

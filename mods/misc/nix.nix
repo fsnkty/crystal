@@ -9,6 +9,7 @@
       settings = {
         experimental-features =
           [ "auto-allocate-uids" "no-url-literals" "nix-command" "flakes" ];
+        auto-allocate-uids = true;
         auto-optimise-store = true;
         allowed-users = [ "@wheel" ];
         use-xdg-base-directories = true;
