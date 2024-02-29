@@ -68,17 +68,9 @@
           "media"
         ];
         hashedPasswordFile = config.age.secrets.user.path;
-        packages = builtins.attrValues {
-          inherit (pkgs)
-            wget
-            rsync
-            eza
-            yazi
-            ;
-        };
+        packages = builtins.attrValues { inherit (pkgs) wget yazi; };
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIrSQqI/X+I9fcQGOxgvTzZ2p/9SG4abc4xXkrAdRxBc" # lunar
         ];
       };
     };
@@ -88,7 +80,6 @@
     domain = "shimeji.cafe";
     hostName = "library";
     hostId = "9a350e7b";
-    firewall.enable = true;
     enableIPv6 = false;
     useDHCP = false;
   };

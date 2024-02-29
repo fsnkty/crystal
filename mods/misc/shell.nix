@@ -14,7 +14,10 @@
     };
   };
   config = lib.mkIf config.misc.shell.enable {
-    users.users.main.shell = lib.mkForce pkgs.zsh;
+    users.users.main = {
+      shell = lib.mkForce pkgs.zsh;
+      packages = [ pkgs.eza ];
+    };
     environment = {
       shells = [ pkgs.zsh ];
       binsh = lib.getExe pkgs.dash;

@@ -9,7 +9,10 @@
 {
   options.misc.nix = {
     config = nuke.mkEnable;
-    flakePath = lib.mkOption { type = lib.types.str; };
+    flakePath = lib.mkOption {
+      type = lib.types.str;
+      default = "/storage/Repos/crystal";
+    };
     nh = nuke.mkEnable;
   };
   config = lib.mkIf config.misc.nix.config {

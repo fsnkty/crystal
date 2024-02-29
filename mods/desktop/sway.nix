@@ -12,7 +12,7 @@
     services.greetd = {
       enable = true;
       settings.default_session = {
-        command = "${pkgs.sway}/bin/sway";
+        command = "${lib.getExe pkgs.sway}";
         user = config.users.users.main.name;
       };
     };
@@ -59,7 +59,7 @@
           "up"
           "right"
         ];
-        lock = "swaylock -f -c 000000 --clock --indicator";
+        lock = "swaylock -f -c 000000 --clock --timestr '%H:%M' --datestr '' --indicator --line-ver-color '#${primary.main}'";
       in
       ''
         xwayland enable

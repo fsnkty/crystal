@@ -8,7 +8,6 @@
   misc = {
     nix = {
       config = true;
-      flakePath = "/storage/Repos/crystal";
       nh = true;
     };
     shell.enable = true;
@@ -17,20 +16,23 @@
     disableRoot = true;
   };
   desktop = {
-    console = true;
     audio = true;
     sway = true;
-    theme = true;
-    waybar = true;
-    wofi = true;
+    theme = {
+      fonts = true;
+      gtkqt = true;
+      console = true;
+    };
   };
   program = {
-    alacritty = true;
-    firefox = true;
+    git = true;
     htop = true;
     neovim = true;
+    alacritty = true;
+    firefox = true;
+    waybar = true;
+    wofi = true;
     prism = true;
-    git = true;
     steam = true;
   };
   service.openssh = true;
@@ -57,12 +59,10 @@
       packages = builtins.attrValues {
         inherit (pkgs)
           krita
-          obs-studio
           element-desktop
           vesktop
           imv
           mpv
-          eza
           yazi
           ueberzugpp
           ;
