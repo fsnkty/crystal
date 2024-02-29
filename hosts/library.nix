@@ -65,7 +65,7 @@
       };
     };
   };
-  ### hardware
+  ### networking
   networking = {
     domain = "shimeji.cafe";
     hostName = "library";
@@ -89,6 +89,12 @@
       routes = [{ routeConfig.Gateway = "192.168.0.1"; }];
     };
   };
+  services.openssh.hostKeys = [{
+    comment = "library host";
+    path = "/etc/ssh/library_ed25519_key";
+    type = "ed25519";
+  }];
+  ### hardware
   hardware = {
     enableRedistributableFirmware = true;
     cpu.intel.updateMicrocode = true;

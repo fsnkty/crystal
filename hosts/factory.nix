@@ -63,7 +63,7 @@
   home.file =
     lib.genAttrs [ "Documents" "Downloads" "Pictures" "Videos" "Repos" ]
     (name: { source = "/storage/${name}"; });
-  ### hardware
+  ### networking
   networking = {
     hostName = "factory";
     hostId = "007f0200";
@@ -89,6 +89,12 @@
       };
     };
   };
+  services.openssh.hostKeys = [{
+    comment = "factory host";
+    path = "/etc/ssh/factory_ed25519_key";
+    type = "ed25519";
+  }];
+  # hardware
   powerManagement.cpuFreqGovernor = "schedutil";
   hardware = {
     enableRedistributableFirmware = true;
