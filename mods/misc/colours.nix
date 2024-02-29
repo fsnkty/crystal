@@ -1,7 +1,7 @@
-{ lib, config, ... }: {
+{ mountain, ... }:
+{
   # https://github.com/mountain-theme/Mountain
-  options.mountain = lib.mkOption { };
-  config.mountain = {
+  _module.args.mountain = {
     grayscale = {
       yoru = "0f0f0f";
       kesseki = "191919";
@@ -38,33 +38,35 @@
       yuki = "f0f0f0";
     };
   };
-  options.colours = lib.mkOption { };
-  config.colours = let inherit (config.mountain) grayscale alpha accent;
-  in {
-    primary = {
-      bg = grayscale.yoru;
-      fg = accent.yuki;
-      main = accent.sakura;
+  _module.args.colours =
+    let
+      inherit (mountain) grayscale alpha accent;
+    in
+    {
+      primary = {
+        bg = grayscale.yoru;
+        fg = accent.yuki;
+        main = accent.ichigo;
+      };
+      alpha = {
+        red = alpha.kaen;
+        green = alpha.take;
+        yellow = alpha.chikyu;
+        blue = alpha.ume;
+        magenta = alpha.kosumosu;
+        cyan = alpha.shinkai;
+        black = alpha.iwa;
+        white = alpha.usagi;
+      };
+      accent = {
+        red = accent.ichigo;
+        green = accent.kusa;
+        yellow = accent.suna;
+        blue = accent.ajisai;
+        magenta = accent.sakura;
+        cyan = accent.kori;
+        black = accent.amagumo;
+        white = accent.yuki;
+      };
     };
-    alpha = {
-      red = alpha.kaen;
-      green = alpha.take;
-      yellow = alpha.chikyu;
-      blue = alpha.ume;
-      magenta = alpha.kosumosu;
-      cyan = alpha.shinkai;
-      black = alpha.iwa;
-      white = alpha.usagi;
-    };
-    accent = {
-      red = accent.ichigo;
-      green = accent.kusa;
-      yellow = accent.suna;
-      blue = accent.ajisai;
-      magenta = accent.sakura;
-      cyan = accent.kori;
-      black = accent.amagumo;
-      white = accent.yuki;
-    };
-  };
 }

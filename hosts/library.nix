@@ -1,4 +1,10 @@
-{ pkgs, lib, config, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   misc = {
     nix = {
       config = true;
@@ -14,18 +20,21 @@
     disableRoot = true;
   };
   service = {
-    web = lib.genAttrs [
-      "nginx"
-      "forgejo"
-      "jellyfin"
-      "qbittorrent"
-      "nextcloud"
-      "vaultwarden"
-      "synapse"
-      "navidrome"
-      "komga"
-      "grafana"
-    ] (_: { enable = true; });
+    web =
+      lib.genAttrs
+        [
+          "nginx"
+          "forgejo"
+          "jellyfin"
+          "qbittorrent"
+          "nextcloud"
+          "vaultwarden"
+          "synapse"
+          "navidrome"
+          "komga"
+          "grafana"
+        ]
+        (_: { enable = true; });
     fail2ban = true;
     postgresql = true;
     mailserver = true;
@@ -54,13 +63,22 @@
         name = "nuko";
         uid = 1000;
         isNormalUser = true;
-        extraGroups = [ "wheel" "media" ];
+        extraGroups = [
+          "wheel"
+          "media"
+        ];
         hashedPasswordFile = config.age.secrets.user.path;
-        packages = builtins.attrValues { inherit (pkgs) wget rsync eza yazi; };
+        packages = builtins.attrValues {
+          inherit (pkgs)
+            wget
+            rsync
+            eza
+            yazi
+            ;
+        };
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIrSQqI/X+I9fcQGOxgvTzZ2p/9SG4abc4xXkrAdRxBc" # lunar
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZH8voUTYblnUaSThDyB+JrdFTVMVVxT4kA+EE+XrCG" # orbit
         ];
       };
     };
@@ -83,17 +101,22 @@
         DHCP = "no";
         DNSSEC = "yes";
         DNSOverTLS = "yes";
-        DNS = [ "1.1.1.1" "1.1.0.0" ];
+        DNS = [
+          "1.1.1.1"
+          "1.1.0.0"
+        ];
       };
       address = [ "192.168.0.3/24" ];
-      routes = [{ routeConfig.Gateway = "192.168.0.1"; }];
+      routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
     };
   };
-  services.openssh.hostKeys = [{
-    comment = "library host";
-    path = "/etc/ssh/library_ed25519_key";
-    type = "ed25519";
-  }];
+  services.openssh.hostKeys = [
+    {
+      comment = "library host";
+      path = "/etc/ssh/library_ed25519_key";
+      type = "ed25519";
+    }
+  ];
   ### hardware
   hardware = {
     enableRedistributableFirmware = true;
@@ -106,14 +129,17 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "sd_mod" ];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "sd_mod"
+    ];
     kernelModules = [ "kvm-intel" ];
     supportedFilesystems = [ "zfs" ];
   };
   fileSystems = {
     "/boot" = {
-      device =
-        "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part1";
+      device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part1";
       fsType = "vfat";
     };
     "/" = {
@@ -129,9 +155,7 @@
       fsType = "zfs";
     };
   };
-  swapDevices = [{
-    device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part2";
-  }];
+  swapDevices = [ { device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part2"; } ];
   ### remember the warning.. ###
   system.stateVersion = "23.11";
 }

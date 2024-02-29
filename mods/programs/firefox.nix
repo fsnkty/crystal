@@ -1,6 +1,80 @@
-{ lib, nuke, pkgs, config, ... }: {
+{
+  lib,
+  nuke,
+  pkgs,
+  config,
+  colours,
+  ...
+}:
+{
   options.program.firefox = nuke.mkEnable;
   config = lib.mkIf config.program.firefox {
+    programs.firefox = {
+      enable = true;
+      package = pkgs.firefox.override { cfg.speechSynthesisSupport = false; };
+      policies = {
+        Preferences = {
+          "gfx.webrender.all" = true;
+          "browser.aboutConfig.showWarning" = true;
+          "browser.tabs.firefox-view" = true;
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          "svg.context-properties.content.enabled" = true;
+          "layout.css.has-selector.enabled" = true;
+          "privacy.firstparty.isolate" = true;
+          "browser.EULA.override" = true;
+          "browser.tabs.inTitlebar" = 0;
+        };
+        CaptivePortal = false;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DisableFirefoxAccounts = true;
+        DisableProfileImport = true;
+        DisableSetDesktopBackground = true;
+        DisableFeedbackCommands = true;
+        DisableFirefoxScreenshots = true;
+        DontCheckDefaultBrowser = true;
+        NoDefaultBookmarks = true;
+        PasswordManagerEnabled = false;
+        FirefoxHome = {
+          Pocket = false;
+          Snippets = false;
+          TopSites = false;
+          Highlights = false;
+          Locked = true;
+        };
+        UserMessaging = {
+          ExtensionRecommendations = false;
+          SkipOnboarding = true;
+        };
+        Cookies = {
+          Behavior = "accept";
+          Locked = false;
+        };
+        ExtensionSettings = {
+          "uBlock0@raymondhill.net" = {
+            # ublock
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/file/4188488/ublock_origin-1.55.0.xpi";
+          };
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+            # bitwarden
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/file/4180072/bitwarden_password_manager-2024.2.0.xpi";
+          };
+          "sponsorBlocker@ajay.app" = {
+            # sponsorblock
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/file/4178444/sponsorblock-5.5.4.xpi";
+          };
+
+          "Tab-Session-Manager@sienori" = {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/file/4165190/tab_session_manager-6.12.2.xpi";
+          };
+        };
+      };
+    };
     home.file = {
       ".mozilla/firefox/profiles.ini".text = ''
         [Profile0]
@@ -13,8 +87,10 @@
       '';
       #https://github.com/crambaud/waterfall
       ".mozilla/firefox/${config.users.users.main.name}/chrome/userChrome.css".text =
-        let inherit (config.colours) primary alpha accent;
-        in ''
+        let
+          inherit (colours) primary alpha accent;
+        in
+        ''
           :root {
              --window-colour:               #${primary.bg};
              --secondary-colour:            #${alpha.black};
@@ -205,76 +281,7 @@
           .identity-color-pink      { --identity-tab-color: var(--uc-identity-color-pink)      !important; --identity-icon-color: var(--uc-identity-color-pink)      !important; }
           .identity-color-purple    { --identity-tab-color: var(--uc-identity-color-purple)    !important; --identity-icon-color: var(--uc-identity-color-purple)    !important; }
         '';
-      ".mozilla/firefox/${config.users.users.main.name}/chrome/userContent.css".text =
-        "";
-    };
-    programs.firefox = {
-      enable = true;
-      # thankfully im not in need of such Support
-      package = pkgs.firefox.override { cfg.speechSynthesisSupport = false; };
-      policies = {
-        Preferences = {
-          "gfx.webrender.all" = true;
-          "browser.aboutConfig.showWarning" = true;
-          "browser.tabs.firefox-view" = true;
-          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-          "svg.context-properties.content.enabled" = true;
-          "layout.css.has-selector.enabled" = true;
-          "privacy.firstparty.isolate" = true;
-          "browser.EULA.override" = true;
-          "browser.tabs.inTitlebar" = 0;
-        };
-        CaptivePortal = false;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-        DisableTelemetry = true;
-        DisableFirefoxAccounts = true;
-        DisableProfileImport = true;
-        DisableSetDesktopBackground = true;
-        DisableFeedbackCommands = true;
-        DisableFirefoxScreenshots = true;
-        DontCheckDefaultBrowser = true;
-        NoDefaultBookmarks = true;
-        PasswordManagerEnabled = false;
-        FirefoxHome = {
-          Pocket = false;
-          Snippets = false;
-          TopSites = false;
-          Highlights = false;
-          Locked = true;
-        };
-        UserMessaging = {
-          ExtensionRecommendations = false;
-          SkipOnboarding = true;
-        };
-        Cookies = {
-          Behavior = "accept";
-          Locked = false;
-        };
-        ExtensionSettings = {
-          "uBlock0@raymondhill.net" = { # ublock
-            installation_mode = "force_installed";
-            install_url =
-              "https://addons.mozilla.org/firefox/downloads/file/4188488/ublock_origin-1.55.0.xpi";
-          };
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = { # bitwarden
-            installation_mode = "force_installed";
-            install_url =
-              "https://addons.mozilla.org/firefox/downloads/file/4180072/bitwarden_password_manager-2024.2.0.xpi";
-          };
-          "sponsorBlocker@ajay.app" = { # sponsorblock
-            installation_mode = "force_installed";
-            install_url =
-              "https://addons.mozilla.org/firefox/downloads/file/4178444/sponsorblock-5.5.4.xpi";
-          };
-
-          "Tab-Session-Manager@sienori" = {
-            installation_mode = "force_installed";
-            install_url =
-              "https://addons.mozilla.org/firefox/downloads/file/4165190/tab_session_manager-6.12.2.xpi";
-          };
-        };
-      };
+      ".mozilla/firefox/${config.users.users.main.name}/chrome/userContent.css".text = "";
     };
   };
 }

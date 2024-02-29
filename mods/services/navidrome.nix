@@ -1,4 +1,12 @@
-{ config, lib, nuke, modulesPath, inputs, ... }: {
+{
+  config,
+  lib,
+  nuke,
+  modulesPath,
+  inputs,
+  ...
+}:
+{
   disabledModules = [ "${modulesPath}/services/audio/navidrome.nix" ];
   imports = [ "${inputs.navi}/nixos/modules/services/audio/navidrome.nix" ];
   #### awaiting PR ####

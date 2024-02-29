@@ -1,4 +1,10 @@
-{ config, lib, nuke, ... }: {
+{
+  config,
+  lib,
+  nuke,
+  ...
+}:
+{
   options.service.web.grafana = {
     enable = nuke.mkEnable;
     port = nuke.mkDefaultInt 8094;
@@ -38,24 +44,24 @@
         scrapeConfigs = [
           {
             job_name = "library";
-            static_configs = [{ targets = [ "127.0.0.1:9100" ]; }];
+            static_configs = [ { targets = [ "127.0.0.1:9100" ]; } ];
           }
           {
             job_name = "nextcloud";
-            static_configs = [{ targets = [ "127.0.0.1:9205" ]; }];
+            static_configs = [ { targets = [ "127.0.0.1:9205" ]; } ];
           }
           {
             job_name = "zfs";
-            static_configs = [{ targets = [ "127.0.0.1:9134" ]; }];
+            static_configs = [ { targets = [ "127.0.0.1:9134" ]; } ];
           }
           {
             job_name = "nginx";
-            static_configs = [{ targets = [ "127.0.0.1:9113" ]; }];
+            static_configs = [ { targets = [ "127.0.0.1:9113" ]; } ];
           }
           {
             job_name = "synapse";
             metrics_path = "/_synapse/metrics";
-            static_configs = [{ targets = [ "127.0.0.1:9118" ]; }];
+            static_configs = [ { targets = [ "127.0.0.1:9118" ]; } ];
           }
         ];
       };

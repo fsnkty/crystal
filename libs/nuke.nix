@@ -1,6 +1,8 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   _module.args.nuke = {
-    mkDefaultInt = port:
+    mkDefaultInt =
+      port:
       lib.mkOption {
         default = port;
         type = lib.types.int;

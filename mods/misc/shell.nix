@@ -1,7 +1,17 @@
-{ lib, nuke, config, pkgs, ... }: {
+{
+  lib,
+  nuke,
+  config,
+  pkgs,
+  ...
+}:
+{
   options.misc.shell = {
     enable = nuke.mkEnable;
-    prompt = lib.mkOption { type = lib.types.lines; };
+    prompt = lib.mkOption {
+      type = lib.types.lines;
+      default = "'%~ %# '";
+    };
   };
   config = lib.mkIf config.misc.shell.enable {
     users.users.main.shell = lib.mkForce pkgs.zsh;
@@ -44,7 +54,7 @@
         no = "nh os";
         grep = "grep --color=auto";
         ssh-library = "ssh 192.168.0.3";
-        pass = "wl-copy < /home/${config.users.users.main.name}Documents/vault";
+        pass = "wl-copy < /home/${config.users.users.main.name}/Documents/vault";
       };
       promptInit = "PROMPT=${config.misc.shell.prompt}";
     };

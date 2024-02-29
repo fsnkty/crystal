@@ -3,8 +3,7 @@ pkgs.stdenv.mkDerivation {
   pname = "sf-fonts";
   version = "1";
   pro = pkgs.fetchurl {
-    url =
-      "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
+    url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
     sha256 = "sha256-Mu0pmx3OWiKBmMEYLNg+u2MxFERK07BQGe3WAhEec5Q=";
   };
   mono = pkgs.fetchFromGitHub {

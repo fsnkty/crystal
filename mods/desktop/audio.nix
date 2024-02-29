@@ -1,4 +1,10 @@
-{ lib, nuke, config, ... }: {
+{
+  lib,
+  nuke,
+  config,
+  ...
+}:
+{
   options.desktop.audio = nuke.mkEnable;
   config = lib.mkIf config.desktop.audio {
     services.pipewire = {

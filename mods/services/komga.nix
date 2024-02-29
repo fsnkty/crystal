@@ -1,4 +1,10 @@
-{ config, lib, nuke, ... }: {
+{
+  config,
+  lib,
+  nuke,
+  ...
+}:
+{
   options.service.web.komga = {
     enable = nuke.mkEnable;
     port = nuke.mkDefaultInt 8097;
@@ -18,7 +24,10 @@
       SystemCallFilter = [ "@system-service" ];
       UMask = "0077";
       ProtectSystem = "strict";
-      ReadWritePaths = [ "/var/lib/komga" "/tmp" ];
+      ReadWritePaths = [
+        "/var/lib/komga"
+        "/tmp"
+      ];
       ProtectHome = true;
       PrivateTmp = true;
       ProtectProc = "invisible";
@@ -28,7 +37,11 @@
       PrivateDevices = true;
       ProtectHostname = true;
       ProtectKernelTunables = true;
-      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_NETLINK" ];
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+        "AF_NETLINK"
+      ];
       LockPersonality = true;
       RestrictNamespaces = true;
       ProtectKernelLogs = true;

@@ -1,4 +1,12 @@
-{ config, pkgs, lib, nuke, inputs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  nuke,
+  inputs,
+  ...
+}:
+{
   imports = [ "${inputs.qbit}/nixos/modules/services/torrent/qbittorrent.nix" ];
   #### awaiting pr ####
   options.service.web.qbittorrent = {
@@ -11,9 +19,7 @@
     torrentingPort = 43862;
     openFirewall = true;
     group = "media";
-    package = pkgs.qbittorrent-nox.overrideAttrs {
-      meta.mainProgram = "qbittorrent-nox";
-    };
+    package = pkgs.qbittorrent-nox.overrideAttrs { meta.mainProgram = "qbittorrent-nox"; };
     serverConfig = {
       LegalNotice.Accepted = true;
       BitTorrent.Session = {
@@ -45,8 +51,7 @@
             hash = "sha256-ZkeDhXDBjakTmJYN9LZtSRMSkaySt1MhS9QDEujBdYI=";
           };
           Username = "nuko";
-          Password_PBKDF2 = ''
-            "@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
+          Password_PBKDF2 = ''"@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
           ReverseProxySupportEnabled = true;
           TrustedReverseProxiesList = "qbit.${config.networking.domain}";
         };

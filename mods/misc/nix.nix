@@ -1,4 +1,12 @@
-{ inputs, pkgs, lib, nuke, config, ... }: {
+{
+  inputs,
+  pkgs,
+  lib,
+  nuke,
+  config,
+  ...
+}:
+{
   options.misc.nix = {
     config = nuke.mkEnable;
     flakePath = lib.mkOption { type = lib.types.str; };
@@ -7,8 +15,12 @@
   config = lib.mkIf config.misc.nix.config {
     nix = {
       settings = {
-        experimental-features =
-          [ "auto-allocate-uids" "no-url-literals" "nix-command" "flakes" ];
+        experimental-features = [
+          "auto-allocate-uids"
+          "no-url-literals"
+          "nix-command"
+          "flakes"
+        ];
         auto-allocate-uids = true;
         auto-optimise-store = true;
         allowed-users = [ "@wheel" ];

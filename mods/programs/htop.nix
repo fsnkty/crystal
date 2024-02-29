@@ -1,4 +1,11 @@
-{ config, lib, nuke, pkgs, ... }: {
+{
+  config,
+  lib,
+  nuke,
+  pkgs,
+  ...
+}:
+{
   options.program.htop = nuke.mkEnable;
   config = lib.mkIf config.program.htop {
     users.users.main.packages = [ pkgs.htop ];

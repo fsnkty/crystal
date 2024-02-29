@@ -1,39 +1,47 @@
-{ pkgs, lib, nuke, config, inputs, ... }: {
+{
+  pkgs,
+  lib,
+  nuke,
+  config,
+  inputs,
+  ...
+}:
+{
   imports = [ inputs.agenix.nixosModules.default ];
   options.misc = {
     ageSetup = nuke.mkEnable;
     disableRoot = nuke.mkEnable;
     cleanDefaults = nuke.mkEnable;
   };
-  config = let
-    inherit (lib) mkIf;
-    inherit (config.misc) ageSetup disableRoot cleanDefaults;
-  in {
-    ### ageSetup
-    environment.systemPackages =
-      mkIf ageSetup [ inputs.agenix.packages.${pkgs.system}.default ];
-    age.identityPaths =
-      mkIf ageSetup [ "/home/${config.users.users.main.name}/.ssh/id_ed25519" ];
-    ### disableRoot
-    users.users.root = mkIf disableRoot {
-      hashedPassword = "!";
-      shell = pkgs.shadow;
-      home = lib.mkForce "/home/root"; # for sudo.
+  config =
+    let
+      inherit (lib) mkIf mkForce;
+      inherit (config.misc) ageSetup disableRoot cleanDefaults;
+    in
+    {
+      ### ageSetup
+      environment.systemPackages = mkIf ageSetup [ inputs.agenix.packages.${pkgs.system}.default ];
+      age.identityPaths = mkIf ageSetup [ "/home/${config.users.users.main.name}/.ssh/id_ed25519" ];
+      ### disableRoot
+      users.users.root = mkIf disableRoot {
+        hashedPassword = "!";
+        shell = pkgs.shadow;
+        home = mkForce "/home/root"; # for sudo.
+      };
+      ### clean
+      programs = mkIf cleanDefaults {
+        nano.enable = false;
+        command-not-found.enable = false;
+      };
+      environment.defaultPackages = mkIf cleanDefaults [ ];
+      documentation = mkIf cleanDefaults {
+        # online pages are easier to navigate.
+        enable = false;
+        doc.enable = false;
+        info.enable = false;
+        man.enable = false;
+        nixos.enable = false;
+      };
+      boot.enableContainers = mkIf cleanDefaults false;
     };
-    ### clean
-    programs = mkIf cleanDefaults {
-      nano.enable = false;
-      command-not-found.enable = false;
-    };
-    environment.defaultPackages = mkIf cleanDefaults [ ];
-    documentation = mkIf cleanDefaults {
-      # online pages are easier to navigate.
-      enable = false;
-      doc.enable = false;
-      info.enable = false;
-      man.enable = false;
-      nixos.enable = false;
-    };
-    boot.enableContainers = mkIf cleanDefaults false;
-  };
 }

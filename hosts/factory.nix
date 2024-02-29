@@ -1,14 +1,17 @@
-{ pkgs, lib, config, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   misc = {
     nix = {
       config = true;
       flakePath = "/storage/Repos/crystal";
       nh = true;
     };
-    shell = {
-      enable = true;
-      prompt = "'%~ %# '";
-    };
+    shell.enable = true;
     ageSetup = true;
     cleanDefaults = true;
     disableRoot = true;
@@ -38,7 +41,7 @@
     sudo.execWheelOnly = true;
     tpm2.enable = true;
   };
-  ### user stuff
+  ### user setup
   age.secrets.user = {
     file = ../shhh/user.age;
     owner = config.users.users.main.name;
@@ -53,16 +56,32 @@
       hashedPasswordFile = config.age.secrets.user.path;
       packages = builtins.attrValues {
         inherit (pkgs)
-          krita obs-studio element-desktop vesktop imv mpv eza yazi ueberzugpp;
+          krita
+          obs-studio
+          element-desktop
+          vesktop
+          imv
+          mpv
+          eza
+          yazi
+          ueberzugpp
+          ;
       };
       openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" # library
       ];
     };
   };
   home.file =
-    lib.genAttrs [ "Documents" "Downloads" "Pictures" "Videos" "Repos" ]
-    (name: { source = "/storage/${name}"; });
+    lib.genAttrs
+      [
+        "Documents"
+        "Downloads"
+        "Pictures"
+        "Videos"
+        "Repos"
+      ]
+      (name: { source = "/storage/${name}"; });
   ### networking
   networking = {
     hostName = "factory";
@@ -82,18 +101,23 @@
           DHCP = "no";
           DNSSEC = "yes";
           DNSOverTLS = "yes";
-          DNS = [ "1.1.1.1" "1.1.0.0" ];
+          DNS = [
+            "1.1.1.1"
+            "1.1.0.0"
+          ];
         };
         address = [ "192.168.0.4/24" ];
-        routes = [{ routeConfig.Gateway = "192.168.0.1"; }];
+        routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
       };
     };
   };
-  services.openssh.hostKeys = [{
-    comment = "factory host";
-    path = "/etc/ssh/factory_ed25519_key";
-    type = "ed25519";
-  }];
+  services.openssh.hostKeys = [
+    {
+      comment = "factory host";
+      path = "/etc/ssh/factory_ed25519_key";
+      type = "ed25519";
+    }
+  ];
   # hardware
   powerManagement.cpuFreqGovernor = "schedutil";
   hardware = {
@@ -115,19 +139,35 @@
       verbose = false;
       systemd.enable = true;
       kernelModules = [ "amdgpu" ];
-      availableKernelModules =
-        [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+      availableKernelModules = [
+        "nvme"
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
     };
-    kernelModules = [ "kvm-amd" "amd_pstate" ];
+    kernelModules = [
+      "kvm-amd"
+      "amd_pstate"
+    ];
     supportedFilesystems = [ "zfs" ];
-    kernelParams = [ "quiet" "splash" "amd_pstate=guided" ];
+    kernelParams = [
+      "quiet"
+      "splash"
+      "amd_pstate=guided"
+    ];
   };
   fileSystems = {
     "/boot" = {
-      device =
-        "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part1";
+      device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part1";
       fsType = "vfat";
-      options = [ "rw" "noatime" "x-systemd.automount" ];
+      options = [
+        "rw"
+        "noatime"
+        "x-systemd.automount"
+      ];
     };
     "/" = {
       device = "rpool/root";
@@ -138,9 +178,7 @@
       fsType = "zfs";
     };
   };
-  swapDevices = [{
-    device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part2";
-  }];
+  swapDevices = [ { device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part2"; } ];
   ### remember the warning.. ###
   system.stateVersion = "23.11";
 }
