@@ -33,6 +33,7 @@
         enable = true;
         config = {
           init.defaultBranch = "main";
+          push.autoSetupRemote = true;
           user = {
             name = "nuko";
             email = "nuko@shimeji.cafe";

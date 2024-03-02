@@ -13,8 +13,6 @@ let
         plugins = builtins.attrValues {
           inherit (pkgs.vimPlugins)
             nvim-lspconfig
-            null-ls-nvim
-            nvim-treesitter
             nvim-tree-lua
             nvim-web-devicons
             ;
@@ -24,8 +22,7 @@ let
         withRuby = false;
         viAlias = true;
         vimAlias = true;
-        customRC = ''
-          lua << EOF
+        luaRcContent = ''
           local k = vim.keymap.set
           k("n", "<C-DOWN>", "<cmd>resize +2<cr>")
           k("n", "<C-UP>", "<cmd>resize -2<cr>")
@@ -77,38 +74,16 @@ let
             autostart = true,
             capabilities = vim.lsp.protocol.make_client_capabilities(),
             cmd = {'nil'},
-            settings = {
-              ['nil'] = {
-                formatting = {
-                  command = {'alejandra', '--quiet'},
-                }
-              }
-            }
           }
-          require('null-ls').setup {
-            sources = {
-              require('null-ls').builtins.formatting.alejandra,
-              require('null-ls').builtins.diagnostics.deadnix
-            }
-          }
-          EOF
         '';
       };
       wrapperArgs =
-        let
-          path = lib.makeBinPath [
-            pkgs.deadnix
-            pkgs.statix
-            pkgs.nil
-            pkgs.alejandra
-          ];
-        in
         con.wrapperArgs
         ++ [
           "--prefix"
           "PATH"
           ":"
-          path
+          "${lib.makeBinPath [ pkgs.nil ]}"
         ];
     in
     pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped (con // { inherit wrapperArgs; });
@@ -118,7 +93,6 @@ in
   config = lib.mkIf config.program.neovim {
     users.users.main.packages = [
       mynv
-      pkgs.alejandra
     ];
     environment.variables = {
       EDITOR = "nvim";

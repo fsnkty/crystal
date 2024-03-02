@@ -61,6 +61,7 @@
           krita
           element-desktop
           vesktop
+          teams-for-linux
           imv
           mpv
           yazi
