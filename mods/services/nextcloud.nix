@@ -14,12 +14,10 @@
           "user_cloud"
           "cloud_env"
         ]
-        (
-          name: {
-            file = ../../shhh + "/${name}.age";
-            owner = "nextcloud";
-          }
-        );
+        (name: {
+          file = ../../shhh + "/${name}.age";
+          owner = "nextcloud";
+        });
     services = {
       nextcloud =
         let

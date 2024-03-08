@@ -34,7 +34,9 @@
           "komga"
           "grafana"
         ]
-        (_: { enable = true; });
+        (_: {
+          enable = true;
+        });
     fail2ban = true;
     postgresql = true;
     mailserver = true;
@@ -132,6 +134,13 @@
     "/boot" = {
       device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part1";
       fsType = "vfat";
+      options = [
+        "rw"
+        "noatime"
+        "fmask=0077"
+        "dmask=0077"
+        "x-systemd.automount"
+      ];
     };
     "/" = {
       device = "rpool/root";

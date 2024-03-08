@@ -15,12 +15,10 @@
           "personal"
           "services"
         ]
-        (
-          name: {
-            file = ../../shhh + "/${name}_mail.age";
-            owner = "dovecot2";
-          }
-        );
+        (name: {
+          file = ../../shhh + "/${name}_mail.age";
+          owner = "dovecot2";
+        });
     mailserver =
       let
         inherit (config.networking) domain;

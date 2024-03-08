@@ -18,6 +18,7 @@
   desktop = {
     audio = true;
     sway = true;
+    hyprland = true;
     theme = {
       fonts = true;
       gtkqt = true;
@@ -82,7 +83,9 @@
         "Videos"
         "Repos"
       ]
-      (name: { source = "/storage/${name}"; });
+      (name: {
+        source = "/storage/${name}";
+      });
   ### networking
   networking = {
     hostName = "factory";
@@ -167,6 +170,8 @@
       options = [
         "rw"
         "noatime"
+        "fmask=0077"
+        "dmask=0077"
         "x-systemd.automount"
       ];
     };

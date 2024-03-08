@@ -11,11 +11,7 @@ let
     let
       con = pkgs.neovimUtils.makeNeovimConfig {
         plugins = builtins.attrValues {
-          inherit (pkgs.vimPlugins)
-            nvim-lspconfig
-            nvim-tree-lua
-            nvim-web-devicons
-            ;
+          inherit (pkgs.vimPlugins) nvim-lspconfig nvim-tree-lua nvim-web-devicons;
           mountain = inputs.mountain.packages.${pkgs.system}.nvim;
         };
         withPython3 = false;
@@ -77,23 +73,19 @@ let
           }
         '';
       };
-      wrapperArgs =
-        con.wrapperArgs
-        ++ [
-          "--prefix"
-          "PATH"
-          ":"
-          "${lib.makeBinPath [ pkgs.nil ]}"
-        ];
+      wrapperArgs = con.wrapperArgs ++ [
+        "--prefix"
+        "PATH"
+        ":"
+        "${lib.makeBinPath [ pkgs.nil ]}"
+      ];
     in
     pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped (con // { inherit wrapperArgs; });
 in
 {
   options.program.neovim = nuke.mkEnable;
   config = lib.mkIf config.program.neovim {
-    users.users.main.packages = [
-      mynv
-    ];
+    users.users.main.packages = [ mynv ];
     environment.variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
