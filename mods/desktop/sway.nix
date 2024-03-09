@@ -76,6 +76,7 @@
             before-sleep '${lock}'
         }
         input "5426:132:Razer_Razer_DeathAdder_V2" accel_profile flat
+        input "1386:827:Wacom_Intuos_S_2_Pen" map_to_output ${d1}
         output ${d1} {
           mode 1920x1080@144Hz
           position 0,0
