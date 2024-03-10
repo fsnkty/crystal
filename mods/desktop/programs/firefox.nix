@@ -7,8 +7,8 @@
   ...
 }:
 {
-  options.program.firefox = nuke.mkEnable;
-  config = lib.mkIf config.program.firefox {
+  options.desktop.program.firefox = nuke.mkEnable;
+  config = lib.mkIf config.desktop.program.firefox {
     programs.firefox = {
       enable = true;
       package = pkgs.firefox.override { cfg.speechSynthesisSupport = false; };
@@ -51,28 +51,29 @@
           Behavior = "accept";
           Locked = false;
         };
-        ExtensionSettings = {
-          "uBlock0@raymondhill.net" = {
-            # ublock
+        ExtensionSettings =
+          let
+            addons = "https://addons.mozilla.org/firefox/downloads/file/";
             installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/file/4188488/ublock_origin-1.55.0.xpi";
+          in
+          {
+            "uBlock0@raymondhill.net" = {
+              inherit installation_mode;
+              install_url = "${addons}4188488/ublock_origin-1.55.0.xpi";
+            };
+            "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+              inherit installation_mode;
+              install_url = "${addons}4180072/bitwarden_password_manager-2024.2.0.xpi";
+            };
+            "sponsorBlocker@ajay.app" = {
+              inherit installation_mode;
+              install_url = "${addons}4178444/sponsorblock-5.5.4.xpi";
+            };
+            "Tab-Session-Manager@sienori" = {
+              inherit installation_mode;
+              install_url = "${addons}4165190/tab_session_manager-6.12.2.xpi";
+            };
           };
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
-            # bitwarden
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/file/4180072/bitwarden_password_manager-2024.2.0.xpi";
-          };
-          "sponsorBlocker@ajay.app" = {
-            # sponsorblock
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/file/4178444/sponsorblock-5.5.4.xpi";
-          };
-
-          "Tab-Session-Manager@sienori" = {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/file/4165190/tab_session_manager-6.12.2.xpi";
-          };
-        };
       };
     };
     home.file = {

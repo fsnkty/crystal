@@ -11,7 +11,7 @@ let
   inherit (lib.types) lines;
 in
 {
-  options.misc.users.main.shell = {
+  options.user.main.shell = {
     setup = mkEnable;
     prompt = mkOption {
       type = lines;
@@ -22,7 +22,7 @@ in
     let
       inherit (lib) mkIf mkForce getExe;
       inherit (pkgs) zsh eza dash;
-      cfg = config.misc.users.main.shell;
+      cfg = config.user.main.shell;
     in
     mkIf cfg.setup {
       users.users.main = {

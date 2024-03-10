@@ -37,7 +37,7 @@
           extraLibraries =
             let
               inherit (pkgs) wqy_zenhei;
-              inherit (pkgs.pkgs.i686Linux) gperftools;
+              inherit (pkgs.pkgsi686Linux) gperftools;
             in
             pkgs: [
               wqy_zenhei

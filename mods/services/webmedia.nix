@@ -10,7 +10,6 @@
 let
   inherit (nuke) mkWebOpt;
   inherit (lib) mkIf;
-  cfg = config.service.web;
 in
 {
   # awaiting prs
@@ -30,35 +29,35 @@ in
     navidrome = mkWebOpt 8093;
     jellyfin = mkWebOpt 8096;
   };
-  config = {
-    services =
-      let
-        enable = true;
-        group = "media";
-      in
-      {
-        komga = mkIf cfg.komga.enable {
+  config =
+    let
+      inherit (config.service.web) komga navidrome jellyfin;
+      enable = true;
+      group = "media";
+    in
+    {
+      services = {
+        komga = mkIf komga.enable {
           inherit enable group;
-          port = cfg.komga.port;
+          port = komga.port;
         };
-        navidrome = mkIf cfg.navidrome.enable {
+        navidrome = mkIf navidrome.enable {
           inherit enable group;
           settings = {
             MusicFolder = "/storage/media/Music";
             CacheFolder = "/var/cache/navidrome";
             EnableDownloads = true;
             EnableSharing = true;
-            Port = cfg.navidrome.port;
+            Port = navidrome.port;
           };
         };
-        jellyfin = mkIf cfg.jellyfin.enable {
+        jellyfin = mkIf jellyfin.enable {
           # yet to find a proper way to declare a webui port.
           inherit enable group;
         };
       };
-    # hardening which isnt appropriate for upstream.
-    systemd.services = {
-      jellyfin.serviceConfig = mkIf cfg.jellyfin.enable {
+      # hardening which isnt appropriate for upstream.
+      systemd.services.jellyfin.serviceConfig = mkIf jellyfin.enable {
         DeviceAllow = [ "/dev/dri/renderD128" ];
         ProtectSystem = "strict";
         ProtectHome = "yes";
@@ -73,15 +72,14 @@ in
         ProcSubset = "pid";
         CapabilityBoundingSet = "";
       };
+      # video hardware accel setup
+      boot.kernelParams = mkIf jellyfin.enable [ "i915.enable_guc=2" ];
+      hardware.opengl = mkIf jellyfin.enable {
+        enable = true;
+        extraPackages = [
+          pkgs.intel-media-driver
+          pkgs.intel-compute-runtime
+        ];
+      };
     };
-    # video hardware accel setup
-    boot.kernelParams = mkIf cfg.jellyfin.enable [ "i915.enable_guc=2" ];
-    hardware.opengl = mkIf cfg.jellyfin.enable {
-      enable = true;
-      extraPackages = [
-        pkgs.intel-media-driver
-        pkgs.intel-compute-runtime
-      ];
-    };
-  };
 }

@@ -1,31 +1,32 @@
 {
+  colours,
   config,
-  lib,
   nuke,
   pkgs,
-  colours,
+  lib,
   ...
 }:
 {
-  options.program.alacritty = nuke.mkEnable;
-  config = lib.mkIf config.program.alacritty {
+  options.desktop.program.alacritty = nuke.mkEnable;
+  config = lib.mkIf config.desktop.program.alacritty {
     users.users.main.packages = [ pkgs.alacritty ];
     home.file.".config/alacritty/alacritty.toml".source =
       (pkgs.formats.toml { }).generate "alacritty.toml"
         {
-          colors = {
-            bright = builtins.mapAttrs (_: prev: "#${prev}") (colours.accent);
-            normal = builtins.mapAttrs (_: prev: "#${prev}") (colours.alpha);
-            primary =
-              let
-                inherit (colours.primary) bg fg;
-              in
-              {
+          colors =
+            let
+              inherit (colours) accent alpha;
+              inherit (colours.primary) bg fg;
+            in
+            {
+              bright = builtins.mapAttrs (_: prev: "#${prev}") (accent);
+              normal = builtins.mapAttrs (_: prev: "#${prev}") (alpha);
+              primary = {
                 background = "#${bg}";
                 bright_foreground = "#${fg}";
                 dim_foreground = "#${fg}";
               };
-          };
+            };
           cursor = {
             style = "Underline";
             unfocused_hollow = false;
@@ -37,12 +38,6 @@
             padding = {
               x = 8;
               y = 8;
-            };
-          };
-          font = {
-            normal = {
-              family = "Liga SFMono Nerd Font";
-              style = "Regular";
             };
           };
         };

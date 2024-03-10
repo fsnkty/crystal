@@ -5,10 +5,7 @@
   ...
 }:
 {
-  options.service.web.grafana = {
-    enable = nuke.mkEnable;
-    port = nuke.mkDefaultInt 8094;
-  };
+  options.service.web.grafana = nuke.mkWebOpt 8094;
   config = lib.mkIf config.service.web.grafana.enable {
     age.secrets."user_cloud_pom" = {
       file = ../../shhh/user_cloud_pom.age;

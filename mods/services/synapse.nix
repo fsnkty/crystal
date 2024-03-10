@@ -28,32 +28,35 @@
             presence.enabled = false;
             withJemalloc = true;
             enable_metrics = true;
-            listeners = [
-              {
-                bind_addresses = [ "127.0.0.1" ];
-                port = 8008;
-                resources = [
-                  {
-                    compress = true;
-                    names = [ "client" ];
-                  }
-                  {
-                    compress = false;
-                    names = [ "federation" ];
-                  }
-                ];
+            listeners =
+              let
                 tls = false;
-                type = "http";
-                x_forwarded = true;
-              }
-              {
                 bind_addresses = [ "127.0.0.1" ];
-                port = 9118;
-                type = "metrics";
-                tls = false;
-                resources = [ ];
-              }
-            ];
+              in
+              [
+                {
+                  inherit tls bind_addresses;
+                  port = 8008;
+                  resources = [
+                    {
+                      compress = true;
+                      names = [ "client" ];
+                    }
+                    {
+                      compress = false;
+                      names = [ "federation" ];
+                    }
+                  ];
+                  type = "http";
+                  x_forwarded = true;
+                }
+                {
+                  inherit tls bind_addresses;
+                  port = 9118;
+                  type = "metrics";
+                  resources = [ ];
+                }
+              ];
           };
         };
         nginx.virtualHosts = {
@@ -71,16 +74,15 @@
                 default_type application/json;
                 add_header Access-Control-Allow-Origin "*";
               '';
+              inherit (pkgs.formats) json;
             in
             {
               "=/.well-known/matrix/server" = {
-                alias = (pkgs.formats.json { }).generate "well-known-matrix-server" {
-                  "m.server" = "matrix.${domain}:443";
-                };
+                alias = (json { }).generate "well-known-matrix-server" { "m.server" = "matrix.${domain}:443"; };
                 inherit extraConfig;
               };
               "=/.well-known/matrix/client" = {
-                alias = (pkgs.formats.json { }).generate "well-known-matrix-client" {
+                alias = (json { }).generate "well-known-matrix-client" {
                   "m.homeserver" = {
                     "base_url" = "https://matrix.${domain}";
                   };

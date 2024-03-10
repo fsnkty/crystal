@@ -7,14 +7,14 @@
   ...
 }:
 {
-  options.program = {
+  options.desktop.program = {
     waybar = nuke.mkEnable;
     wofi = nuke.mkEnable;
   };
   config =
     let
       inherit (lib) mkIf optionals;
-      inherit (config.program) wofi waybar;
+      inherit (config.desktop.program) wofi waybar;
     in
     {
       users.users.main.packages = optionals wofi [ pkgs.wofi ] ++ optionals waybar [ pkgs.waybar ];

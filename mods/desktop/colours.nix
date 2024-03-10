@@ -1,4 +1,4 @@
-{ }:
+{ ... }:
 {
   _module.args.colours =
     let

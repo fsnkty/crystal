@@ -6,28 +6,28 @@
       nh = true;
     };
     secrets = true;
-    users = {
-      noRoot = true;
-      main = {
-        shell.setup = true;
-        packages = builtins.attrValues {
-          inherit (pkgs)
-            krita
-            element-desktop
-            vesktop
-            teams-for-linux
-            imv
-            mpv
-            yazi
-            ueberzugpp
-            ;
-        };
-        keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" ];
-      };
-    };
     cleanDefaults = true;
+    nztz = true;
   };
-  ### user setup
+  user = {
+    noRoot = true;
+    main = {
+      enable = true;
+      shell.setup = true;
+      packages = builtins.attrValues {
+        inherit (pkgs)
+          element-desktop
+          vesktop
+          teams-for-linux
+          krita
+          imv
+          mpv
+          ueberzugpp
+          ;
+      };
+      keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" ];
+    };
+  };
   home.file =
     lib.genAttrs
       [
@@ -41,13 +41,13 @@
         source = "/storage/${name}";
       });
   desktop = {
-    sway = true;
+    sway = false;
     hyprland = true;
     setup = {
       audio = true;
       greeter = {
         enable = true;
-        command = "sway";
+        command = "Hyprland";
       };
     };
     theme = {
@@ -55,24 +55,22 @@
       gtkqt = true;
       console = true;
     };
+    program = {
+      alacritty = true;
+      firefox = true;
+      prism = true;
+      steam = true;
+      waybar = true;
+      wofi = true;
+    };
   };
   program = {
     git = true;
+    ssh = true;
     htop = true;
     neovim = true;
-
-    alacritty = true;
-    firefox = true;
-    waybar = true;
-    wofi = true;
-
-    prism = true;
-    steam = true;
   };
-  service.openssh = true;
   ### misc
-  time.timeZone = "NZ";
-  i18n.defaultLocale = "en_NZ.UTF-8";
   security = {
     sudo.execWheelOnly = true;
     tpm2.enable = true;

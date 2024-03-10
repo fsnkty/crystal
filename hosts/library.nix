@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
+{ lib, ... }:
 {
   misc = {
     nix = {
@@ -11,13 +6,26 @@
       flakePath = "/storage/repos/crystal";
       nh = true;
     };
-    shell = {
-      enable = true;
-      prompt = "'%F{magenta}圖書館%F{reset_color} %~ %# '";
-    };
-    ageSetup = true;
+    secrets = true;
     cleanDefaults = true;
-    disableRoot = true;
+    nztz = true;
+  };
+  users = {
+    noRoot = true;
+    main = {
+      enable = true;
+      shell = {
+        setup = true;
+        prompt = "'%F{magenta}圖書館%F{reset_color} %~ %# '";
+      };
+      keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" ];
+    };
+  };
+  program = {
+    htop = true;
+    neovim = true;
+    git = true;
+    ssh = true;
   };
   service = {
     web =
@@ -43,40 +51,10 @@
     openssh = true;
     blocky = false;
   };
-  program = {
-    htop = true;
-    neovim = true;
-    git = true;
-  };
   ### misc
-  time.timeZone = "NZ";
-  i18n.defaultLocale = "en_NZ.UTF-8";
   security.sudo.execWheelOnly = true;
   ### management user stuff
-  age.secrets.user = {
-    file = ../shhh/user.age;
-    owner = config.users.users.main.name;
-  };
-  users = {
-    groups.media = { };
-    mutableUsers = false;
-    users = {
-      main = {
-        name = "nuko";
-        uid = 1000;
-        isNormalUser = true;
-        extraGroups = [
-          "wheel"
-          "media"
-        ];
-        hashedPasswordFile = config.age.secrets.user.path;
-        packages = builtins.attrValues { inherit (pkgs) wget yazi; };
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory
-        ];
-      };
-    };
-  };
+  users.groups.media = { };
   ### networking
   networking = {
     domain = "shimeji.cafe";

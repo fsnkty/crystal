@@ -7,12 +7,9 @@
   ...
 }:
 {
+  ### awaiting pr https://github.com/NixOS/nixpkgs/pull/287923
   imports = [ "${inputs.qbit}/nixos/modules/services/torrent/qbittorrent.nix" ];
-  #### awaiting pr ####
-  options.service.web.qbittorrent = {
-    enable = nuke.mkEnable;
-    port = nuke.mkDefaultInt 8098;
-  };
+  options.service.web.qbittorrent = nuke.mkWebOpt 8098;
   config.services.qbittorrent = lib.mkIf config.service.web.qbittorrent.enable {
     enable = true;
     webuiPort = config.service.web.qbittorrent.port;

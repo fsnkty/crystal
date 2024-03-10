@@ -5,10 +5,7 @@
   ...
 }:
 {
-  options.service.web.forgejo = {
-    enable = nuke.mkEnable;
-    port = nuke.mkDefaultInt 8095;
-  };
+  options.service.web.forgejo = nuke.mkWebOpt 8095;
   config.services.forgejo = lib.mkIf config.service.web.forgejo.enable {
     enable = true;
     settings = {

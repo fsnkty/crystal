@@ -6,72 +6,26 @@
   inputs,
   ...
 }:
-let
-  inherit (nuke) mkEnable;
-  inherit (lib) mkOption mkIf mkForce;
-  inherit (lib.types)
-    listOf
-    package
-    str
-    bool
-    ;
-in
 {
   imports = [ inputs.agenix.nixosModules.default ];
-  options.misc = {
-    users = {
-      noRoot = mkEnable;
-      main = {
-        enable = mkOption {
-          type = bool;
-          default = true;
-        };
-        name = mkOption {
-          type = str;
-          default = "nuko";
-        };
-        packages = mkOption { type = listOf package; };
-        keys = mkOption { type = listOf str; };
-      };
+  options.misc =
+    let
+      inherit (nuke) mkEnable;
+    in
+    {
+      secrets = mkEnable;
+      cleanDefaults = mkEnable;
+      nztz = mkEnable;
     };
-    secrets = mkEnable;
-    cleanDefaults = mkEnable;
-  };
   config =
     let
-      inherit (config.misc) secrets cleanDefaults users;
-      inherit (users) noRoot main;
+      inherit (lib) mkIf;
+      inherit (config.misc) secrets cleanDefaults nztz;
     in
     {
       ### secrets setup
       environment.systemPackages = mkIf secrets [ inputs.agenix.packages.${pkgs.system}.default ];
-      age.identityPaths = mkIf secrets [ "/home/${main.name}/.ssh/id_ed25519" ];
-
-      age.secrets.user = mkIf main.enable {
-        file = ../../shhh/user.age;
-        owner = main.name;
-      };
-      users = {
-        mutableUsers = !main.enable;
-        users = {
-          ### disableRoot
-          root = mkIf noRoot {
-            hashedPassword = "!";
-            shell = pkgs.shadow;
-            home = mkForce "/home/root"; # for sudo.
-          };
-          ### configure main user
-          main = mkIf main.enable {
-            uid = 1000;
-            isNormalUser = true;
-            extraGroups = [ "wheel" ];
-            hashedPasswordFile = config.age.secrets.user.path;
-            inherit (main) name packages;
-            openssh.authorizedKeys.keys = main.keys;
-          };
-        };
-      };
-
+      age.identityPaths = mkIf secrets [ "/home/${config.users.users.main.name}/.ssh/id_ed25519" ];
       ### clean
       programs = mkIf cleanDefaults {
         nano.enable = false;
@@ -85,5 +39,8 @@ in
         nixos.enable = false;
       };
       boot.enableContainers = mkIf cleanDefaults false;
+      ### timezone
+      time.timeZone = mkIf nztz "NZ";
+      i18n.defaultLocale = mkIf nztz "en_NZ.UTF-8";
     };
 }
