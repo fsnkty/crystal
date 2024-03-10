@@ -7,19 +7,14 @@
   ...
 }:
 {
-  options.misc.nix =
-    let
-      inherit (nuke) mkEnable;
-      inherit (lib) mkOption types;
-    in
-    {
-      config = mkEnable;
-      nh = mkEnable;
-      flakePath = mkOption {
-        type = types.str;
-        default = "/storage/Repos/crystal";
-      };
+  options.misc.nix = {
+    config = nuke.mkEnable;
+    nh = nuke.mkEnable;
+    flakePath = lib.mkOption {
+      type = lib.types.str;
+      default = "/storage/Repos/crystal";
     };
+  };
   config =
     let
       inherit (lib) mkIf optionals;

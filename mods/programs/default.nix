@@ -5,14 +5,10 @@
   ...
 }:
 {
-  options.program =
-    let
-      inherit (nuke) mkEnable;
-    in
-    {
-      git = mkEnable;
-      ssh = mkEnable;
-    };
+  options.program = {
+    git = nuke.mkEnable;
+    ssh = nuke.mkEnable;
+  };
   config =
     let
       inherit (lib) mkIf;

@@ -8,15 +8,11 @@
 }:
 {
   imports = [ inputs.agenix.nixosModules.default ];
-  options.misc =
-    let
-      inherit (nuke) mkEnable;
-    in
-    {
-      secrets = mkEnable;
-      cleanDefaults = mkEnable;
-      nztz = mkEnable;
-    };
+  options.misc = {
+    secrets = nuke.mkEnable;
+    cleanDefaults = nuke.mkEnable;
+    nztz = nuke.mkEnable;
+  };
   config =
     let
       inherit (lib) mkIf;

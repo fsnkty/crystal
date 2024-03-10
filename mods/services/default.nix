@@ -5,15 +5,11 @@
   ...
 }:
 {
-  options.service =
-    let
-      inherit (nuke) mkEnable;
-    in
-    {
-      fail2ban = mkEnable;
-      postgresql = mkEnable;
-      openssh = mkEnable;
-    };
+  options.service = {
+    fail2ban = nuke.mkEnable;
+    postgresql = nuke.mkEnable;
+    openssh = nuke.mkEnable;
+  };
   config.services =
     let
       inherit (lib) mkIf;

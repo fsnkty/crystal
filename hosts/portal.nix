@@ -1,52 +1,41 @@
-{
-  pkgs,
-  inputs,
-  config,
-  ...
-}:
+{ inputs, config, ... }:
+let
+  inherit (config.users.users.main) name;
+  inherit (inputs.wsl.nixosModules) wsl;
+in
 {
   misc = {
     nix = {
       config = true;
-      flakePath = "home/${config.users.users.main.name}/crystal";
+      flakePath = "home/${name}/crystal";
       nh = true;
     };
-    shell.enable = true;
-    ageSetup = true;
+    secrets = true;
     cleanDefaults = true;
-    disableRoot = true;
+    nztz = true;
+  };
+  user = {
+    noRoot = true;
+    main = {
+      enable = true;
+      shell.setup = true;
+    };
   };
   program = {
     htop = true;
     neovim = true;
     git = true;
   };
-  ### misc 
-  time.timeZone = "NZ";
-  i18n.defaultLocale = "en_NZ.UTF-8";
+
   security.sudo.execWheelOnly = true;
-  ### user setup
-  age.secrets.user = {
-    file = ../shhh/user.age;
-    owner = config.users.users.main.name;
-  };
-  users = {
-    mutableUsers = false;
-    users.main = {
-      name = "nuko";
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      hashedPasswordFile = config.age.secrets.users.path;
-      packages = builtins.attrValues { inherit (pkgs) wget eza yazi; };
-    };
-  };
-  ### wsl int
   networking.hostname = "portal";
-  imports = [ inputs.wsl.nixosModules.wsl ];
+
+  ### wsl int
+  imports = [ wsl ];
   wsl = {
     enable = true;
-    defaultUser = config.users.users.main.name;
-    wslConf.user.default = config.users.users.main.name;
+    defaultUser = name;
+    wslConf.user.default = name;
     useWindowsDriver = true;
     usbup.eanble = true;
     startMenuLaucher = true;

@@ -5,16 +5,11 @@
   pkgs,
   ...
 }:
-let
-  inherit (nuke) mkEnable;
-  inherit (lib) mkOption;
-  inherit (lib.types) lines;
-in
 {
   options.user.main.shell = {
-    setup = mkEnable;
-    prompt = mkOption {
-      type = lines;
+    setup = nuke.mkEnable;
+    prompt = lib.mkOption {
+      type = lib.types.lines;
       default = "'%~ %# '";
     };
   };

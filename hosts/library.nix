@@ -10,7 +10,7 @@
     cleanDefaults = true;
     nztz = true;
   };
-  users = {
+  user = {
     noRoot = true;
     main = {
       enable = true;
@@ -53,7 +53,6 @@
   };
   ### misc
   security.sudo.execWheelOnly = true;
-  ### management user stuff
   users.groups.media = { };
   ### networking
   networking = {
@@ -93,7 +92,7 @@
     enableRedistributableFirmware = true;
     cpu.intel.updateMicrocode = true;
   };
-  powerManagement.cpuFreqGovernor = "performance";
+  powerManagement.cpuFreqGovernor = "powersave";
   boot = {
     loader = {
       timeout = 0;
