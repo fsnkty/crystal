@@ -23,7 +23,7 @@
       ### fonts
       fonts = mkIf fonts {
         packages = builtins.attrValues {
-          #sfFonts = pkgs.callPackage ../../pkgs/sfFonts.nix { };
+          sfFonts = pkgs.callPackage ../../pkgs/sfFonts.nix { };
           inherit (pkgs) noto-fonts-emoji noto-fonts-extra noto-fonts-cjk;
         };
         fontconfig = {

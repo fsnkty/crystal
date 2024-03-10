@@ -9,35 +9,26 @@
 {
   options.desktop.sway = nuke.mkEnable;
   config = lib.mkIf config.desktop.sway {
-    services.greetd = {
+    programs.sway = {
       enable = true;
-      settings.default_session = {
-        command = "${lib.getExe pkgs.sway}";
-        user = config.users.users.main.name;
+      wrapperFeatures.gtk = true;
+      extraPackages = builtins.attrValues {
+        inherit (pkgs)
+          xdg-utils
+          autotiling-rs
+          wl-clipboard
+          swaylock-effects
+          swaynotificationcenter
+          swayidle
+          swaybg
+          ;
       };
-    };
-    programs = {
-      sway = {
-        enable = true;
-        wrapperFeatures.gtk = true;
-        extraPackages = builtins.attrValues {
-          inherit (pkgs)
-            xdg-utils
-            autotiling-rs
-            wl-clipboard
-            swaylock-effects
-            swaynotificationcenter
-            swayidle
-            swaybg
-            ;
-        };
-        # export WLR_RENDERER=vulkan # vulkan validation-layers
-        extraSessionCommands = ''
-          export LIBSEAT_BACKEND=logind
-          export SDL_VIDEODRIVER=wayland
-          export _JAVA_AWT_WM_NONREPARENTING=1
-        '';
-      };
+      # export WLR_RENDERER=vulkan # vulkan validation-layers
+      extraSessionCommands = ''
+        export LIBSEAT_BACKEND=logind
+        export SDL_VIDEODRIVER=wayland
+        export _JAVA_AWT_WM_NONREPARENTING=1
+      '';
     };
     home.file.".config/sway/config".text =
       let

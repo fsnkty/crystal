@@ -39,7 +39,12 @@
               y = 8;
             };
           };
-          font.size = 12;
+          font = {
+            normal = {
+              family = "Liga SFMono Nerd Font";
+              style = "Regular";
+            };
+          };
         };
   };
 }

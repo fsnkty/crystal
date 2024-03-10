@@ -1,79 +1,33 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
+{ pkgs, lib, ... }:
 {
   misc = {
     nix = {
       config = true;
       nh = true;
     };
-    shell.enable = true;
-    ageSetup = true;
-    cleanDefaults = true;
-    disableRoot = true;
-  };
-  desktop = {
-    audio = true;
-    sway = true;
-    hyprland = true;
-    theme = {
-      fonts = true;
-      gtkqt = true;
-      console = true;
+    secrets = true;
+    users = {
+      noRoot = true;
+      main = {
+        shell.setup = true;
+        packages = builtins.attrValues {
+          inherit (pkgs)
+            krita
+            element-desktop
+            vesktop
+            teams-for-linux
+            imv
+            mpv
+            yazi
+            ueberzugpp
+            ;
+        };
+        keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" ];
+      };
     };
-  };
-  program = {
-    git = true;
-    htop = true;
-    neovim = true;
-    alacritty = true;
-    firefox = true;
-    waybar = true;
-    wofi = true;
-    prism = true;
-    steam = true;
-  };
-  service.openssh = true;
-  ### misc
-  time.timeZone = "NZ";
-  i18n.defaultLocale = "en_NZ.UTF-8";
-  security = {
-    sudo.execWheelOnly = true;
-    tpm2.enable = true;
+    cleanDefaults = true;
   };
   ### user setup
-  age.secrets.user = {
-    file = ../shhh/user.age;
-    owner = config.users.users.main.name;
-  };
-  users = {
-    mutableUsers = false;
-    users.main = {
-      name = "nuko";
-      uid = 1000;
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      hashedPasswordFile = config.age.secrets.user.path;
-      packages = builtins.attrValues {
-        inherit (pkgs)
-          krita
-          element-desktop
-          vesktop
-          teams-for-linux
-          imv
-          mpv
-          yazi
-          ueberzugpp
-          ;
-      };
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" # library
-      ];
-    };
-  };
   home.file =
     lib.genAttrs
       [
@@ -86,6 +40,43 @@
       (name: {
         source = "/storage/${name}";
       });
+  desktop = {
+    sway = true;
+    hyprland = true;
+    setup = {
+      audio = true;
+      greeter = {
+        enable = true;
+        command = "sway";
+      };
+    };
+    theme = {
+      fonts = true;
+      gtkqt = true;
+      console = true;
+    };
+  };
+  program = {
+    git = true;
+    htop = true;
+    neovim = true;
+
+    alacritty = true;
+    firefox = true;
+    waybar = true;
+    wofi = true;
+
+    prism = true;
+    steam = true;
+  };
+  service.openssh = true;
+  ### misc
+  time.timeZone = "NZ";
+  i18n.defaultLocale = "en_NZ.UTF-8";
+  security = {
+    sudo.execWheelOnly = true;
+    tpm2.enable = true;
+  };
   ### networking
   networking = {
     hostName = "factory";
