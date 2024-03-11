@@ -61,5 +61,6 @@
           };
         };
       };
+      user.main.shell.setup = main.enable;
     };
 }

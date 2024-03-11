@@ -10,24 +10,47 @@
   options.desktop.hyprland = nuke.mkEnable;
   config = lib.mkIf config.desktop.hyprland {
     programs.hyprland.enable = true;
-    users.users.main.packages = [
-      pkgs.wpaperd
-      pkgs.hyprlock
-    ];
+    desktop.setup.greeter = {
+      enable = true;
+      command = "Hyprland";
+    };
+    users.users.main.packages = builtins.attrValues {
+      inherit (pkgs)
+        wpaperd
+        hyprlock
+        hypridle
+        xdg-utils
+        wl-clipboard
+        ;
+    };
     home.file =
       let
         m1 = "DP-1";
         m2 = "HDMI-A-1";
       in
       {
+        ".config/hypr/hypridle.conf".text = ''
+          general {
+            lock_cmd = hyprlock
+            before_sleep_cmd = hyprlock
+          }
+          listener {
+            timeout = 300
+            on-timeout = hyprlock
+          }
+          listener {
+            timeout = 600
+            on-timeout = systemctl suspend
+          }
+        '';
         ".config/hypr/hyprlock.conf".text = ''
           background {
               monitor = ${m1}
-              path = /home/${config.users.users.main.name}/.cache/rwpspread/rwps_de15e2f358aa25d6_${m1}.png
+              path = /home/${config.users.users.main.name}/.cache/rwpspread/rwps_${m1}.png
           }
-          background2 {
+          background {
               monitor = ${m2}
-              path = /home/${config.users.users.main.name}/.cache/rwpspread/rwps_de15e2f358aa25d6_${m2}.png
+              path = /home/${config.users.users.main.name}/.cache/rwpspread/rwps_${m2}.png
           }
           input-field {
             monitor = ${m1}
@@ -40,11 +63,14 @@
         '';
         ".config/hypr/hyprland.conf".text =
           let
-            inherit (lib) range;
+            inherit (lib) range getExe;
+            inherit (pkgs) grim slurp;
             inherit (colours) primary;
             nls = a: b: lib.concatMapStringsSep "\n" a b;
           in
           ''
+            exec-once=hyprlock
+            exec-once=hypridle
             exec-once=wpaperd
             monitor=${m1},highrr,auto,auto
             monitor=${m2},preferred,auto,auto
@@ -104,6 +130,7 @@
               "SUPER, Return, exec, alacritty"
               "SUPER, D, exec, wofi --show drun -a -W 15% -H 35%"
               "SUPER, L, exec, hyprlock"
+              ''SUPER_SHIFT, S, exec, ${getExe grim} -g "$(${getExe slurp} -d)" - | wl-copy -t image/png''
 
               "SUPER_SHIFT, Q, killactive,"
               "SUPER_SHIFT, Z, fullscreen,"

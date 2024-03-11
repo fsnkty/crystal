@@ -13,6 +13,8 @@ in
 {
   options.desktop.setup = {
     audio = mkEnable;
+    rgb = mkEnable;
+    ply = mkEnable;
     greeter = {
       enable = mkEnable;
       command = mkOption { type = str; };
@@ -34,8 +36,19 @@ in
           user = config.users.users.main.name;
         };
       };
+      # rgb
+      hardware.openrgb = mkIf cfg.rgb {
+        enable = true;
+        motherboard = "amd";
+      };
     };
     # audio
     security.rtkit.enable = cfg.audio;
+    # ply
+    boot = mkIf cfg.ply {
+      plymouth.enable = true;
+      initrd.verbose = false;
+      kernelParams = [ "quiet" "splash" ];
+    };
   };
 }

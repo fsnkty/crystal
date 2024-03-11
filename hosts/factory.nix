@@ -8,12 +8,16 @@
     secrets = true;
     cleanDefaults = true;
     nztz = true;
+    wired = {
+      enable = true;
+      ip = "192.168.0.4";
+      card = "enp39s0";
+    };
   };
   user = {
     noRoot = true;
     main = {
       enable = true;
-      shell.setup = true;
       packages = builtins.attrValues {
         inherit (pkgs)
           element-desktop
@@ -41,14 +45,11 @@
         source = "/storage/${name}";
       });
   desktop = {
-    sway = false;
     hyprland = true;
     setup = {
       audio = true;
-      greeter = {
-        enable = true;
-        command = "Hyprland";
-      };
+      rgb = true;
+      ply = true;
     };
     theme = {
       fonts = true;
@@ -79,30 +80,10 @@
   networking = {
     hostName = "factory";
     hostId = "007f0200";
-    enableIPv6 = false;
-    useDHCP = false;
   };
   systemd = {
     services.systemd-udev-settle.enable = false;
-    network = {
-      enable = true;
-      wait-online.enable = false;
-      networks.enp39s0 = {
-        enable = true;
-        name = "enp39s0";
-        networkConfig = {
-          DHCP = "no";
-          DNSSEC = "yes";
-          DNSOverTLS = "yes";
-          DNS = [
-            "1.1.1.1"
-            "1.1.0.0"
-          ];
-        };
-        address = [ "192.168.0.4/24" ];
-        routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
-      };
-    };
+    network.wait-online.enable = false;
   };
   services.openssh.hostKeys = [
     {
@@ -117,19 +98,15 @@
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
-  services.hardware.openrgb = {
-    enable = true;
-    motherboard = "amd";
-  };
   boot = {
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    kernelModules = [ "kvm-amd" "amd_pstate" ];
+    kernelParams = [ "amd_pstate=guided" ];
     loader = {
       timeout = 0; # hold space to open the menu.
       systemd-boot.enable = true;
     };
-    plymouth.enable = true;
     initrd = {
-      verbose = false;
       systemd.enable = true;
       kernelModules = [ "amdgpu" ];
       availableKernelModules = [
@@ -141,16 +118,7 @@
         "sd_mod"
       ];
     };
-    kernelModules = [
-      "kvm-amd"
-      "amd_pstate"
-    ];
     supportedFilesystems = [ "zfs" ];
-    kernelParams = [
-      "quiet"
-      "splash"
-      "amd_pstate=guided"
-    ];
   };
   fileSystems = {
     "/boot" = {

@@ -9,15 +9,17 @@
     secrets = true;
     cleanDefaults = true;
     nztz = true;
+    wired = {
+      enable = true;
+      ip = "192.168.0.3";
+      card = "enp6s0";
+    };
   };
   user = {
     noRoot = true;
     main = {
       enable = true;
-      shell = {
-        setup = true;
-        prompt = "'%F{magenta}圖書館%F{reset_color} %~ %# '";
-      };
+      shell.prompt = "'%F{magenta}圖書館%F{reset_color} %~ %# '";
       keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" ];
     };
   };
@@ -59,26 +61,6 @@
     domain = "shimeji.cafe";
     hostName = "library";
     hostId = "9a350e7b";
-    enableIPv6 = false;
-    useDHCP = false;
-  };
-  systemd.network = {
-    enable = true;
-    networks.enp6s0 = {
-      enable = true;
-      name = "enp6s0";
-      networkConfig = {
-        DHCP = "no";
-        DNSSEC = "yes";
-        DNSOverTLS = "yes";
-        DNS = [
-          "1.1.1.1"
-          "1.1.0.0"
-        ];
-      };
-      address = [ "192.168.0.3/24" ];
-      routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
-    };
   };
   services.openssh.hostKeys = [
     {
