@@ -5,7 +5,7 @@
   ...
 }:
 {
-  options.misc.wired = 
+  options.misc.wired =
     let
       inherit (nuke) mkEnable mkStr;
     in
@@ -14,7 +14,7 @@
       ip = mkStr;
       card = mkStr;
     };
-  config = 
+  config =
     let
       inherit (lib) mkIf;
       cfg = config.misc.wired;
@@ -39,7 +39,7 @@
             ];
           };
           address = [ "${cfg.ip}/24" ];
-          routes = [ {routeConfig.Gateway = "192.168.0.1"; } ];
+          routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
         };
       };
     };

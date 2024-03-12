@@ -6,7 +6,6 @@
 }:
 let
   inherit (lib) mkIf mkOption;
-  inherit (lib.types) str;
   inherit (nuke) mkEnable;
   cfg = config.desktop.setup;
 in
@@ -17,7 +16,7 @@ in
     ply = mkEnable;
     greeter = {
       enable = mkEnable;
-      command = mkOption { type = str; };
+      command = mkOption { type = lib.types.str; };
     };
   };
   config = {
@@ -48,7 +47,10 @@ in
     boot = mkIf cfg.ply {
       plymouth.enable = true;
       initrd.verbose = false;
-      kernelParams = [ "quiet" "splash" ];
+      kernelParams = [
+        "quiet"
+        "splash"
+      ];
     };
   };
 }

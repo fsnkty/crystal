@@ -56,6 +56,17 @@
   ### misc
   security.sudo.execWheelOnly = true;
   users.groups.media = { };
+  systemd = {
+    # shouldn't be able to get to these anyway
+    services = {
+      "getty@tty1".enable = false;
+      "autovt@".enable = false;
+      "serial-getty@ttyS0".enable = lib.mkDefault false;
+      "serial-getty@hvc0".enable = false;
+    };
+    enableEmergencyMode = false;
+  };
+  #environment.noXlibs = lib.mkDefault true;
   ### networking
   networking = {
     domain = "shimeji.cafe";
@@ -76,6 +87,10 @@
   };
   powerManagement.cpuFreqGovernor = "powersave";
   boot = {
+    kernelParams = [
+      "panic=1"
+      "boot.panic_on_fail"
+    ];
     loader = {
       timeout = 0;
       systemd-boot.enable = true;

@@ -9,6 +9,10 @@
 {
   options.desktop.sway = nuke.mkEnable;
   config = lib.mkIf config.desktop.sway {
+    desktop.setup.greeter = {
+      enable = true;
+      command = "sway";
+    };
     programs.sway = {
       enable = true;
       wrapperFeatures.gtk = true;

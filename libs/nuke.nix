@@ -25,6 +25,6 @@ in
       port = mkDefaultInt port;
     };
     # yep.. 
-    mkStr = mkOption { type = lib.types.str;};
+    mkStr = mkOption { type = lib.types.str; };
   };
 }

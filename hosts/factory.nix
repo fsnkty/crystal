@@ -100,7 +100,10 @@
   };
   boot = {
     kernelPackages = pkgs.linuxPackages_xanmod_latest;
-    kernelModules = [ "kvm-amd" "amd_pstate" ];
+    kernelModules = [
+      "kvm-amd"
+      "amd_pstate"
+    ];
     kernelParams = [ "amd_pstate=guided" ];
     loader = {
       timeout = 0; # hold space to open the menu.

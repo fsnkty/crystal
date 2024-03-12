@@ -4,6 +4,17 @@ let
   inherit (inputs.wsl.nixosModules) wsl;
 in
 {
+  ### wsl int
+  imports = [ wsl ];
+  wsl = {
+    enable = true;
+    defaultUser = name;
+    wslConf.user.default = name;
+    useWindowsDriver = true;
+    usbup.eanble = true;
+    startMenuLaucher = true;
+  };
+  
   misc = {
     nix = {
       config = true;
@@ -30,16 +41,6 @@ in
   security.sudo.execWheelOnly = true;
   networking.hostname = "portal";
 
-  ### wsl int
-  imports = [ wsl ];
-  wsl = {
-    enable = true;
-    defaultUser = name;
-    wslConf.user.default = name;
-    useWindowsDriver = true;
-    usbup.eanble = true;
-    startMenuLaucher = true;
-  };
   ### dont be silly
   system.stateVersion = "23.11";
 }
