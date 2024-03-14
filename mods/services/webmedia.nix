@@ -42,6 +42,7 @@ in
           port = komga.port;
         };
         navidrome = mkIf navidrome.enable {
+          package = inputs.navi.legacyPackages.${pkgs.system}.navidrome;
           inherit enable group;
           settings = {
             MusicFolder = "/storage/media/Music";
