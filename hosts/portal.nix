@@ -1,24 +1,20 @@
-{ inputs, config, ... }:
-let
-  inherit (config.users.users.main) name;
-  inherit (inputs.wsl.nixosModules) wsl;
-in
+{ inputs, ... }:
 {
   ### wsl int
-  imports = [ wsl ];
+  imports = [ inputs.wsl.nixosModules.wsl ];
   wsl = {
     enable = true;
-    defaultUser = name;
-    wslConf.user.default = name;
+    defaultUser = "nuko";
+    wslConf.user.default = "nuko";
     useWindowsDriver = true;
-    usbup.eanble = true;
-    startMenuLaucher = true;
+    usbip.enable = true;
+    startMenuLaunchers = true;
   };
-  
+
   misc = {
     nix = {
       config = true;
-      flakePath = "home/${name}/crystal";
+      flakePath = "/home/nuko/crystal";
       nh = true;
     };
     secrets = true;
@@ -39,7 +35,7 @@ in
   };
 
   security.sudo.execWheelOnly = true;
-  networking.hostname = "portal";
+  networking.hostName = "portal";
 
   ### dont be silly
   system.stateVersion = "23.11";

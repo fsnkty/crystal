@@ -225,26 +225,9 @@
         "navi": "navi",
         "nixpkgs": "nixpkgs_2",
         "qbit": "qbit",
-        "rwp": "rwp",
         "snms": "snms",
         "vault": "vault",
         "wsl": "wsl"
-      }
-    },
-    "rwp": {
-      "locked": {
-        "lastModified": 1710226052,
-        "narHash": "sha256-M9N9auE1wkrwct2fQ1QIyuxjl5wi4ViMYoi4a45lK58=",
-        "ref": "update-rwpspread",
-        "rev": "897f4b553c48309587129ac3c014a9a2654febdb",
-        "revCount": 595716,
-        "type": "git",
-        "url": "file:/storage/Repos/nixpkgs/"
-      },
-      "original": {
-        "ref": "update-rwpspread",
-        "type": "git",
-        "url": "file:/storage/Repos/nixpkgs/"
       }
     },
     "snms": {

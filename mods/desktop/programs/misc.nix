@@ -9,15 +9,15 @@
 {
   options.desktop.program = {
     waybar = nuke.mkEnable;
-    wofi = nuke.mkEnable;
+    fuzzel = nuke.mkEnable;
   };
   config =
     let
       inherit (lib) mkIf optionals;
-      inherit (config.desktop.program) wofi waybar;
+      inherit (config.desktop.program) fuzzel waybar;
     in
     {
-      users.users.main.packages = optionals wofi [ pkgs.wofi ] ++ optionals waybar [ pkgs.waybar ];
+      users.users.main.packages = optionals fuzzel [ pkgs.fuzzel ] ++ optionals waybar [ pkgs.waybar ];
       home.file =
         let
           d1 = "DP-1";
@@ -25,14 +25,15 @@
           inherit (colours) primary alpha;
         in
         {
-          ".config/wofi/style.css" = mkIf wofi {
-            text = ''
-              #window { border: 3px solid #${primary.main}; }
-              #input { margin: 15px; }
-              #inner-box { margin: 0px 15px 15px 15px; }
-              #entry { margin: 5px; }
-              #entry:selected { color: #${primary.main}; }
-            '';
+          ".config/fuzzel/fuzzel.ini" = mkIf fuzzel {
+            source = (pkgs.formats.ini { }).generate "fuzzel.ini" {
+              colors = {
+                background = primary.bg + "FF";
+                text = primary.fg + "FF";
+                match = primary.main + "FF";
+                border = primary.main + "FF";
+              };
+            };
           };
           ".config/waybar/config" = mkIf waybar {
             text =

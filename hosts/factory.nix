@@ -62,7 +62,7 @@
       prism = true;
       steam = true;
       waybar = true;
-      wofi = true;
+      fuzzel = true;
     };
   };
   program = {

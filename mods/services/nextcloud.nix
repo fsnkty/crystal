@@ -39,7 +39,7 @@
         };
         # just the smtp pass.
         secretFile = cloud_env.path;
-        extraOptions = {
+        settings = {
           mail_smtpmode = "smtp";
           mail_sendmailmode = "smtp";
           mail_smtpsecure = "ssl";

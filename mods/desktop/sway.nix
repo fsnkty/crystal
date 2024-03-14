@@ -87,7 +87,7 @@
         client.focused_inactive ${concatStrings (replicate 4 "#${primary.bg} ")}
         ${concatMapStringsSep "\n" (n: "bindsym ${m}+${n}") [
           "Return exec alacritty"
-          "d exec wofi --show drun -a -W 15% -H 35%"
+          "d exec fuzzel"
           ''Shift+s exec ${getExe grim} -g "$(${getExe slurp} -d)" - | wl-copy -t image/png''
           "l exec ${lock}"
           "Shift+q kill"
