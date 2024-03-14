@@ -21,13 +21,13 @@
       packages = builtins.attrValues {
         inherit (pkgs)
           element-desktop
-          vesktop
           teams-for-linux
           krita
           imv
           mpv
           ueberzugpp
           ;
+        vesktop = pkgs.vesktop.override { withTTS = false; };
       };
       keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" ];
     };

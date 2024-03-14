@@ -1,6 +1,6 @@
 ## ⚠ WARNING ⚠
-This not intended to be a resource to learn from, I also make zero effort to make this portable or adaptable.
-please look elsewhere for that, I promise trying to use this would be more pain than its worth if you are just starting out.
+Please dont blindly attempt to paste anything here or "start from" this.
+I promise its less pain to do this yourself.
 
 Please feel free to comment on where I can improve! I really appreciate it
 
@@ -33,5 +33,5 @@ Please feel free to comment on where I can improve! I really appreciate it
 - `pkgs/sfFonts.nix`: [San Francisco](https://developer.apple.com/fonts/) 
 
 ### misc
+- nix eval like, exists, `nix eval .#nixosConfigurations.hostname.config.foo` is epic. ( also the repl lol )
 - tf2: [DeerHud](https://tf2huds.dev/hud/DeerHud), [master comfig](https://comfig.app/app/) launch options `LD_PRELOAD=/usr/lib32/libtcmalloc_minimal.so  SDL_VIDEODRIVER=x11 %command% +exec autoexec -vulkan -full -novid -nojoy -nosteamcontroller -nohltv -particles 1 -precachefontchars -noquicktime`
-

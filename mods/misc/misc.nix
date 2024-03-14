@@ -26,7 +26,9 @@
       programs = mkIf cleanDefaults {
         nano.enable = false;
         command-not-found.enable = false;
+        bash.enableCompletion = false;
       };
+      xdg.sounds.enable = mkIf cleanDefaults false;
       environment.defaultPackages = mkIf cleanDefaults [ ];
       documentation = mkIf cleanDefaults {
         enable = false;
