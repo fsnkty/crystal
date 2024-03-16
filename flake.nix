@@ -1,75 +1,30 @@
 {
+  # hate how inputs must be trivial but whatever
   inputs = {
-    nixpkgs = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    master.url = "github:NixOS/nixpkgs/master";
+    # extras.. 
+    agenix.url = "github:ryantm/agenix";
+    snms.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    wsl.url = "github:nix-community/NixOS-WSL";
+    mountain.url = "github:nu-nu-ko/mountain-nix";
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprlock.url = "github:hyprwm/hyprlock";
+    # no need to keep so many nixpkgs inputs
+    agenix.inputs = {
+      nixpkgs.follows = "nixpkgs";
+      darwin.follows = "";
+      home-manager.follows = "";
     };
-    master = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "master";
-    };
-    agenix = {
-      type = "github";
-      owner = "ryantm";
-      repo = "agenix";
-      inputs = {
-        darwin.follows = "";
-        home-manager.follows = "";
-      };
-    };
-    snms = {
-      type = "gitlab";
-      owner = "simple-nixos-mailserver";
-      repo = "nixos-mailserver";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    mountain = {
-      type = "github";
-      owner = "nu-nu-ko";
-      repo = "mountain-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    wsl = {
-      type = "github";
-      owner = "nix-community";
-      repo = "NixOS-WSL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland = {
-      type = "github";
-      owner = "hyprwm";
-      repo = "Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprlock = {
-      type = "github";
-      owner = "hyprwm";
-      repo = "hyprlock";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    wsl.inputs.nixpkgs.follows = "nixpkgs";
+    snms.inputs.nixpkgs.follows = "nixpkgs";
+    mountain.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+    hyprlock.inputs.nixpkgs.follows = "nixpkgs";
     # awaiting pr's # git+file/path/?ref=branch
-    qbit = {
-      type = "github";
-      owner = "nu-nu-ko";
-      repo = "nixpkgs";
-      ref = "init-nixos-qbittorrent";
-    };
-    navi = {
-      type = "github";
-      owner = "nu-nu-ko";
-      repo = "nixpkgs";
-      ref = "nixos-navidrome-cleanup";
-    };
-    vault = {
-      type = "github";
-      owner = "nu-nu-ko";
-      repo = "nixpkgs";
-      ref = "nixos-vaultwarden-hardening";
-    };
+    qbit.url = "github:nu-nu-ko/nixpkgs/?ref=init-nixos-qbittorrent";
+    navi.url = "github:nu-nu-ko/nixpkgs/?ref=nixos-navidrome-cleanup";
+    vault.url = "github:nu-nu-ko/nixpkgs/?ref=nixos-vaultwarden-hardening";
   };
   outputs = inputs: {
     nixosConfigurations =
