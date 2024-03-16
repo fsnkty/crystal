@@ -20,7 +20,7 @@ in
     "${modulesPath}/services/audio/navidrome.nix"
   ];
   imports = [
-    "${inputs.komga}/nixos/modules/services/web-apps/komga.nix"
+    "${inputs.master}/nixos/modules/services/web-apps/komga.nix"
     "${inputs.navi}/nixos/modules/services/audio/navidrome.nix"
   ];
 
@@ -39,7 +39,7 @@ in
       services = {
         komga = mkIf komga.enable {
           inherit enable group;
-          port = komga.port;
+          inherit (komga) port;
         };
         navidrome = mkIf navidrome.enable {
           package = inputs.navi.legacyPackages.${pkgs.system}.navidrome;

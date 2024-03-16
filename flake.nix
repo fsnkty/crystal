@@ -6,6 +6,12 @@
       repo = "nixpkgs";
       ref = "nixos-unstable";
     };
+    master = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      ref = "master";
+    };
     agenix = {
       type = "github";
       owner = "ryantm";
@@ -33,6 +39,18 @@
       repo = "NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland = {
+      type = "github";
+      owner = "hyprwm";
+      repo = "Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprlock = {
+      type = "github";
+      owner = "hyprwm";
+      repo = "hyprlock";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # awaiting pr's # git+file/path/?ref=branch
     qbit = {
       type = "github";
@@ -51,12 +69,6 @@
       owner = "nu-nu-ko";
       repo = "nixpkgs";
       ref = "nixos-vaultwarden-hardening";
-    };
-    komga = {
-      type = "github";
-      owner = "nu-nu-ko";
-      repo = "nixpkgs";
-      ref = "nixos-komga-hardening";
     };
   };
   outputs = inputs: {

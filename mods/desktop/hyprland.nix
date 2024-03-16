@@ -4,12 +4,16 @@
   nuke,
   config,
   colours,
+  inputs,
   ...
 }:
 {
   options.desktop.hyprland = nuke.mkEnable;
   config = lib.mkIf config.desktop.hyprland {
-    programs.hyprland.enable = true;
+    programs.hyprland = {
+      enable = true;
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    };
     desktop.setup.greeter = {
       enable = true;
       command = "Hyprland";
@@ -17,11 +21,11 @@
     users.users.main.packages = builtins.attrValues {
       inherit (pkgs)
         wpaperd
-        hyprlock
         hypridle
         xdg-utils
         wl-clipboard
         ;
+      hyprlock = inputs.hyprlock.packages.${pkgs.system}.hyprlock;
     };
     home.file =
       let

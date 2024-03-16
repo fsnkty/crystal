@@ -32,7 +32,7 @@
     };
   config =
     let
-      inherit (lib) mkIf mkForce;
+      inherit (lib) mkIf mkForce mkDefault;
       inherit (config.user) main noRoot;
     in
     {
@@ -41,13 +41,13 @@
         owner = main.name;
       };
       users = {
-        mutableUsers = !main.enable;
+        mutableUsers = mkDefault false;
         users = {
           ### disableRoot
           root = mkIf noRoot {
-            hashedPassword = "!";
-            shell = pkgs.shadow;
-            home = mkForce "/home/root"; # for sudo.
+            hashedPassword = mkDefault "!";
+            shell = mkForce pkgs.shadow;
+            home = mkDefault "/home/root"; # for sudo.
           };
           ### configure main user
           main = mkIf main.enable {
@@ -61,6 +61,6 @@
           };
         };
       };
-      user.main.shell.setup = main.enable;
+      user.main.shell.setup = mkDefault main.enable;
     };
 }
