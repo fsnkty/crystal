@@ -22,7 +22,7 @@ in
     cleanup = true;
   };
   _system.timeZone.NZ = true;
-  _user.mainUser.shell.setup = true;
+  _user.main.shell.setup = true;
   _programs = {
     neovim = true;
     git = true;

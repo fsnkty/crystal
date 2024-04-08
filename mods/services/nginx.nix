@@ -70,7 +70,9 @@
                   in
                   mkIf config._services.synapse {
                     "=/.well-known/matrix/server" = {
-                      alias = (pkgs.formats.json { }).generate "well-known-matrix-server" { "m.server" = "matrix.${domain}:443"; };
+                      alias = (pkgs.formats.json { }).generate "well-known-matrix-server" {
+                        "m.server" = "matrix.${domain}:443";
+                      };
                       inherit extraConfig;
                     };
                     "=/.well-known/matrix/client" = {

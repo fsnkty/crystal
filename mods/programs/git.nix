@@ -11,13 +11,15 @@
     config = {
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
-      user = let
-        inherit (config.users.users.main) name;
-      in {
-        inherit name;
-        email = "${name}@shimeji.cafe";
-        signingkey = "/home/${name}/.ssh/id_ed25519.pub";
-      };
+      user =
+        let
+          inherit (config.users.users.main) name;
+        in
+        {
+          inherit name;
+          email = "${name}@shimeji.cafe";
+          signingkey = "/home/${name}/.ssh/id_ed25519.pub";
+        };
       gpg.format = "ssh";
       commit.gpgsign = true;
     };

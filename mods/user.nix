@@ -20,7 +20,8 @@
     {
       mediaGroup = mkEnable;
       disableRoot = mkEnable;
-      mainUser = {
+      immutable = mkEnable;
+      main = {
         enable = mkEnable;
         packages = mkOption {
           type = listOf package;
@@ -41,62 +42,74 @@
     };
   config =
     let
-      inherit (lib) mkIf mkDefault mkForce;
-      inherit (config._user) mainUser disableRoot mediaGroup;
+      inherit (lib)
+        mkIf
+        mkDefault
+        mkForce
+        ;
+      inherit (config._user)
+        main
+        disableRoot
+        mediaGroup
+        immutable
+        ;
+      inherit (config.users.users.main) name;
     in
-    {
-      age.secrets.user = mkIf mainUser.enable {
-        file = ../assets/age/user.age;
-        owner = config.users.users.main.name;
-      };
-      users = {
-        mutableUsers = mkIf mainUser.enable true;
+    lib.mkMerge [
+      (mkIf main.enable {
+        age.secrets.user = {
+          file = ../assets/age/user.age;
+          owner = name;
+        };
+        users.users.main = {
+          name = "nuko";
+          isNormalUser = true;
+          extraGroups = [ "wheel" ];
+          hashedPasswordFile = config.age.secrets.user.path;
+          openssh.authorizedKeys.keys = main.loginKeys;
+          packages = builtins.attrValues { inherit (pkgs) wget yazi eza; } ++ main.packages;
+        };
+      })
+      (mkIf immutable {
         users = {
-          main = mkIf mainUser.enable {
-            name = "nuko";
-            uid = 1000;
-            isNormalUser = true;
-            extraGroups = [ "wheel" ];
-            hashedPasswordFile = config.age.secrets.user.path;
-            openssh.authorizedKeys.keys = mainUser.loginKeys;
-            shell = mkIf mainUser.shell.setup pkgs.zsh;
-            packages = builtins.attrValues { inherit (pkgs) wget yazi eza; } ++ mainUser.packages;
+          mutableUsers = false;
+          users.main.uid = mkIf main.enable 1000;
+          groups.media.gid = mkIf mediaGroup 1000;
+        };
+      })
+      (mkIf disableRoot {
+        users.users.root = {
+          hashedPassword = mkDefault "!"; # cannot eval.
+          home = mkDefault "/home/root"; # for sudo use.
+          shell = mkForce pkgs.shadow;
+        };
+      })
+      (mkIf mediaGroup {
+        users.groups.media = {
+          members = mkIf main.enable [ name ];
+        };
+      })
+      (mkIf main.shell.setup {
+        users.users.main.shell = pkgs.zsh;
+        environment = {
+          shells = [ pkgs.zsh ];
+          binsh = lib.getExe pkgs.dash;
+          variables = {
+            XDG_DATA_HOME = ''"$HOME"/.local/share'';
+            XDG_CONFIG_HOME = ''"$HOME"/.config'';
+            XDG_STATE_HOME = ''"$HOME"/.local/state'';
+            XDG_CACHE_HOME = ''"$HOME"/.cache'';
           };
-          root = mkIf disableRoot {
-            hashedPassword = mkDefault "!"; # cannot eval.
-            home = mkDefault "/home/root"; # for sudo use.
-            shell = mkForce pkgs.shadow;
-          };
         };
-        groups.media = mkIf mediaGroup {
-          gid = 1000;
-          members = [ config.users.users.main.name ];
-        };
-      };
-      security.sudo.execWheelOnly = mkIf disableRoot true;
-      environment = mkIf mainUser.shell.setup {
-        shells = [ pkgs.zsh ];
-        binsh = lib.getExe pkgs.dash;
-        variables = {
-          XDG_DATA_HOME = ''"$HOME"/.local/share'';
-          XDG_CONFIG_HOME = ''"$HOME"/.config'';
-          XDG_STATE_HOME = ''"$HOME"/.local/state'';
-          XDG_CACHE_HOME = ''"$HOME"/.cache'';
-        };
-      };
-      programs.zsh =
-        let
-          inherit (mainUser.shell) setup prompt;
-        in
-        mkIf setup {
+        programs.zsh = {
           enable = true;
-          promptInit = "PROMPT=${prompt}";
+          promptInit = "PROMPT=${main.shell.prompt}";
           shellAliases = {
             ls = "eza";
             lg = "eza -lag";
             nf = "nix flake";
             library = "ssh 192.168.0.3";
-            pass = "wl-copy < /home/${config.users.users.main.name}/Documents/vault";
+            pass = "wl-copy < /home/${name}/Documents/vault";
           };
           shellInit = ''
             nr() {
@@ -119,5 +132,6 @@
           histFile = "$HOME/.cache/zsh_history";
           histSize = 10000;
         };
-    };
+      })
+    ];
 }

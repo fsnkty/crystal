@@ -21,7 +21,8 @@
   _user = {
     mediaGroup = true;
     disableRoot = true;
-    mainUser = {
+    immutable = true;
+    main = {
       enable = true;
       shell = {
         setup = true;
