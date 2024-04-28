@@ -31,6 +31,7 @@
           imv
           mpv
           ueberzugpp
+          osu-lazer
           ;
         vesktop = pkgs.vesktop.override { withTTS = false; };
       };
@@ -38,7 +39,6 @@
     };
   };
   _programs = {
-    alacritty = true;
     firefox = true;
     steam = true;
     prismlauncher = true;
@@ -47,7 +47,7 @@
     neovim = true;
     htop = true;
   };
-  _desktop = true;
+  _desktop.enable = true;
   _homeFile =
     lib.genAttrs
       [
@@ -66,7 +66,7 @@
     hostId = "007f0200";
   };
   ### hardware
-  # improves boot times
+  zramSwap.enable = true;
   systemd = {
     services.systemd-udev-settle.enable = false;
     network.wait-online.enable = false;
@@ -77,7 +77,6 @@
     cpu.amd.updateMicrocode = true;
   };
   boot = {
-    kernelPackages = pkgs.linuxPackages_xanmod_latest;
     kernelModules = [
       "kvm-amd"
       "amd_pstate"
@@ -112,7 +111,5 @@
       ];
     };
   };
-  swapDevices = [ { device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716711A-part2"; } ];
-
   system.stateVersion = "23.11";
 }

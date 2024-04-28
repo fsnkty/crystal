@@ -51,28 +51,17 @@
           Locked = false;
         };
         ExtensionSettings =
-          let
-            addons = "https://addons.mozilla.org/firefox/downloads/file/";
-            installation_mode = "force_installed";
-          in
-          {
-            "uBlock0@raymondhill.net" = {
-              inherit installation_mode;
-              install_url = "${addons}4188488/ublock_origin-1.55.0.xpi";
+          lib.mapAttrs
+            (n: v: ({
+              installation_mode = "force_installed";
+              addons = "https://addons.mozilla.org/firefox/downloads/file/${v}";
+            }))
+            {
+              "uBlock0@raymondhill.net" = "4188488/ublock_origin-1.55.0.xpi";
+              "{446900e4-71c2-419f-a6a7-df9c091e268b}" = "4180072/bitwarden_password_manager-2024.2.0.xpi";
+              "sponsorBlocker@ajay.app" = "4178444/sponsorblock-5.5.4.xpi";
+              "Tab-Session-Manager@sienori" = "4165190/tab_session_manager-6.12.2.xpi";
             };
-            "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
-              inherit installation_mode;
-              install_url = "${addons}4180072/bitwarden_password_manager-2024.2.0.xpi";
-            };
-            "sponsorBlocker@ajay.app" = {
-              inherit installation_mode;
-              install_url = "${addons}4178444/sponsorblock-5.5.4.xpi";
-            };
-            "Tab-Session-Manager@sienori" = {
-              inherit installation_mode;
-              install_url = "${addons}4165190/tab_session_manager-6.12.2.xpi";
-            };
-          };
       };
     };
     _homeFile.".mozilla/firefox/profiles.ini".text = ''

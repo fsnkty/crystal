@@ -16,14 +16,16 @@
           colors =
             let
               inherit (_colours) accent alpha primary;
+              inherit (primary) fg bg;
+              inherit (builtins) mapAttrs;
             in
             {
-              bright = builtins.mapAttrs (_: prev: "#${prev}") accent;
-              normal = builtins.mapAttrs (_: prev: "#${prev}") alpha;
+              bright = mapAttrs (_: x: "#${x}") accent;
+              normal = mapAttrs (_: x: "#${x}") alpha;
               primary = {
-                background = "#${primary.bg}";
-                bright_foreground = "#${primary.fg}";
-                dim_foreground = "#${primary.fg}";
+                background = "#${bg}";
+                bright_foreground = "#${fg}";
+                dim_foreground = "#${fg}";
               };
             };
           cursor = {
@@ -33,7 +35,6 @@
           window = {
             dynamic_padding = false;
             dynamic_title = true;
-            opacity = 1;
             padding = {
               x = 8;
               y = 8;

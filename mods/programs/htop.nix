@@ -18,8 +18,10 @@
       column_meters_0 = "LeftCPUs4 CPU MemorySwap";
       column_meter_modes_0 = "1 1 1";
       column_meters_1 = "RightCPUs4 NetworkIO DiskIO";
-      column_meter_modes_1 = "1 2 2";
+      column_meter_modes_1 = "1 2 2 2";
       tree_view = true;
+      screen = "Main=PID USER PERCENT_CPU PERCENT_MEM TIME Command";
+      ".tree_view" = true;
     };
   };
 }

@@ -42,11 +42,7 @@
     };
   config =
     let
-      inherit (lib)
-        mkIf
-        mkDefault
-        mkForce
-        ;
+      inherit (lib) mkIf mkDefault mkForce;
       inherit (config._user)
         main
         disableRoot
