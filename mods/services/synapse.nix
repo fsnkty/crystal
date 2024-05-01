@@ -18,7 +18,7 @@
         server_name = config.networking.domain;
         max_upload_size = "10G";
         url_preview_enabled = true;
-        presence.enabled = false;
+        presence.enabled = true;
         enable_metrics = true;
         withJemalloc = true;
         registration_shared_secret_path = config.age.secrets.synapse_shared.path;

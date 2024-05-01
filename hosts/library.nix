@@ -105,7 +105,7 @@
       fsType = "zfs";
     };
     "/boot" = {
-      device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part1";
+      device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part1";
       fsType = "vfat";
       options = [
         "rw"
@@ -116,7 +116,8 @@
       ];
     };
   };
-  swapDevices = [ { device = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0-part2"; } ];
+  zramSwap.enable = true;
+  swapDevices = [ { device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part2"; } ];
 
   system.stateVersion = "23.11";
 }
