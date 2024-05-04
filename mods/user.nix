@@ -130,8 +130,8 @@
               format = "[$symbol$branch(:$remote_branch)]($style)";
             };
             format = ''
-              [\[$directory$git_branch$git_state$git_commit\]](bold green)
-              [❤️ $username$hostname](bold #ff9ad2)$character
+              [$directory$git_branch$git_commit$git_state](bold red)
+              [❤️ $username$hostname](bold red)$character
             '';
             character = {
               success_symbol = "➜";
