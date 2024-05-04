@@ -24,10 +24,7 @@
     immutable = true;
     main = {
       enable = true;
-      shell = {
-        setup = true;
-        prompt = "'%F{magenta}圖書館%F{reset_color} %~ %# '";
-      };
+      shell = true;
       loginKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" ];
     };
   };

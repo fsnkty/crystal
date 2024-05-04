@@ -22,7 +22,7 @@
     immutable = true;
     main = {
       enable = true;
-      shell.setup = true;
+      shell = true;
       packages = builtins.attrValues {
         inherit (pkgs)
           element-desktop
@@ -31,7 +31,6 @@
           imv
           mpv
           ueberzugpp
-          osu-lazer
           ;
         vesktop = pkgs.vesktop.override { withTTS = false; };
       };

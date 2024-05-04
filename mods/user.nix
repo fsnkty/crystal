@@ -10,12 +10,7 @@
     let
       inherit (_lib) mkEnable;
       inherit (lib) mkOption types;
-      inherit (types)
-        str
-        listOf
-        package
-        lines
-        ;
+      inherit (types) str listOf package;
     in
     {
       mediaGroup = mkEnable;
@@ -31,13 +26,7 @@
           type = listOf str;
           default = [ ];
         };
-        shell = {
-          setup = mkEnable;
-          prompt = mkOption {
-            type = lines;
-            default = "'%~ %# '";
-          };
-        };
+        shell = mkEnable;
       };
     };
   config =
@@ -85,7 +74,7 @@
           members = mkIf main.enable [ name ];
         };
       })
-      (mkIf main.shell.setup {
+      (mkIf main.shell {
         users.users.main.shell = pkgs.zsh;
         environment = {
           shells = [ pkgs.zsh ];
@@ -99,7 +88,6 @@
         };
         programs.zsh = {
           enable = true;
-          promptInit = "PROMPT=${main.shell.prompt}";
           shellAliases = {
             ls = "eza";
             lg = "eza -lag";
@@ -127,6 +115,29 @@
           syntaxHighlighting.enable = true;
           histFile = "$HOME/.cache/zsh_history";
           histSize = 10000;
+        };
+        programs.starship = {
+          enable = true;
+          settings = {
+            add_newline = false;
+            hostname.format = " in [$ssh_symbol$hostname]($style)";
+            username = {
+              style_user = "bold cyan";
+              format = "[$user]($style)";
+            };
+            git_branch = {
+              symbol = "  ";
+              format = "[$symbol$branch(:$remote_branch)]($style)";
+            };
+            format = ''
+              [\[$directory$git_branch$git_state$git_commit\]](bold green)
+              [❤️ $username$hostname](bold #ff9ad2)$character
+            '';
+            character = {
+              success_symbol = "➜";
+              error_symbol = "➜";
+            };
+          };
         };
       })
     ];
