@@ -8,8 +8,9 @@
 }:
 {
   imports = [ inputs.agenix.nixosModules.default ];
-  options._common =
+  options._system =
     let
+      inherit (lib) mkOption types;
       inherit (_lib) mkEnable;
     in
     {
@@ -23,17 +24,27 @@
       };
       agenix.setup = mkEnable;
       cleanup = mkEnable;
+      timeZone.NZ = mkEnable;
+      setHostKey = mkEnable;
+      wired = {
+        enable = mkEnable;
+        ip = mkOption { type = types.str; };
+        name = mkOption { type = types.str; };
+      };
     };
   config =
     let
       inherit (lib) mkMerge mkIf optionals;
-      inherit (config._common) nix agenix cleanup;
+      inherit (config._system)
+        nix
+        agenix
+        cleanup
+        timeZone
+        setHostKey
+        wired
+        ;
     in
     mkMerge [
-      (mkIf agenix.setup {
-        environment.systemPackages = [ inputs.agenix.packages.${pkgs.system}.default ];
-        age.identityPaths = [ "/home/${config.users.users.main.name}/.ssh/id_ed25519" ];
-      })
       (mkIf cleanup {
         environment.defaultPackages = [ ];
         programs = {
@@ -49,6 +60,10 @@
           nixos.enable = false;
         };
         boot.enableContainers = false;
+      })
+      (mkIf agenix.setup {
+        environment.systemPackages = [ inputs.agenix.packages.${pkgs.system}.default ];
+        age.identityPaths = [ "/home/${config.users.users.main.name}/.ssh/id_ed25519" ];
       })
       (mkIf nix.config {
         environment = {
@@ -84,6 +99,43 @@
           config.allowUnfree = true;
         };
         users.users.main.packages = optionals nix.nh [ pkgs.nh ];
+      })
+      (mkIf timeZone.NZ {
+        time.timeZone = "NZ";
+        i18n.defaultLocale = "en_NZ.UTF-8";
+      })
+      (mkIf setHostKey {
+        services.openssh.hostKeys = [
+          {
+            comment = "${config.networking.hostName} host";
+            path = "/etc/ssh/${config.networking.hostName}_ed25519_key";
+            type = "ed25519";
+          }
+        ];
+      })
+      (mkIf wired.enable {
+        networking = {
+          enableIPv6 = false;
+          useDHCP = false;
+        };
+        systemd.network = {
+          enable = true;
+          networks.${wired.name} = {
+            enable = true;
+            inherit (wired) name;
+            networkConfig = {
+              DHCP = "no";
+              DNSSEC = "yes";
+              DNSOverTLS = "yes";
+              DNS = [
+                "1.1.1.1"
+                "1.1.0.0"
+              ];
+            };
+            address = [ "${wired.ip}/24" ];
+            routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
+          };
+        };
       })
     ];
 }

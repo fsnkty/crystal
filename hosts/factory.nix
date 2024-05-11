@@ -1,22 +1,5 @@
 { pkgs, lib, ... }:
 {
-  _common = {
-    nix = {
-      config = true;
-      nh = true;
-    };
-    agenix.setup = true;
-    cleanup = true;
-  };
-  _system = {
-    timeZone.NZ = true;
-    setHostKey = true;
-    wired = {
-      enable = true;
-      ip = "192.168.0.4";
-      name = "enp39s0";
-    };
-  };
   _user = {
     disableRoot = true;
     immutable = true;
@@ -38,6 +21,9 @@
     };
   };
   _programs = {
+    hyprland = true;
+    alacritty = true;
+    fuzzel = true;
     firefox = true;
     steam = true;
     prismlauncher = true;
@@ -46,7 +32,6 @@
     neovim = true;
     htop = true;
   };
-  _desktop.enable = true;
   _homeFile =
     lib.genAttrs
       [
@@ -59,12 +44,33 @@
       (name: {
         source = "/storage/${name}";
       });
-  ### networking
+  _system = {
+    nix = {
+      config = true;
+      nh = true;
+    };
+    agenix.setup = true;
+    cleanup = true;
+    timeZone.NZ = true;
+    setHostKey = true;
+    wired = {
+      enable = true;
+      ip = "192.168.0.4";
+      name = "enp39s0";
+    };
+    desktop = {
+      greeter = true;
+      rgb = true;
+      gtk = true;
+      audio = true;
+      fonts = true;
+      plymouth = true;
+    };
+  };
   networking = {
     hostName = "factory";
     hostId = "007f0200";
   };
-  ### hardware
   zramSwap.enable = true;
   systemd = {
     services.systemd-udev-settle.enable = false;

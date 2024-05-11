@@ -1,14 +1,12 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     # extra
     agenix.url = "github:ryantm/agenix";
     snms.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     wsl.url = "github:nix-community/NixOS-WSL";
     # awaiting pr's | git+file/path/?ref=branch
     qbit.url = "github:nu-nu-ko/nixpkgs/?ref=init-nixos-qbittorrent";
-    navi.url = "github:nu-nu-ko/nixpkgs/?ref=nixos-navidrome-cleanup";
     vault.url = "github:nu-nu-ko/nixpkgs/?ref=nixos-vaultwarden-hardening";
   };
   outputs =

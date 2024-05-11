@@ -13,16 +13,16 @@ in
     usbip.enable = true;
     startMenuLaunchers = true;
   };
-  _common = {
+  _system = {
     nix = {
       config = true;
       flakePath = "/home/${name}/crystal";
       nh = true;
     };
     cleanup = true;
+    timeZone.NZ = true;
   };
-  _system.timeZone.NZ = true;
-  _user.main.shell.setup = true;
+  _user.main.shell = true;
   _programs = {
     neovim = true;
     git = true;

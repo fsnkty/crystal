@@ -6,22 +6,22 @@
   ...
 }:
 let
-  cfg = config._desktop;
+  cfg = config._system.desktop;
   inherit (lib) mkIf mkMerge;
   inherit (_lib) mkEnable;
 in
 {
-  options._desktop = {
-    enable = mkEnable;
+  options._system.desktop = {
     rgb = mkEnable;
     gtk = mkEnable;
     audio = mkEnable;
     fonts = mkEnable;
     plymouth = mkEnable;
     console = mkEnable;
+    greeter = mkEnable;
   };
   config = mkMerge [
-    (mkIf cfg.enable {
+    (mkIf cfg.greeter {
       services.greetd = {
         enable = true;
         settings.default_session = {
@@ -29,24 +29,12 @@ in
           user = config.users.users.main.name;
         };
       };
-      _programs = {
-        hyprland = true;
-        alacritty = true;
-        fuzzel = true;
-      };
-      _desktop = {
-        rgb = true;
-        gtk = true;
-        audio = true;
-        fonts = true;
-        plymouth = true;
-      };
     })
     (mkIf cfg.fonts {
       fonts = {
         packages = [
           pkgs.noto-fonts
-          (pkgs.callPackage ../assets/packages/SF-fonts.nix { })
+          (pkgs.callPackage ../../assets/packages/SF-fonts.nix { })
         ];
         fontconfig = {
           defaultFonts = {

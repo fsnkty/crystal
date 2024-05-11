@@ -1,23 +1,5 @@
-{ lib, pkgs, ... }:
+{ ... }:
 {
-  _common = {
-    nix = {
-      config = true;
-      flakePath = "/storage/repos/crystal";
-      nh = true;
-    };
-    agenix.setup = true;
-    cleanup = true;
-  };
-  _system = {
-    timeZone.NZ = true;
-    setHostKey = true;
-    wired = {
-      enable = true;
-      ip = "192.168.0.3";
-      name = "enp6s0";
-    };
-  };
   _user = {
     mediaGroup = true;
     disableRoot = true;
@@ -52,15 +34,22 @@
       jellyfin.enable = true;
     };
   };
-  # shouldn't be able to get to these anyway
-  systemd = {
-    services = {
-      "getty@tty1".enable = false;
-      "autovt@".enable = false;
-      "serial-getty@ttyS0".enable = lib.mkDefault false;
-      "serial-getty@hvc0".enable = false;
+  _system = {
+    nix = {
+      config = true;
+      flakePath = "/storage/repos/crystal";
+      nh = true;
     };
-    enableEmergencyMode = false;
+    agenix.setup = true;
+    cleanup = true;
+    timeZone.NZ = true;
+    setHostKey = true;
+    wired = {
+      enable = true;
+      ip = "192.168.0.3";
+      name = "enp6s0";
+    };
+    server.headless = true;
   };
   ### networking
   networking = {
@@ -75,17 +64,8 @@
     cpu.intel.updateMicrocode = true;
   };
   boot = {
-    kernelPackages = pkgs.linuxPackages_hardened;
+    loader.systemd-boot.enable = true;
     kernelModules = [ "kvm-intel" ];
-    kernelParams = [
-      "panic=1"
-      "boot.panic_on_fail"
-    ];
-    loader = {
-      timeout = 0;
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
     supportedFilesystems = [ "zfs" ];
   };
   fileSystems = {

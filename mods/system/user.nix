@@ -43,7 +43,7 @@
     lib.mkMerge [
       (mkIf main.enable {
         age.secrets.user = {
-          file = ../assets/age/user.age;
+          file = ../../assets/age/user.age;
           owner = name;
         };
         users.users.main = {
@@ -54,6 +54,7 @@
           openssh.authorizedKeys.keys = main.loginKeys;
           packages = builtins.attrValues { inherit (pkgs) wget yazi eza; } ++ main.packages;
         };
+        security.sudo.execWheelOnly = true;
       })
       (mkIf immutable {
         users = {
