@@ -1,10 +1,7 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-    # extra
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     agenix.url = "github:ryantm/agenix";
-    snms.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
-    wsl.url = "github:nix-community/NixOS-WSL";
     # awaiting pr's | git+file/path/?ref=branch
     qbit.url = "github:nu-nu-ko/nixpkgs/?ref=init-nixos-qbittorrent";
     vault.url = "github:nu-nu-ko/nixpkgs/?ref=nixos-vaultwarden-hardening";
@@ -36,7 +33,6 @@
       nixosConfigurations = genHosts [
         "factory"
         "library"
-        "portal"
       ];
     };
 }

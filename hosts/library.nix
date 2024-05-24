@@ -16,17 +16,14 @@
     ssh = true;
   };
   _services = {
-    fail2ban = true;
     postgresql = true;
     openssh = true;
     prometheus = true;
-    mailServer = true;
     synapse = true;
     nginx = true;
     web = {
       komga.enable = true;
       navidrome.enable = true;
-      forgejo.enable = true;
       vaultwarden.enable = true;
       nextcloud.enable = true;
       qbittorrent.enable = true;

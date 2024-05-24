@@ -11,7 +11,6 @@ if you are here looking to learn more about Nix and or "get started" with Nixos,
 ## hosts
 - factory: desktop
 - library: server
-- portal: wsl
 
 ## structure
 - assets:

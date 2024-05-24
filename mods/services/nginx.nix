@@ -37,7 +37,6 @@
           in
           mkMerge [
             (genHosts [
-              "forgejo"
               "grafana"
               "vaultwarden"
               "navidrome"

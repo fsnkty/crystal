@@ -19,8 +19,15 @@ in
     plymouth = mkEnable;
     console = mkEnable;
     greeter = mkEnable;
+    noNetBoot = mkEnable;
   };
   config = mkMerge [
+    (mkIf cfg.noNetBoot {
+      systemd = {
+        services.systemd-udev-settle.enable = false;
+        network.wait-online.enable = false;
+      };
+    })
     (mkIf cfg.greeter {
       services.greetd = {
         enable = true;

@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
   _user = {
     disableRoot = true;
@@ -65,6 +65,7 @@
       audio = true;
       fonts = true;
       plymouth = true;
+      noNetBoot = true;
     };
   };
   networking = {
@@ -72,16 +73,13 @@
     hostId = "007f0200";
   };
   zramSwap.enable = true;
-  systemd = {
-    services.systemd-udev-settle.enable = false;
-    network.wait-online.enable = false;
-  };
   powerManagement.cpuFreqGovernor = "schedutil";
   hardware = {
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
   boot = {
+    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     kernelModules = [
       "kvm-amd"
       "amd_pstate"

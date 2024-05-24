@@ -10,8 +10,7 @@ let
     let
       con = pkgs.neovimUtils.makeNeovimConfig {
         plugins = builtins.attrValues {
-          inherit (pkgs.vimPlugins) nvim-lspconfig nvim-tree-lua nvim-web-devicons;
-          mountain = (pkgs.callPackage ../../assets/packages/mountain-nvim { });
+          inherit (pkgs.vimPlugins) nvim-lspconfig nvim-tree-lua nvim-web-devicons kanagawa-nvim;
         };
         withPython3 = false;
         withRuby = false;
@@ -69,7 +68,7 @@ let
             capabilities = vim.lsp.protocol.make_client_capabilities(),
             cmd = {'nil'},
           }
-          vim.cmd.colorscheme 'mountain'
+          vim.cmd.colorscheme 'kanagawa-dragon'
         '';
       };
       wrapperArgs = con.wrapperArgs ++ [
