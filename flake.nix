@@ -1,7 +1,14 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    agenix.url = "github:ryantm/agenix";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        darwin.follows = "";
+        home-manager.follows = "";
+      };
+    };
     # awaiting pr's | git+file/path/?ref=branch
     qbit.url = "github:nu-nu-ko/nixpkgs/?ref=init-nixos-qbittorrent";
     vault.url = "github:nu-nu-ko/nixpkgs/?ref=nixos-vaultwarden-hardening";
