@@ -32,11 +32,7 @@
     };
   };
   _system = {
-    nix = {
-      config = true;
-      flakePath = "/storage/repos/crystal";
-      nh = true;
-    };
+    nix.config = true;
     agenix.setup = true;
     cleanup = true;
     timeZone.NZ = true;

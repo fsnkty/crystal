@@ -37,10 +37,7 @@ mostly obvious, just writing here to shame myself into sticking to it..
 
 ### todos
 - look into writing my solution for managing encrypting secrets
-- replace nh, as I only use `nh os *` ( for nom mostly lol )
-- improve deployment of updates to different hosts. ( will become more important as I make more changes requiring rebuilds )
 - add hosts for rpi, tablet, laptop(s), server assist
-
 
 > [!NOTE]
 > - `libs/options.nix{home.file}` first written by [eclairevoyant](https://github.com/eclairevoyant)

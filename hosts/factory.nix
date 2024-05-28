@@ -14,6 +14,7 @@
           imv
           mpv
           ueberzugpp
+          colmena
           ;
         vesktop = pkgs.vesktop.override { withTTS = false; };
       };
@@ -45,10 +46,7 @@
         source = "/storage/${name}";
       });
   _system = {
-    nix = {
-      config = true;
-      nh = true;
-    };
+    nix.config = true;
     agenix.setup = true;
     cleanup = true;
     timeZone.NZ = true;

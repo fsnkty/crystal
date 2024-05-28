@@ -17,29 +17,30 @@
     inputs:
     let
       inherit (builtins) concatMap filter;
-      inherit (inputs.nixpkgs) lib;
-      inherit (lib) genAttrs hasSuffix filesystem;
-      genHosts =
-        hosts:
-        genAttrs hosts (
-          name:
-          lib.nixosSystem {
-            modules =
-              concatMap (x: filter (hasSuffix ".nix") (map toString (filesystem.listFilesRecursive x))) [
-                ./libs
-                ./mods
-              ]
-              ++ [ ./hosts/${name}.nix ];
-            specialArgs = {
-              inherit inputs;
-            };
-          }
-        );
+      inherit (inputs) nixpkgs;
+      inherit (nixpkgs.lib) hasSuffix filesystem;
     in
     {
-      nixosConfigurations = genHosts [
-        "factory"
-        "library"
-      ];
+      colmena = {
+        meta = {
+          nixpkgs = nixpkgs.legacyPackages.x86_64-linux;
+          specialArgs = {inherit inputs;};
+        };
+        defaults = {name, ...}: {
+          imports = concatMap (x: filter (hasSuffix ".nix") (map toString (filesystem.listFilesRecursive x))) [
+            ./libs
+            ./mods
+          ]
+          ++ [ ./hosts/${name}.nix ];
+        };
+        factory.deployment = {
+          allowLocalDeployment = true;
+          targetHost = null;
+        };
+        library.deployment = {
+          targetUser = "nuko";
+          targetHost = "192.168.0.3";
+        };
+      };
     };
 }

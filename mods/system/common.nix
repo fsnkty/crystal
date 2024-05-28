@@ -14,14 +14,7 @@
       inherit (_lib) mkEnable;
     in
     {
-      nix = {
-        config = mkEnable;
-        nh = mkEnable;
-        flakePath = lib.mkOption {
-          type = lib.types.str;
-          default = "/storage/Repos/crystal";
-        };
-      };
+      nix.config = mkEnable;
       agenix.setup = mkEnable;
       cleanup = mkEnable;
       timeZone.NZ = mkEnable;
@@ -34,7 +27,7 @@
     };
   config =
     let
-      inherit (lib) mkMerge mkIf optionals;
+      inherit (lib) mkMerge mkIf;
       inherit (config._system)
         nix
         agenix
@@ -66,10 +59,8 @@
         age.identityPaths = [ "/home/${config.users.users.main.name}/.ssh/id_ed25519" ];
       })
       (mkIf nix.config {
-        environment = {
-          etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
-          sessionVariables.FLAKE = nix.flakePath;
-        };
+        environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
+        security.sudo.wheelNeedsPassword = false;
         nix = {
           settings = {
             experimental-features = [
@@ -82,6 +73,7 @@
             auto-optimise-store = true;
             use-xdg-base-directories = true;
             allowed-users = [ "@wheel" ];
+            trusted-users = [ "nuko" ];
             nix-path = [ "nixpkgs=flake:nixpkgs" ];
           };
           nixPath = [ "nixpkgs=/etc/nix/inputs/nixpkgs" ];
@@ -98,7 +90,6 @@
           hostPlatform = "x86_64-linux";
           config.allowUnfree = true;
         };
-        users.users.main.packages = optionals nix.nh [ pkgs.nh ];
       })
       (mkIf timeZone.NZ {
         time.timeZone = "NZ";
