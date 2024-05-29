@@ -51,11 +51,6 @@
             };
           Preferences = {
             WebUI = {
-              AlternativeUIEnabled = true;
-              RootFolder = pkgs.fetchzip {
-                url = "https://github.com/VueTorrent/VueTorrent/releases/download/v2.7.2/vuetorrent.zip";
-                hash = "sha256-bJyI7RvVCf0M5vs8Qi+uAHv74CWxSDZ0Bb6zWJ4x4CM=";
-              };
               Username = "nuko";
               Password_PBKDF2 = ''"@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
               ReverseProxySupportEnabled = true;
