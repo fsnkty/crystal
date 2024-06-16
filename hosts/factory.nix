@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   _user = {
     disableRoot = true;
@@ -15,6 +20,7 @@
           mpv
           ueberzugpp
           colmena
+          age
           ;
         vesktop = pkgs.vesktop.override { withTTS = false; };
       };
@@ -22,9 +28,9 @@
     };
   };
   _programs = {
-    hyprland = true;
+    #hyprland = true;
     alacritty = true;
-    fuzzel = true;
+    #fuzzel = true;
     firefox = true;
     steam = true;
     prismlauncher = true;
@@ -47,7 +53,6 @@
       });
   _system = {
     nix.config = true;
-    agenix.setup = true;
     cleanup = true;
     timeZone.NZ = true;
     setHostKey = true;
@@ -57,7 +62,7 @@
       name = "enp39s0";
     };
     desktop = {
-      greeter = true;
+      #greeter = true;
       rgb = true;
       gtk = true;
       audio = true;
@@ -66,6 +71,17 @@
       noNetBoot = true;
     };
   };
+  services = {
+    displayManager = {
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
+      defaultSession = "plasma";
+    };
+    desktopManager.plasma6.enable = true;
+  };
+
   networking = {
     hostName = "factory";
     hostId = "007f0200";

@@ -10,7 +10,6 @@
     knownHosts = {
       library = {
         extraHostNames = [
-          "tea.shimeji.cafe"
           "192.168.0.3"
           "119.224.63.166"
         ];

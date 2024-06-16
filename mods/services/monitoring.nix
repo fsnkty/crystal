@@ -13,19 +13,16 @@
   config =
     let
       inherit (lib) mkIf;
+      inherit (config._services.web.grafana) enable port dns;
     in
     {
       services = {
-        grafana = 
-        let
-          inherit (config._services.web) grafana;
-        in
-        mkIf grafana.enable {
-          enable = true;
+        grafana = mkIf enable {
+          inherit enable;
           settings.server = {
             http_addr = "127.0.0.1";
-            http_port = grafana.port;
-            domain = "${grafana.dns}.${config.networking.domain}";
+            http_port = port;
+            domain = "${dns}.${config.networking.domain}";
           };
         };
         prometheus = mkIf config._services.prometheus {

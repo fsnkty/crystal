@@ -9,7 +9,7 @@
   options._services.nginx = _lib.mkEnable;
   config =
     let
-      inherit (lib) mkIf mkMerge;
+      inherit (lib) mkIf;
       inherit (config.networking) domain;
     in
     mkIf config._services.nginx {
@@ -34,8 +34,46 @@
                   };
                 }
               );
+            extraConfig = ''
+              default_type application/json;
+              add_header Access-Control-Allow-Origin "*";
+            '';
           in
-          mkMerge [
+          lib.mkMerge [
+            {
+              "${domain}" = {
+                root = "/storage/web/shimeji.cafe";
+                locations = mkIf config._services.synapse {
+                  "=/.well-known/matrix/server" = {
+                    alias = (pkgs.formats.json { }).generate "well-known-matrix-server" {
+                      "m.server" = "matrix.${domain}:443";
+                    };
+                    inherit extraConfig;
+                  };
+                  "=/.well-known/matrix/client" = {
+                    alias = (pkgs.formats.json { }).generate "well-known-matrix-client" {
+                      "m.homeserver"."base_url" = "https://matrix.${domain}";
+                      "org.matrix.msc3575.proxy"."url" = "https://matrix.${domain}";
+                    };
+                    inherit extraConfig;
+                  };
+                };
+                inherit forceSSL enableACME;
+              };
+              "matrix.${domain}" = mkIf config._services.synapse {
+                locations = {
+                  "/_matrix".proxyPass = "http://127.0.0.1:8008";
+                  "/_synapse".proxyPass = "http://127.0.0.1:8008";
+                };
+                inherit forceSSL enableACME;
+              };
+              "wires.${domain}" = {
+                root = "/storage/web/wires";
+                inherit forceSSL enableACME;
+              };
+              "cloud.${domain}" = mkIf config._services.web.nextcloud.enable { inherit forceSSL enableACME; };
+              "vault.${domain}".locations."/".extraConfig = mkIf config._services.web.vaultwarden.enable "proxy_pass_header Authorization;";
+            }
             (genHosts [
               "grafana"
               "vaultwarden"
@@ -44,49 +82,7 @@
               "komga"
               "jellyfin"
             ])
-            {
-              "wires.${domain}" = {
-                root = "/storage/web/wires";
-                inherit forceSSL enableACME;
-              };
-              "cloud.${domain}" = mkIf config._services.web.nextcloud.enable { inherit forceSSL enableACME; };
-              "vault.${domain}".locations."/".extraConfig = mkIf config._services.web.vaultwarden.enable "proxy_pass_header Authorization;";
-              "matrix.${domain}" = mkIf config._services.synapse {
-                locations = {
-                  "/_matrix".proxyPass = "http://127.0.0.1:8008";
-                  "/_synapse".proxyPass = "http://127.0.0.1:8008";
-                };
-                inherit forceSSL enableACME;
-              };
-              "${domain}" = {
-                root = "/storage/web/public";
-                locations =
-                  let
-                    extraConfig = ''
-                      default_type application/json;
-                      add_header Access-Control-Allow-Origin "*";
-                    '';
-                  in
-                  mkIf config._services.synapse {
-                    "=/.well-known/matrix/server" = {
-                      alias = (pkgs.formats.json { }).generate "well-known-matrix-server" {
-                        "m.server" = "matrix.${domain}:443";
-                      };
-                      inherit extraConfig;
-                    };
-                    "=/.well-known/matrix/client" = {
-                      alias = (pkgs.formats.json { }).generate "well-known-matrix-client" {
-                        "m.homeserver"."base_url" = "https://matrix.${domain}";
-                        "org.matrix.msc3575.proxy"."url" = "https://matrix.${domain}";
-                      };
-                      inherit extraConfig;
-                    };
-                  };
-                inherit forceSSL enableACME;
-              };
-            }
           ];
-        # some sane global defaults.
         recommendedBrotliSettings = true;
         recommendedProxySettings = true;
         recommendedZstdSettings = true;

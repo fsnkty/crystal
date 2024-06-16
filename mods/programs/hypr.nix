@@ -15,7 +15,7 @@ let
 in
 {
   options._programs.hyprland = _lib.mkEnable;
-  config = {
+  config = lib.mkIf config._programs.hyprland {
     programs.hyprland.enable = true;
     users.users.main.packages = [ pkgs.wl-clipboard ];
     _homeFile = {
@@ -44,6 +44,7 @@ in
         decoration {
           rounding = 2
           drop_shadow = true
+          shadow_range = 6
           blur {
             enabled = false
           }

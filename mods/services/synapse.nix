@@ -8,20 +8,22 @@
 {
   options._services.synapse = _lib.mkEnable;
   config = lib.mkIf config._services.synapse {
-    age.secrets.synapse_shared = {
-      file = ../../assets/age/synapse_shared.age;
-      owner = "matrix-synapse";
+    deployment.keys."synapse_shared" = {
+      keyCommand = ["age" "-i" "/keys/deploy/library" "-d" "assets/age/synapse_shared.age"];
+      destDir = "/keys";
+      user = "matrix-synapse";
+      group = "matrix-synapse";
     };
+    services.postgresql.enable = true;
     services.matrix-synapse = {
       enable = true;
       settings = {
         server_name = config.networking.domain;
-        max_upload_size = "10G";
+        max_upload_size = "100M";
         url_preview_enabled = true;
         presence.enabled = true;
-        enable_metrics = true;
         withJemalloc = true;
-        registration_shared_secret_path = config.age.secrets.synapse_shared.path;
+        registration_shared_secret_path = "/keys/synapse_shared";
         registration_requires_token = true;
         listeners =
           let
@@ -44,12 +46,6 @@
               ];
               type = "http";
               x_forwarded = true;
-            }
-            {
-              inherit tls bind_addresses;
-              port = 9118;
-              type = "metrics";
-              resources = [ ];
             }
           ];
       };

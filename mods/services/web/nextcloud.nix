@@ -13,20 +13,20 @@
       inherit (config.networking) domain;
     in
     lib.mkIf enable {
-      assertions = _lib.assertWeb;
-      age.secrets.user_cloud = {
-        file = ../../../assets/age/user_cloud.age;
-        owner = "nextcloud";
+      deployment.keys."user_cloud" = {
+        keyCommand = ["age" "-i" "/keys/deploy/library" "-d" "assets/age/user_cloud.age"];
+        destDir = "/keys";
+        user = "nextcloud";
+        group = "nextcloud";
       };
+      assertions = _lib.assertWeb;
       services.nextcloud = {
         inherit enable;
         package = pkgs.nextcloud29;
-        database.createLocally = true;
         configureRedis = true;
         config = {
-          adminuser = "nuko";
-          adminpassFile = config.age.secrets.user_cloud.path; # only set on setup.
-          dbtype = "pgsql";
+          adminuser = "fsnkty";
+          adminpassFile = "/keys/user_cloud"; # only set on setup.
         };
         phpOptions = {
           "opcache.interned_strings_buffer" = "16";
@@ -35,8 +35,9 @@
         settings = {
           default_phone_region = "NZ";
           overwriteprotocol = "https";
-          trusted_proxies = [ "https://${dns}.${domain}" ];
-          trusted_domains = [ "https://${dns}.${domain}" ];
+          trusted_proxies = [ "104.21.63.104" ];
+          trusted_domains = [ "${dns}.${domain}" ];
+          "overwrite.cli.url" = "https://${dns}.${domain}";
         };
         hostName = "cloud.${domain}";
         nginx.recommendedHttpHeaders = true;

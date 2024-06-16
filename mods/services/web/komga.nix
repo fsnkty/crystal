@@ -6,15 +6,11 @@
 }:
 {
   options._services.web.komga = _lib.mkWebOpt "komga" 8097;
-  config =
-    let
+  config = lib.mkIf config._services.web.komga.enable {
+    assertions = _lib.assertWeb;
+    services.komga = {
       inherit (config._services.web.komga) enable port;
-    in
-    lib.mkIf enable {
-      assertions = _lib.assertWeb;
-      services.komga = {
-        inherit enable port;
-        group = "media";
-      };
+      group = "media";
     };
+  };
 }

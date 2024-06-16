@@ -4,7 +4,7 @@ pkgs.stdenv.mkDerivation {
   version = "1";
   pro = pkgs.fetchurl {
     url = "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg";
-    sha256 = "sha256-Mu0pmx3OWiKBmMEYLNg+u2MxFERK07BQGe3WAhEec5Q=";
+    sha256 = "sha256-B8xljBAqOoRFXvSOkOKDDWeYUebtMmQLJ8lF05iFnXk=";
   };
   mono = pkgs.fetchFromGitHub {
     owner = "shaunsingh";

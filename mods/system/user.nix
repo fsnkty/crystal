@@ -42,15 +42,15 @@
     in
     lib.mkMerge [
       (mkIf main.enable {
-        age.secrets.user = {
-          file = ../../assets/age/user.age;
-          owner = name;
+        deployment.keys."user" = {
+          keyCommand = ["age" "-i" "/keys/deploy/factory" "-d" "assets/age/user.age"];
+          destDir = "/keys";
         };
         users.users.main = {
           name = "nuko";
           isNormalUser = true;
           extraGroups = [ "wheel" ];
-          hashedPasswordFile = config.age.secrets.user.path;
+          hashedPasswordFile = "/keys/user";
           openssh.authorizedKeys.keys = main.loginKeys;
           packages = builtins.attrValues { inherit (pkgs) wget yazi eza; } ++ main.packages;
         };

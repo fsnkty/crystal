@@ -10,7 +10,12 @@ let
     let
       con = pkgs.neovimUtils.makeNeovimConfig {
         plugins = builtins.attrValues {
-          inherit (pkgs.vimPlugins) nvim-lspconfig nvim-tree-lua nvim-web-devicons kanagawa-nvim;
+          inherit (pkgs.vimPlugins)
+            nvim-lspconfig
+            nvim-tree-lua
+            nvim-web-devicons
+            kanagawa-nvim
+            ;
         };
         withPython3 = false;
         withRuby = false;

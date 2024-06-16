@@ -12,6 +12,7 @@
       PermitRootLogin = "no";
       PasswordAuthentication = false;
       LogLevel = "VERBOSE";
+      AllowUsers = [ config.users.users.main.name ];
     };
   };
 }

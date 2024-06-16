@@ -12,11 +12,11 @@
   };
   _programs = {
     neovim = true;
+    htop = true;
     git = true;
     ssh = true;
   };
   _services = {
-    postgresql = true;
     openssh = true;
     prometheus = true;
     synapse = true;
@@ -33,7 +33,6 @@
   };
   _system = {
     nix.config = true;
-    agenix.setup = true;
     cleanup = true;
     timeZone.NZ = true;
     setHostKey = true;

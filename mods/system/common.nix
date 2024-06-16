@@ -1,13 +1,11 @@
 {
   inputs,
   config,
-  pkgs,
   _lib,
   lib,
   ...
 }:
 {
-  imports = [ inputs.agenix.nixosModules.default ];
   options._system =
     let
       inherit (lib) mkOption types;
@@ -15,7 +13,6 @@
     in
     {
       nix.config = mkEnable;
-      agenix.setup = mkEnable;
       cleanup = mkEnable;
       timeZone.NZ = mkEnable;
       setHostKey = mkEnable;
@@ -30,7 +27,6 @@
       inherit (lib) mkMerge mkIf;
       inherit (config._system)
         nix
-        agenix
         cleanup
         timeZone
         setHostKey
@@ -43,7 +39,7 @@
         programs = {
           nano.enable = false;
           command-not-found.enable = false;
-          bash.enableCompletion = false;
+          bash.completion.enable = false;
         };
         xdg.sounds.enable = false;
         documentation = {
@@ -54,13 +50,9 @@
         };
         boot.enableContainers = false;
       })
-      (mkIf agenix.setup {
-        environment.systemPackages = [ inputs.agenix.packages.${pkgs.system}.default ];
-        age.identityPaths = [ "/home/${config.users.users.main.name}/.ssh/id_ed25519" ];
-      })
       (mkIf nix.config {
+        security.sudo.wheelNeedsPassword = false; #colmena pain
         environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
-        security.sudo.wheelNeedsPassword = false;
         nix = {
           settings = {
             experimental-features = [
@@ -72,7 +64,6 @@
             auto-allocate-uids = true;
             auto-optimise-store = true;
             use-xdg-base-directories = true;
-            allowed-users = [ "@wheel" ];
             trusted-users = [ "nuko" ];
             nix-path = [ "nixpkgs=flake:nixpkgs" ];
           };
@@ -112,19 +103,10 @@
         systemd.network = {
           enable = true;
           networks.${wired.name} = {
-            enable = true;
-            inherit (wired) name;
-            networkConfig = {
-              DHCP = "no";
-              DNSSEC = "yes";
-              DNSOverTLS = "yes";
-              DNS = [
-                "1.1.1.1"
-                "1.1.0.0"
-              ];
-            };
+            inherit (wired) enable name;
+            networkConfig.DHCP = "no";
             address = [ "${wired.ip}/24" ];
-            routes = [ { routeConfig.Gateway = "192.168.0.1"; } ];
+            routes = [ { Gateway = "192.168.0.1"; } ];
           };
         };
       })
