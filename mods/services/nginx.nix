@@ -75,7 +75,6 @@
               "vault.${domain}".locations."/".extraConfig = mkIf config._services.web.vaultwarden.enable "proxy_pass_header Authorization;";
             }
             (genHosts [
-              "grafana"
               "vaultwarden"
               "navidrome"
               "qbittorrent"

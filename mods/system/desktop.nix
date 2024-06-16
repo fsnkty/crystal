@@ -12,13 +12,13 @@ let
 in
 {
   options._system.desktop = {
+    kde = mkEnable;
     rgb = mkEnable;
     gtk = mkEnable;
     audio = mkEnable;
     fonts = mkEnable;
     plymouth = mkEnable;
     console = mkEnable;
-    greeter = mkEnable;
     noNetBoot = mkEnable;
   };
   config = mkMerge [
@@ -28,13 +28,16 @@ in
         network.wait-online.enable = false;
       };
     })
-    (mkIf cfg.greeter {
-      services.greetd = {
-        enable = true;
-        settings.default_session = {
-          command = "Hyprland";
-          user = config.users.users.main.name;
+    (mkIf cfg.kde {
+      services = {
+        displayManager = {
+          sddm = {
+            enable = true;
+            wayland.enable = true;
+          };
+          defaultSession = "plasma";
         };
+        desktopManager.plasma6.enable = true;
       };
     })
     (mkIf cfg.fonts {

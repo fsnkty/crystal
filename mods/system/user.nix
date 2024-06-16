@@ -43,7 +43,13 @@
     lib.mkMerge [
       (mkIf main.enable {
         deployment.keys."user" = {
-          keyCommand = ["age" "-i" "/keys/deploy/factory" "-d" "assets/age/user.age"];
+          keyCommand = [
+            "age"
+            "-i"
+            "/keys/deploy/factory"
+            "-d"
+            "assets/age/user.age"
+          ];
           destDir = "/keys";
         };
         users.users.main = {

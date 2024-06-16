@@ -13,14 +13,12 @@
       shell = true;
       packages = builtins.attrValues {
         inherit (pkgs)
-          element-desktop
-          teams-for-linux
-          krita
-          imv
-          mpv
-          ueberzugpp
           colmena
           age
+          krita
+          ueberzugpp
+          teams-for-linux
+          element-desktop
           ;
         vesktop = pkgs.vesktop.override { withTTS = false; };
       };
@@ -28,9 +26,7 @@
     };
   };
   _programs = {
-    #hyprland = true;
     alacritty = true;
-    #fuzzel = true;
     firefox = true;
     steam = true;
     prismlauncher = true;
@@ -62,7 +58,7 @@
       name = "enp39s0";
     };
     desktop = {
-      #greeter = true;
+      kde = true;
       rgb = true;
       gtk = true;
       audio = true;
@@ -70,16 +66,6 @@
       plymouth = true;
       noNetBoot = true;
     };
-  };
-  services = {
-    displayManager = {
-      sddm = {
-        enable = true;
-        wayland.enable = true;
-      };
-      defaultSession = "plasma";
-    };
-    desktopManager.plasma6.enable = true;
   };
 
   networking = {

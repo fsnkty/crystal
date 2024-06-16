@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   _user = {
     mediaGroup = true;
     disableRoot = true;
@@ -18,7 +17,6 @@
   };
   _services = {
     openssh = true;
-    prometheus = true;
     synapse = true;
     nginx = true;
     web = {
@@ -27,7 +25,6 @@
       vaultwarden.enable = true;
       nextcloud.enable = true;
       qbittorrent.enable = true;
-      grafana.enable = true;
       jellyfin.enable = true;
     };
   };

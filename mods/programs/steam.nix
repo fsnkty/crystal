@@ -20,7 +20,7 @@
     programs.steam = {
       enable = true;
       package = pkgs.steam.override {
-        #required for source1 titles
+        # required for source1 titles
         extraLibraries = pkgs: [
           pkgs.wqy_zenhei
           pkgs.pkgsi686Linux.gperftools

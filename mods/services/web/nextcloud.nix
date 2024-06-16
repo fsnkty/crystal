@@ -14,7 +14,13 @@
     in
     lib.mkIf enable {
       deployment.keys."user_cloud" = {
-        keyCommand = ["age" "-i" "/keys/deploy/library" "-d" "assets/age/user_cloud.age"];
+        keyCommand = [
+          "age"
+          "-i"
+          "/keys/deploy/library"
+          "-d"
+          "assets/age/user_cloud.age"
+        ];
         destDir = "/keys";
         user = "nextcloud";
         group = "nextcloud";

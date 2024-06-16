@@ -52,10 +52,10 @@
         };
         ExtensionSettings =
           lib.mapAttrs
-            (n: v: ({
+            (n: v: {
               installation_mode = "force_installed";
               addons = "https://addons.mozilla.org/firefox/downloads/file/${v}";
-            }))
+            })
             {
               "uBlock0@raymondhill.net" = "4188488/ublock_origin-1.55.0.xpi";
               "{446900e4-71c2-419f-a6a7-df9c091e268b}" = "4180072/bitwarden_password_manager-2024.2.0.xpi";

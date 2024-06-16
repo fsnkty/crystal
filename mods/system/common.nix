@@ -51,7 +51,7 @@
         boot.enableContainers = false;
       })
       (mkIf nix.config {
-        security.sudo.wheelNeedsPassword = false; #colmena pain
+        security.sudo.wheelNeedsPassword = false; # colmena pain
         environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
         nix = {
           settings = {

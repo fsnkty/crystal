@@ -9,7 +9,13 @@
   options._services.synapse = _lib.mkEnable;
   config = lib.mkIf config._services.synapse {
     deployment.keys."synapse_shared" = {
-      keyCommand = ["age" "-i" "/keys/deploy/library" "-d" "assets/age/synapse_shared.age"];
+      keyCommand = [
+        "age"
+        "-i"
+        "/keys/deploy/library"
+        "-d"
+        "assets/age/synapse_shared.age"
+      ];
       destDir = "/keys";
       user = "matrix-synapse";
       group = "matrix-synapse";
