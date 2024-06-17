@@ -13,13 +13,10 @@
       shell = true;
       packages = builtins.attrValues {
         inherit (pkgs)
-          colmena
-          age
           krita
           ueberzugpp
           chromium
           vscodium
-          vim
           teams-for-linux
           element-desktop
           ;
@@ -48,7 +45,10 @@
         source = "/storage/${name}";
       });
   _system = {
-    nix.config = true;
+    nix = {
+      config = true;
+      deploy = true;
+    };
     cleanup = true;
     timeZone.NZ = true;
     setHostKey = true;

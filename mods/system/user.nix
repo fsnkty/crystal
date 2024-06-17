@@ -58,7 +58,7 @@
           extraGroups = [ "wheel" ];
           hashedPasswordFile = "/keys/user";
           openssh.authorizedKeys.keys = main.loginKeys;
-          packages = builtins.attrValues { inherit (pkgs) wget yazi eza; } ++ main.packages;
+          packages = builtins.attrValues { inherit (pkgs) vim eza yazi; } ++ main.packages;
         };
         security.sudo.execWheelOnly = true;
       })

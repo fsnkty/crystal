@@ -3,6 +3,7 @@
   config,
   _lib,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -12,7 +13,10 @@
       inherit (_lib) mkEnable;
     in
     {
-      nix.config = mkEnable;
+      nix = {
+        config = mkEnable;
+        deploy = mkEnable;
+      };
       cleanup = mkEnable;
       timeZone.NZ = mkEnable;
       setHostKey = mkEnable;
@@ -50,8 +54,11 @@
         };
         boot.enableContainers = false;
       })
-      (mkIf nix.config {
+      (mkIf nix.deploy {
         security.sudo.wheelNeedsPassword = false; # colmena pain
+        users.users.main.packages = [ pkgs.colmena pkgs.age ];
+      })
+      (mkIf nix.config {
         environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
         nix = {
           settings = {

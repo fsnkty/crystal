@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+_:
 {
   _user = {
     immutable = true;
@@ -6,7 +6,6 @@
     main = {
       enable = true;
       shell = true;
-      packages = [ pkgs.vim ];
       loginKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" ];
     };
     mediaGroup = true;
