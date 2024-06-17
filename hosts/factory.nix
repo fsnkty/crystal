@@ -18,6 +18,8 @@
           krita
           ueberzugpp
           chromium
+          vscodium
+          vim
           teams-for-linux
           element-desktop
           ;
@@ -26,12 +28,11 @@
     };
   };
   _programs = {
-    alacritty = true;
     steam = true;
     prismlauncher = true;
+    alacritty = true;
     git = true;
     ssh = true;
-    neovim = true;
     htop = true;
   };
   _homeFile =

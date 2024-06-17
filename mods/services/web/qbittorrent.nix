@@ -26,29 +26,25 @@
         openFirewall = enable;
         serverConfig = {
           LegalNotice.Accepted = true;
-          BitTorrent.Session =
-            let
-              basePath = "/storage/media/torrents/";
-            in
-            {
-              TempPathEnabled = true;
-              DefaultSavePath = basePath;
-              TempPath = basePath + "incomplete/";
-              TorrentExportDirectory = basePath + "sources/";
-              QueueingSystemEnabled = true;
-              GlobalMaxInactiveSeedingMinutes = 43800;
-              GlobalMaxSeedingMinutes = 10080;
-              GlobalMaxRatio = 2;
-              MaxActiveCheckingTorrents = 2;
-              MaxActiveDownloads = 5;
-              MaxActiveUploads = 15;
-              MaxActiveTorrents = 20;
-              IgnoreSlowTorrentsForQueueing = true;
-              SlowTorrentsDownloadRate = 30; # kbps
-              SlowTorrentsUploadRate = 30; # kbps
-              MaxConnections = 600;
-              MaxUploads = 200;
-            };
+          BitTorrent.Session = rec {
+            TempPathEnabled = true;
+            DefaultSavePath = "/storage/media/torrents/";
+            TempPath = DefaultSavePath + "incomplete/";
+            TorrentExportDirectory = DefaultSavePath + "sources/";
+            QueueingSystemEnabled = true;
+            GlobalMaxInactiveSeedingMinutes = 43800;
+            GlobalMaxSeedingMinutes = 10080;
+            GlobalMaxRatio = 2;
+            MaxActiveCheckingTorrents = 2;
+            MaxActiveDownloads = 5;
+            MaxActiveUploads = 15;
+            MaxActiveTorrents = 20;
+            IgnoreSlowTorrentsForQueueing = true;
+            SlowTorrentsDownloadRate = 30; # kbps
+            SlowTorrentsUploadRate = 30; # kbps
+            MaxConnections = 600;
+            MaxUploads = 200;
+          };
           Preferences = {
             WebUI = {
               Username = config.users.users.main.name;
