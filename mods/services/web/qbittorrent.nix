@@ -51,7 +51,7 @@
             };
           Preferences = {
             WebUI = {
-              Username = "nuko";
+              Username = config.users.users.main.name;
               Password_PBKDF2 = ''"@ByteArray(g+9najSg/RPqxpxPVWLi9g==:TtILo6iFdNBeD0BhYuPtTYSPiP4QLc2M5dJ3Zxen28g9uy+g2Paq5KF1sU5POQF2ItChu1bujpp0ydLy9z7jSQ==)"'';
               ReverseProxySupportEnabled = true;
               TrustedReverseProxiesList = "${dns}.${config.networking.domain}";

@@ -6,7 +6,7 @@
       hdd2 = "/dev/disk/by-id/ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0D6K3XX";
       hdd3 = "/dev/disk/by-id/ata-WDC_WD30EFZX-68AWUN0_WD-WX32DB0177FD";
       arc = "/dev/disk/by-id/ata-Samsung_SSD_840_Series_S14CNSAD126848W";
-      ssd = "/dev/disk/by-id/ata-KINGSTON_SA400M8120G_50026B7682AD48A0";
+      ssd = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D";
     in
     {
       disk = {

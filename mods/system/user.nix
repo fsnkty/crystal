@@ -53,7 +53,7 @@
           destDir = "/keys";
         };
         users.users.main = {
-          name = "nuko";
+          name = "fsnkty";
           isNormalUser = true;
           extraGroups = [ "wheel" ];
           hashedPasswordFile = "/keys/user";

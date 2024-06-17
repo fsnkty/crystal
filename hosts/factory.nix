@@ -6,8 +6,8 @@
 }:
 {
   _user = {
-    disableRoot = true;
     immutable = true;
+    disableRoot = true;
     main = {
       enable = true;
       shell = true;
@@ -22,7 +22,6 @@
           ;
         vesktop = pkgs.vesktop.override { withTTS = false; };
       };
-      loginKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhTVx3lCAqu9xxn8kPwH0bl0Qg0cE6E0TSJILErD3mq" ];
     };
   };
   _programs = {
@@ -67,7 +66,6 @@
       noNetBoot = true;
     };
   };
-
   networking = {
     hostName = "factory";
     hostId = "007f0200";

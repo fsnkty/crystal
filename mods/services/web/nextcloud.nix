@@ -31,7 +31,7 @@
         package = pkgs.nextcloud29;
         configureRedis = true;
         config = {
-          adminuser = "fsnkty";
+          adminuser = config.users.users.main.name;
           adminpassFile = "/keys/user_cloud"; # only set on setup.
         };
         phpOptions = {

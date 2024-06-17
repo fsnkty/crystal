@@ -1,20 +1,17 @@
-_: {
+{ pkgs, ... }:
+{
   _user = {
-    mediaGroup = true;
-    disableRoot = true;
     immutable = true;
+    disableRoot = true;
     main = {
       enable = true;
       shell = true;
+      packages = [ pkgs.vim ];
       loginKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" ];
     };
+    mediaGroup = true;
   };
-  _programs = {
-    neovim = true;
-    htop = true;
-    git = true;
-    ssh = true;
-  };
+  _programs.htop = true;
   _services = {
     openssh = true;
     synapse = true;
@@ -40,13 +37,11 @@ _: {
     };
     server.headless = true;
   };
-  ### networking
   networking = {
     domain = "shimeji.cafe";
     hostName = "library";
     hostId = "9a350e7b";
   };
-  ### hardware
   powerManagement.cpuFreqGovernor = "powersave";
   hardware = {
     enableRedistributableFirmware = true;

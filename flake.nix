@@ -28,7 +28,7 @@
               ]
             ++ [ ./hosts/${name}.nix ];
           deployment = {
-            targetUser = "nuko";
+            targetUser = "fsnkty";
             allowLocalDeployment = true;
           };
         };

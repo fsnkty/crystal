@@ -8,8 +8,8 @@
 
 ### structure
 - assets:
-    - local packages, agenix files, nix not needed for host evals. (e.g.. disko)
     - non nix resources
+    - local packages, nix not needed for evals. (e.g.. disko)
 - hosts:
     factory.nix
     library.nix
@@ -20,7 +20,7 @@
 - modules:
     - services:
         - web: any service providing a web interface
-    - programs: config, _not_ packages
+    - programs: config/setup, _not_ packages
     - system:
       - desktop.nix
       - server.nix
@@ -32,15 +32,13 @@
 mostly obvious, just writing here to shame myself into sticking to it..
 
 - I think `with` makes ugly & iffy code, it should never be used as `inherit` exists
-- actually using assertions and conditions instead of assuming so much
-- common setup should always be a module, even if a single line.. e.g.. postgresql (painful but I prefer consistency )
+- actually using assertions
+- common setup should always be a module
 
 ### todos
-- look into writing my solution for managing encrypting secrets
 - add hosts for rpi, tablet, laptop(s), server assist
 
 > [!NOTE]
 > - `libs/options.nix{home.file}` first written by [eclairevoyant](https://github.com/eclairevoyant)
 > - `libs/functions.nix{genAttrs'}` thank you [lilyinstarlight](https://github.com/lilyinstarlight)
 > - recursive importing originally from an old stage of [Gerg-L's nixos repo](https://github.com/Gerg-L/nixos)
-> - `nix eval .#nixosConfigurations.host.config.*` also the repl exists..

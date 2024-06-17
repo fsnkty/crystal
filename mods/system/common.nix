@@ -64,7 +64,7 @@
             auto-allocate-uids = true;
             auto-optimise-store = true;
             use-xdg-base-directories = true;
-            trusted-users = [ "nuko" ];
+            trusted-users = [ config.users.users.main.name ];
             nix-path = [ "nixpkgs=flake:nixpkgs" ];
           };
           nixPath = [ "nixpkgs=/etc/nix/inputs/nixpkgs" ];
