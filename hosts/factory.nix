@@ -17,6 +17,7 @@
           age
           krita
           ueberzugpp
+          chromium
           teams-for-linux
           element-desktop
           ;
@@ -26,7 +27,6 @@
   };
   _programs = {
     alacritty = true;
-    firefox = true;
     steam = true;
     prismlauncher = true;
     git = true;
