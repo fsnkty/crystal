@@ -1,5 +1,4 @@
-_:
-{
+_: {
   _user = {
     immutable = true;
     disableRoot = true;
@@ -10,22 +9,24 @@ _:
     };
     mediaGroup = true;
   };
-  _programs.htop = true;
   _services = {
     openssh = true;
     synapse = true;
     nginx = true;
     web = {
       komga.enable = true;
+      jellyfin.enable = true;
       navidrome.enable = true;
-      vaultwarden.enable = true;
       nextcloud.enable = true;
       qbittorrent.enable = true;
-      jellyfin.enable = true;
+      vaultwarden.enable = true;
     };
   };
   _system = {
-    nix.config = true;
+    nix = {
+      config = true;
+      deploy = true;
+    };
     cleanup = true;
     timeZone.NZ = true;
     setHostKey = true;
@@ -41,7 +42,6 @@ _:
     hostName = "library";
     hostId = "9a350e7b";
   };
-  powerManagement.cpuFreqGovernor = "powersave";
   hardware = {
     enableRedistributableFirmware = true;
     cpu.intel.updateMicrocode = true;
@@ -76,8 +76,6 @@ _:
       ];
     };
   };
-  zramSwap.enable = true;
   swapDevices = [ { device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part2"; } ];
-
   system.stateVersion = "23.11";
 }

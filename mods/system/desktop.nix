@@ -39,6 +39,20 @@ in
         };
         desktopManager.plasma6.enable = true;
       };
+      environment.plasma6.excludePackages = builtins.attrValues {
+        inherit (pkgs.kdePackages)
+          plasma-browser-integration
+          konsole
+          oxygen
+          kate
+          elisa
+          breeze-icons
+          breeze-gtk
+          breeze
+          plasma-workspace-wallpapers
+          khelpcenter
+          ;
+      };
     })
     (mkIf cfg.fonts {
       fonts = {

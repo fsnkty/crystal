@@ -19,8 +19,8 @@
           vscodium
           teams-for-linux
           element-desktop
+          vesktop
           ;
-        vesktop = pkgs.vesktop.override { withTTS = false; };
       };
     };
   };
@@ -41,13 +41,13 @@
         "Videos"
         "Repos"
       ]
-      (name: {
-        source = "/storage/${name}";
+      (p: {
+        source = "/storage/${p}";
       });
   _system = {
     nix = {
       config = true;
-      deploy = true;
+      deployer = true;
     };
     cleanup = true;
     timeZone.NZ = true;
@@ -71,7 +71,6 @@
     hostName = "factory";
     hostId = "007f0200";
   };
-  zramSwap.enable = true;
   powerManagement.cpuFreqGovernor = "schedutil";
   hardware = {
     enableRedistributableFirmware = true;
@@ -86,7 +85,7 @@
     ];
     kernelParams = [ "amd_pstate=guided" ];
     loader = {
-      timeout = 0; # hold space to open the menu.
+      timeout = 0;
       systemd-boot.enable = true;
     };
     initrd.systemd.enable = true;

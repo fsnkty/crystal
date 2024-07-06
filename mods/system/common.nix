@@ -54,9 +54,14 @@
         };
         boot.enableContainers = false;
       })
+      (mkIf nix.deployer {
+        users.users.main.packages = [
+          pkgs.colmena
+          pkgs.age
+        ];
+      })
       (mkIf nix.deploy {
         security.sudo.wheelNeedsPassword = false; # colmena pain
-        users.users.main.packages = [ pkgs.colmena pkgs.age ];
       })
       (mkIf nix.config {
         environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
