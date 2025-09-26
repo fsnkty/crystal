@@ -15,8 +15,10 @@
                 (map toString (lib.filesystem.listFilesRecursive path)))
             paths;
       in
-      lib.genAttrs [ "factory" "library" ] (name:
+      # list of hostnames with an entry in /hosts/
+      lib.genAttrs [ "factory" "library" "t460s" ] (name:
         lib.nixosSystem {
+          # importing all modules & its respective /hosts/ file
           modules = importAllList [ ./mods ] ++ [ ./hosts/${name}.nix ];
           specialArgs = { inherit inputs; };
         });

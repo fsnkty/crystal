@@ -1,44 +1,56 @@
-{ inputs, config, pkgs, lib, ... }: {
+{ pkgs, lib, ... }: {
+  system.stateVersion = "23.11";
+
   common = {
     cleanup = true;
     nix = true;
+    nz = true;
   };
+
   server = {
-    headless = true;
-    security = true;
-    tailscale = true;
-    samba = true;
     media = {
       group = true;
       jellyfin = true;
       qbit = true;
     };
-    gtnh = {
-      enable = true;
-      dataDir = "/storage/gtnh";
-    };
-  };
-  users = {
-    mutableUsers = false;
-    users.main = {
-      name = "fsnkty";
-      hashedPasswordFile = "/keys/user";
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      uid = 1000;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory pub
-      ];
+    networking = {
+      library.enable = true;
+      nginx.enable = true;
+      samba.enable = true;
+      ssh = {
+        enable = true;
+        headless = true;
+      };
     };
   };
 
-  time.timeZone = "NZ";
+  users = {
+    mutableUsers = false;
+    users = {
+      main = {
+        name = "fsnkty";
+        hashedPasswordFile = "/keys/user";
+        isNormalUser = true;
+        extraGroups = [ "wheel" ];
+        uid = 1000;
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBN4+lDQxOfTVODQS4d3Mm+y3lpzpsSkwxjbzN4NwJlJ" # factory pub
+        ];
+      };
+      root = {
+        hashedPassword = lib.mkDefault "!"; # invalid hash will never resolve
+        shell = lib.mkForce pkgs.shadow; # unuseable shell
+      };
+    };
+  };
+
   networking = {
+    firewall.enable = true;
     useNetworkd = true;
     hostName = "library";
     hostId = "9a350e7b";
-    enableIPv6 = false;
-    useDHCP = false;
+    enableIPv6 = false; # no ipv6 provided by ISP
+    useDHCP = false; # static IP
     nameservers = [ "1.1.1.1" ];
   };
   systemd.network = {
@@ -99,6 +111,4 @@
   swapDevices = [{
     device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part2";
   }];
-
-  system.stateVersion = "23.11";
 }

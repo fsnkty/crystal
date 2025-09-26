@@ -1,4 +1,6 @@
-{ inputs, config, pkgs, lib, ... }: {
+{ inputs, pkgs, ... }: {
+  system.stateVersion = "24.11";
+
   imports = [ inputs.wsl.nixosModules.wsl ];
   wsl = {
     enable = true;
@@ -7,10 +9,14 @@
     useWindowsDriver = true;
   };
 
+  networking.hostName = "factory";
+
   common = {
     cleanup = true;
     nix = true;
+    nz = true;
   };
+
   users = {
     mutableUsers = false;
     users.main = {
@@ -18,7 +24,6 @@
       hashedPasswordFile = "/keys/user";
       isNormalUser = true;
       extraGroups = [ "wheel" ];
-      uid = 1001;
     };
   };
 
@@ -28,6 +33,7 @@
     enable = true;
     package = pkgs.nix-ld-rs;
   };
+
   # github
   programs.git = {
     enable = true;
@@ -43,7 +49,4 @@
       commit.gpgsign = true;
     };
   };
-
-  time.timeZone = "NZ";
-  system.stateVersion = "24.11";
 }
