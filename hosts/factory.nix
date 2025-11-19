@@ -31,7 +31,7 @@
   environment.systemPackages = [ pkgs.wget pkgs.nixpkgs-fmt ];
   programs.nix-ld = {
     enable = true;
-    package = pkgs.nix-ld-rs;
+    package = pkgs.nix-ld;
   };
 
   # github
@@ -43,7 +43,7 @@
       user = {
         name = "fsnkty";
         email = "fsnkty@pm.me";
-        signingkey = "/home/fsnkty/.ssh/id_ed25519.pub";
+        signingkey = "/home/fsnkty/.ssh/factory.pub";
       };
       gpg.format = "ssh";
       commit.gpgsign = true;

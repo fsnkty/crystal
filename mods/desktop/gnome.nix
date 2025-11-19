@@ -12,7 +12,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       services = {
-        displayerManager.gdm.enable = true;
+        displayManager.gdm.enable = true;
         desktopManager.gnome.enable = true;
       };
     })

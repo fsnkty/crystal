@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     wsl.url = "github:nix-community/NixOS-WSL";
-    qbit.url = "github:fsnkty/nixpkgs/?ref=init-nixos-qbittorrent";
   };
   outputs = inputs: {
     nixosConfigurations =
@@ -16,7 +15,7 @@
             paths;
       in
       # list of hostnames with an entry in /hosts/
-      lib.genAttrs [ "factory" "library" "t460s" ] (name:
+      lib.genAttrs [ "factory" "library" "t460s" "recovery" ] (name:
         lib.nixosSystem {
           # importing all modules & its respective /hosts/ file
           modules = importAllList [ ./mods ] ++ [ ./hosts/${name}.nix ];

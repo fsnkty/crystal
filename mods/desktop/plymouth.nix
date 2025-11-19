@@ -1,7 +1,7 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
-  options.desktop.plymouth.enable = mkEnableOption "enable plymouth and quiet booting";
-  config = mkIf config.desktop.plymouth.enable {
+  options.desktop.plymouth.enable = lib.mkEnableOption "enable plymouth and quiet booting";
+  config = lib.mkIf config.desktop.plymouth.enable {
     boot = {
       plymouth.enable = true;
       consoleLogLevel = 3;
@@ -14,7 +14,6 @@
       ];
       initrd.verbose = false;
       loader.timeout = 0;
-
     };
   };
 }
