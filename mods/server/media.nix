@@ -1,9 +1,14 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, modulesPath, inputs, ... }:
 let
   cfg = config.server.media;
   inherit (lib) mkMerge mkIf mkEnableOption;
 in
 {
+  disabledModules = [
+    "${modulesPath}/services/misc/jellyfin.nix"
+  ];
+  imports = [ "${inputs.jellyfinhardening}/nixos/modules/services/misc/jellyfin.nix" ];
+
   options.server.media = {
     jellyfin = mkEnableOption "";
     qbit = mkEnableOption "";
@@ -17,11 +22,11 @@ in
       };
     })
     (mkIf cfg.jellyfin {
-      nixpkgs.overlays = with pkgs; [
+      nixpkgs.overlays = with pkgs;[
         (
-          prev:
+          final: prev:
           {
-            jellyfin-web = prev.jellyfin-web.overrideAttrs ({
+            jellyfin-web = prev.jellyfin-web.overrideAttrs (finalAttrs: previousAttrs: {
               # adds intro skip plugin script ( must be installed in the admin dashboard )
               # forces subtitle burn in when transcoding for all users all clients always
               installPhase = ''
@@ -49,7 +54,7 @@ in
         # reverse proxy jellyfin
         nginx.virtualHosts."jelly.shimeji.cafe" =
           {
-            enableACME = true;
+            useACMEHost = "shimeji.cafe";
             forceSSL = true;
             locations."/" = {
               proxyPass = "http://localhost:8096";
@@ -66,6 +71,7 @@ in
       services.qbittorrent = {
         enable = true;
         group = "media";
+        openFirewall = true; 
         serverConfig = {
           LegalNotice.Accepted = true;
           BitTorrent.Session = rec {

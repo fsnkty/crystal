@@ -2,23 +2,28 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     wsl.url = "github:nix-community/NixOS-WSL";
+    jellyfinhardening.url = "github:jpds/nixpkgs/?ref=jellyfin-more-hardening";
   };
   outputs = inputs: {
     nixosConfigurations =
       let
         inherit (inputs.nixpkgs) lib;
-        importAllList = paths:
+        listNixRecursive = path:
           builtins.concatMap
-            (path:
+            (p:
               builtins.filter (lib.hasSuffix ".nix")
-                (map toString (lib.filesystem.listFilesRecursive path)))
-            paths;
+                (map toString (lib.filesystem.listFilesRecursive p)))
+            path;
+        listHosts = builtins.map
+          (host:
+            (lib.removeSuffix ".nix" host))
+          (builtins.attrNames (builtins.readDir ./hosts));
       in
       # list of hostnames with an entry in /hosts/
-      lib.genAttrs [ "factory" "library" "t460s" "recovery" ] (name:
+      lib.genAttrs listHosts (name:
         lib.nixosSystem {
-          # importing all modules & its respective /hosts/ file
-          modules = importAllList [ ./mods ] ++ [ ./hosts/${name}.nix ];
+          # import all modules & its respective /hosts/ file
+          modules = listNixRecursive [ ./mods ] ++ [ ./hosts/${name}.nix ];
           specialArgs = { inherit inputs; };
         });
   };

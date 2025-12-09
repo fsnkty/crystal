@@ -5,7 +5,6 @@ let
 in
 {
   options.server.networking = {
-    library = mkEnableOption "Library server configuration";
     nginx = mkEnableOption "Nginx web server";
     samba = mkEnableOption "Samba file sharing service";
     ssh = {
@@ -30,6 +29,14 @@ in
       security.acme = {
         acceptTerms = true;
         defaults.email = "fsnkty@shimeji.cafe";
+        certs = {
+          "shimeji.cafe" = {
+            domain = "*.shimeji.cafe";
+            group = "nginx";
+            dnsProvider = "cloudflare";
+            environmentFile = "/keys/cloudflare";
+          };
+        };
       };
       networking.firewall.allowedTCPPorts = [
         80 # HTTP
@@ -74,11 +81,6 @@ in
             KbdInteractiveAuthentication = false;
             AllowUsers = [ config.users.users.main.name ];
           };
-          hostKeys = [{
-            comment = "library host";
-            path = "/etc/ssh/library_ed25519_key"; # library priv
-            type = "ed25519";
-          }];
         };
       };
     })

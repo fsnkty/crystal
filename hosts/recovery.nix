@@ -1,5 +1,5 @@
 # nix build .#nixosConfigurations.recovery.config.system.build.isoImage
-{ inputs, pkgs, lib, modulesPath, ... }: {
+{ pkgs, lib, modulesPath, ... }: {
     imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
     isoImage.squashfsCompression = "gzip -Xcompression-level 1";
     common = {

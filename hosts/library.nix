@@ -1,22 +1,29 @@
+#nixos-rebuild switch --target-host library --flake .#library --sudo --ask-sudo-password
 { pkgs, lib, ... }: {
-  system.stateVersion = "23.11";
-
-  common = {
+  system = {
+    lockdown = true;
     cleanup = true;
     nix = true;
     nz = true;
   };
-
+  shell = {
+    setup = true;
+    prompt = "'%F{cyan}%m%f %~ %# '";
+  };
   server = {
+    gtnh = {
+      enable = true;
+      dataDir = "/storage/gtnh";
+      openFirewall = true;
+    };
     media = {
       group = true;
       jellyfin = true;
       qbit = true;
     };
     networking = {
-      library.enable = true;
-      nginx.enable = true;
-      samba.enable = true;
+      nginx = true;
+      samba = true;
       ssh = {
         enable = true;
         headless = true;
@@ -26,24 +33,23 @@
 
   users = {
     mutableUsers = false;
-    users = {
-      main = {
-        name = "fsnkty";
-        hashedPasswordFile = "/keys/user";
-        isNormalUser = true;
-        extraGroups = [ "wheel" ];
-        uid = 1000;
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzo6UVJ72vS2sNW20QjMCmfCeChGPUT4YfY8VHiMVjv fsnkty@factory"
-        ];
-      };
-      root = {
-        hashedPassword = lib.mkDefault "!"; # invalid hash will never resolve
-        shell = lib.mkForce pkgs.shadow; # unuseable shell
-      };
+    users.main = {
+      name = "fsnkty";
+      hashedPasswordFile = "/keys/user";
+      isNormalUser = true;
+      extraGroups = [ "wheel" ];
+      uid = 1000;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzo6UVJ72vS2sNW20QjMCmfCeChGPUT4YfY8VHiMVjv fsnkty@factory"
+      ];
     };
   };
 
+  services.openssh.hostKeys = [{
+    comment = "library host";
+    path = "/etc/ssh/library_ed25519_key"; # library priv
+    type = "ed25519";
+  }];
   networking = {
     firewall.enable = true;
     useNetworkd = true;
@@ -68,13 +74,11 @@
     enableRedistributableFirmware = true;
     cpu.intel.updateMicrocode = true;
   };
-
   boot = {
     loader.systemd-boot.enable = true;
     kernelModules = [ "kvm-intel" ];
     supportedFilesystems = [ "zfs" ];
   };
-
   services.zfs = {
     autoScrub.enable = true;
     autoSnapshot = {
@@ -111,4 +115,5 @@
   swapDevices = [{
     device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part2";
   }];
+  system.stateVersion = "23.11";
 }

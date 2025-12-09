@@ -3,9 +3,11 @@
   system.stateVersion = "25.05";
 
   common = {
+    lockdown = true;
     cleanup = true;
     nix = true;
     nz = true;
+    shell.enable = true;
   };
   desktop.gnome = {
     enable = true;

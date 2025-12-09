@@ -1,20 +1,28 @@
 { inputs, pkgs, ... }: {
-  system.stateVersion = "24.11";
-
+  # wsl
   imports = [ inputs.wsl.nixosModules.wsl ];
   wsl = {
     enable = true;
-    defaultUser = "fsnkty";
+    defaultUser = "main";
     wslConf.user.default = "fsnkty";
     useWindowsDriver = true;
   };
+  # vscode server
+  environment.systemPackages = [ pkgs.wget pkgs.nixpkgs-fmt ];
+  programs.nix-ld = {
+    enable = true;
+    package = pkgs.nix-ld;
+  };
 
-  networking.hostName = "factory";
-
-  common = {
+  system = {
+    lockdown = true;
     cleanup = true;
     nix = true;
     nz = true;
+  };
+  shell = {
+    setup = true;
+    prompt = "'%F{red}%m%f %~ %# '";
   };
 
   users = {
@@ -24,16 +32,19 @@
       hashedPasswordFile = "/keys/user";
       isNormalUser = true;
       extraGroups = [ "wheel" ];
+      uid = 1000;
     };
   };
 
-  # wsl vscode server
-  environment.systemPackages = [ pkgs.wget pkgs.nixpkgs-fmt ];
-  programs.nix-ld = {
-    enable = true;
-    package = pkgs.nix-ld;
-  };
-
+  networking.hostName = "factory";
+  
+  # ssh
+  programs.ssh.extraConfig = "
+    Host library
+      HostName = 119.224.63.166
+      User = fsnkty
+      IdentityFile = /home/fsnkty/.ssh/factory
+  ";
   # github
   programs.git = {
     enable = true;
@@ -49,4 +60,5 @@
       commit.gpgsign = true;
     };
   };
+  system.stateVersion = "24.11";
 }

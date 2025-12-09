@@ -1,15 +1,22 @@
 { config, inputs, pkgs, lib, ... }:
 let
-  cfg = config.common;
+  cfg = config.system;
   inherit (lib) mkMerge mkIf mkEnableOption;
 in
 {
-  options.common = {
+  options.system = {
+    lockdown = mkEnableOption "close various potential security flaws";
     cleanup = mkEnableOption "remove some default stuff";
     nix = mkEnableOption "sane nix defaults";
     nz = mkEnableOption "all settings related to timezone/location being NZ";
   };
   config = mkMerge [
+    (mkIf cfg.lockdown {
+      users.users.root = {
+        hashedPassword = lib.mkDefault "!"; # invalid hash will never resolve
+        shell = lib.mkForce pkgs.shadow; # unuseable shell 
+      };
+    })
     (mkIf cfg.cleanup {
       environment.defaultPackages = [ ];
       programs = {
@@ -36,6 +43,7 @@ in
         package = pkgs.nixVersions.latest;
         settings = {
           allowed-users = [ "@wheel" ];
+          trusted-users = [ "@wheel" ];
           experimental-features = [ "no-url-literals" "nix-command" "flakes" ];
           auto-optimise-store = true;
         };
