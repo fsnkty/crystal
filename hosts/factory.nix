@@ -44,6 +44,8 @@
       HostName = 119.224.63.166
       User = fsnkty
       IdentityFile = /home/fsnkty/.ssh/factory
+    Host github.com
+      IdentityFile = /home/fsnkty/.ssh/factory
   ";
   # github
   programs.git = {
