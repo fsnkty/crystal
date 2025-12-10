@@ -1,7 +1,5 @@
 { pkgs, ... }:
 {
-  system.stateVersion = "25.05";
-
   common = {
     lockdown = true;
     cleanup = true;
@@ -9,26 +7,12 @@
     nz = true;
     shell.enable = true;
   };
-  desktop.gnome = {
-    enable = true;
-    cleanup = true;
-    config = true;
-  };
 
   users.users.main = {
     isNormalUser = true;
     name = "fsnkty";
     description = "Madison";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      vim
-      wget
-      vscode
-      firefox
-      nautilus
-      snapshot
-      alacritty
-    ];
   };
 
   services = {
@@ -42,13 +26,12 @@
       pulse.enable = true;
     };
   };
+  security.rtkit.enable = true;
 
   networking = {
-    hostName = "t460s";
+    hostName = "portal";
     networkmanager.enable = true;
   };
-
-  security.rtkit.enable = true;
 
   boot = {
     loader = {
@@ -80,4 +63,5 @@
   swapDevices = [
     { device = "/dev/disk/by-uuid/238ef32e-be79-4dce-8fd9-c1a5a9b39f9e"; }
   ];
+  system.stateVersion = "25.05";
 }
