@@ -34,7 +34,6 @@ in
       boot.enableContainers = false;
     })
     (mkIf cfg.nix {
-      system.rebuild.enableNg = true;
       nixpkgs = {
         hostPlatform = "x86_64-linux";
         config.allowUnfree = true;

@@ -56,17 +56,15 @@ in
           };
           "storage" = {
             path = "/storage";
-            browseable = "yes";
             "read only" = "no";
             "guest ok" = "no";
             "force user" = "fsnkty";
           };
-          "home" = {
-            path = "/home/fsnkty";
-            browseable = "yes";
+          "amber" = {
+            path = "/storage/amber";
             "read only" = "no";
-            "guest ok" = "no";
-            "force user" = "fsnkty";
+            "quest ok" = "no";
+            "force user" = "amber";
           };
         };
       };

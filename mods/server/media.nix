@@ -13,6 +13,7 @@ in
     jellyfin = mkEnableOption "";
     qbit = mkEnableOption "";
     group = mkEnableOption "";
+    radarr = mkEnableOption "";
   };
   config = mkMerge [
     (mkIf cfg.group {
@@ -46,7 +47,7 @@ in
       boot.kernelParams = [ "i915.enable_guc=2" ];
       hardware.graphics = {
         enable = true;
-        extraPackages = [ pkgs.intel-vaapi-driver pkgs.intel-media-driver pkgs.intel-compute-runtime-legacy1 ];
+        extraPackages = [ pkgs.intel-vaapi-driver pkgs.intel-media-driver ];
       };
       systemd.services.jellyfin.environment.LIBVA_DRIVER_NAME = "i965";
       environment.sessionVariables = { LIBVA_DRIVER_NAME = "i965"; };
@@ -100,6 +101,12 @@ in
             AuthSubnetWhitelistEnabled = true;
           };
         };
+      };
+    })
+    (mkIf cfg.radarr {
+      services.radarr = {
+        enable = true;
+        openFirewall = true;
       };
     })
   ];

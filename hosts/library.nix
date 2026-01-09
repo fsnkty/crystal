@@ -43,6 +43,13 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzo6UVJ72vS2sNW20QjMCmfCeChGPUT4YfY8VHiMVjv fsnkty@factory"
       ];
     };
+    users.amber = {
+      name = "amber";
+      hashedPasswordFile = "keys/user_amber";
+      isNormalUser = true;
+      extraGroups = [ "wheel" ];
+      uid = 1002;
+    };
   };
 
   services.openssh.hostKeys = [{
