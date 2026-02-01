@@ -13,7 +13,12 @@ in
     jellyfin = mkEnableOption "";
     qbit = mkEnableOption "";
     group = mkEnableOption "";
-    radarr = mkEnableOption "";
+    arrs = {
+      radarr = mkEnableOption "";
+      sonarr = mkEnableOption "";
+      prowlarr = mkEnableOption "";
+      jellyseerr = mkEnableOption "";
+    };
   };
   config = mkMerge [
     (mkIf cfg.group {
@@ -103,10 +108,42 @@ in
         };
       };
     })
-    (mkIf cfg.radarr {
+    (mkIf cfg.arrs.radarr {
       services.radarr = {
         enable = true;
+        group = "media";
         openFirewall = true;
+      };
+    })
+    (mkIf cfg.arrs.sonarr {
+      services.sonarr = {
+        enable = true;
+        group = "media";
+        openFirewall = true;
+      };
+    })
+    (mkIf cfg.arrs.prowlarr {
+      services.prowlarr = {
+        enable = true;
+        openFirewall = true;
+      };
+    })
+    (mkIf cfg.arrs.jellyseerr {
+      services = {
+        # reverse proxy jellyseerr
+        nginx.virtualHosts."see.shimeji.cafe" =
+          {
+            useACMEHost = "shimeji.cafe";
+            forceSSL = true;
+            locations."/" = {
+              proxyPass = "http://localhost:5055";
+              proxyWebsockets = true;
+            };
+          };
+        jellyseerr = {
+          enable = true;
+          openFirewall = true;
+        };
       };
     })
   ];
