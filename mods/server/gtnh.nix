@@ -72,9 +72,9 @@ in
       };
       groups = mkIf (cfg.group == "gtnh") { gtnh = { }; };
     };
-    networking.firewall = mkIf cfg.openFirewall ({
+    networking.firewall = mkIf cfg.openFirewall {
         allowedUDPPorts = [ 25565 ];
         allowedTCPPorts = [ 25565 ];
-    });
+    };
   };
 }

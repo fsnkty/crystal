@@ -1,5 +1,5 @@
 #nixos-rebuild switch --target-host library --flake .#library --sudo --ask-sudo-password
-{ pkgs, lib, ... }: {
+{ ... }: {
   system = {
     lockdown = true;
     cleanup = true;

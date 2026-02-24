@@ -28,7 +28,7 @@ in
       };
     })
     (mkIf cfg.jellyfin {
-      nixpkgs.overlays = with pkgs;[
+      nixpkgs.overlays =  [
         (
           final: prev:
           {

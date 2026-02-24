@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   cfg = config.shell;
   inherit (lib) mkEnableOption mkOption mkIf;

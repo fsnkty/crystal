@@ -8,7 +8,7 @@
     useWindowsDriver = true;
   };
   # vscode server
-  environment.systemPackages = [ pkgs.wget pkgs.nixpkgs-fmt ];
+  environment.systemPackages = [ pkgs.wget pkgs.nixpkgs-fmt pkgs.nixd ];
   programs.nix-ld = {
     enable = true;
     package = pkgs.nix-ld;

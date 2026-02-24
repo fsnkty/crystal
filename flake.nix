@@ -14,7 +14,7 @@
               builtins.filter (lib.hasSuffix ".nix")
                 (map toString (lib.filesystem.listFilesRecursive p)))
             path;
-        listHosts = builtins.map
+        listHosts = map
           (host:
             (lib.removeSuffix ".nix" host))
           (builtins.attrNames (builtins.readDir ./hosts));
