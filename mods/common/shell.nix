@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.shell;
   inherit (lib) mkEnableOption mkOption mkIf;
@@ -14,8 +19,8 @@ in
   };
   config =
     let
-        inherit (pkgs) eza zsh dash;
-        inherit (lib) getExe mkForce;
+      inherit (pkgs) eza zsh dash;
+      inherit (lib) getExe mkForce;
     in
     mkIf cfg.setup {
       users.users.main = {

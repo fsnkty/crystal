@@ -2,11 +2,21 @@
 let
   name = "paper";
 in
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.server.${name};
   inherit (lib) mkIf mkEnableOption mkOption;
-  inherit (lib.types) str path int bool;
+  inherit (lib.types)
+    str
+    path
+    int
+    bool
+    ;
 in
 {
   options.server.${name} = {
@@ -77,12 +87,10 @@ in
         UMask = "0077";
       };
     };
-    networking.firewall = lib.mkIf cfg.openFirewall (
-      {
-        allowedUDPPorts = [ cfg.serverPort ];
-        allowedTCPPorts = [ cfg.serverPort ];
-      }
-    );
+    networking.firewall = lib.mkIf cfg.openFirewall ({
+      allowedUDPPorts = [ cfg.serverPort ];
+      allowedTCPPorts = [ cfg.serverPort ];
+    });
     users = {
       groups = mkIf (cfg.group == "${name}") { ${name} = { }; };
       users = mkIf (cfg.user == "${name}") {

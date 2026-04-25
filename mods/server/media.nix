@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.server.media;
   inherit (lib) mkMerge mkIf mkEnableOption;
@@ -23,11 +28,10 @@ in
       };
     })
     (mkIf cfg.jellyfin {
-      nixpkgs.overlays =  [
-        (
-          final: prev:
-          {
-            jellyfin-web = prev.jellyfin-web.overrideAttrs (finalAttrs: previousAttrs: {
+      nixpkgs.overlays = [
+        (final: prev: {
+          jellyfin-web = prev.jellyfin-web.overrideAttrs (
+            finalAttrs: previousAttrs: {
               # adds intro skip plugin script ( must be installed in the admin dashboard )
               # forces subtitle burn in when transcoding for all users all clients always
               installPhase = ''
@@ -39,29 +43,33 @@ in
                 cp -a dist $out/share/jellyfin-web
                 runHook postInstall
               '';
-            });
-          }
-        )
+            }
+          );
+        })
       ];
       # hardware transcoding setup for uhd630 intel graphics
       boot.kernelParams = [ "i915.enable_guc=2" ];
       hardware.graphics = {
         enable = true;
-        extraPackages = [ pkgs.intel-vaapi-driver pkgs.intel-media-driver ];
+        extraPackages = [
+          pkgs.intel-vaapi-driver
+          pkgs.intel-media-driver
+        ];
       };
       systemd.services.jellyfin.environment.LIBVA_DRIVER_NAME = "i965";
-      environment.sessionVariables = { LIBVA_DRIVER_NAME = "i965"; };
+      environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "i965";
+      };
       services = {
         # reverse proxy jellyfin
-        nginx.virtualHosts."jelly.shimeji.cafe" =
-          {
-            useACMEHost = "shimeji.cafe";
-            forceSSL = true;
-            locations."/" = {
-              proxyPass = "http://localhost:8096";
-              proxyWebsockets = true;
-            };
+        nginx.virtualHosts."jelly.shimeji.cafe" = {
+          useACMEHost = "shimeji.cafe";
+          forceSSL = true;
+          locations."/" = {
+            proxyPass = "http://localhost:8096";
+            proxyWebsockets = true;
           };
+        };
         jellyfin = {
           enable = true;
           group = "media";
@@ -72,7 +80,7 @@ in
       services.qbittorrent = {
         enable = true;
         group = "media";
-        openFirewall = true; 
+        openFirewall = true;
         serverConfig = {
           LegalNotice.Accepted = true;
           BitTorrent.Session = rec {
@@ -126,16 +134,15 @@ in
     (mkIf cfg.arrs.jellyseerr {
       services = {
         # reverse proxy jellyseerr
-        nginx.virtualHosts."see.shimeji.cafe" =
-          {
-            useACMEHost = "shimeji.cafe";
-            forceSSL = true;
-            locations."/" = {
-              proxyPass = "http://localhost:5055";
-              proxyWebsockets = true;
-            };
+        nginx.virtualHosts."see.shimeji.cafe" = {
+          useACMEHost = "shimeji.cafe";
+          forceSSL = true;
+          locations."/" = {
+            proxyPass = "http://localhost:5055";
+            proxyWebsockets = true;
           };
-        jellyseerr = {
+        };
+        seerr = {
           enable = true;
           openFirewall = true;
         };

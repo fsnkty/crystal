@@ -1,4 +1,10 @@
-{ config, inputs, pkgs, lib, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.system;
   inherit (lib) mkMerge mkIf mkEnableOption;
@@ -6,15 +12,21 @@ in
 {
   options.system = {
     lockdown = mkEnableOption "close various potential security flaws";
-    cleanup = mkEnableOption "remove some default stuff";
-    nix = mkEnableOption "sane nix defaults";
+    cleanup = mkEnableOption "remove some default software";
+    nix = mkEnableOption "sane flake nix defaults";
     nz = mkEnableOption "all settings related to timezone/location being NZ";
   };
   config = mkMerge [
     (mkIf cfg.lockdown {
       users.users.root = {
         hashedPassword = lib.mkDefault "!"; # invalid hash will never resolve
-        shell = lib.mkForce pkgs.shadow; # unuseable shell 
+        shell = lib.mkForce pkgs.shadow; # unuseable shell
+      };
+      services.openssh.settings = {
+        PermitRootLogin = "no";
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        AllowUsers = [ config.users.users.main.name ];
       };
     })
     (mkIf cfg.cleanup {
@@ -43,7 +55,10 @@ in
         settings = {
           allowed-users = [ "@wheel" ];
           trusted-users = [ "@wheel" ];
-          experimental-features = [ "nix-command" "flakes" ];
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
           auto-optimise-store = true;
         };
         optimise.automatic = true;

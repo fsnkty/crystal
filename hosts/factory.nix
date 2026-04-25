@@ -1,4 +1,5 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, ... }:
+{
   # wsl
   imports = [ inputs.wsl.nixosModules.wsl ];
   wsl = {
@@ -8,7 +9,11 @@
     useWindowsDriver = true;
   };
   # vscode server
-  environment.systemPackages = [ pkgs.wget pkgs.nixpkgs-fmt pkgs.nixd ];
+  environment.systemPackages = [
+    pkgs.wget
+    pkgs.nixpkgs-fmt
+    pkgs.nixd
+  ];
   programs.nix-ld = {
     enable = true;
     package = pkgs.nix-ld;
@@ -37,7 +42,7 @@
   };
 
   networking.hostName = "factory";
-  
+
   # ssh
   programs.ssh.extraConfig = "
     Host library

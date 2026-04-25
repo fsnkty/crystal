@@ -7,10 +7,7 @@ in
   options.server.networking = {
     nginx = mkEnableOption "Nginx web server";
     samba = mkEnableOption "Samba file sharing service";
-    ssh = {
-      enable = mkEnableOption "OpenSSH server for remote access";
-      headless = mkEnableOption "Disable all gettys, serial consoles & emergency mode";
-    };
+    headless = mkEnableOption "Disable all gettys, serial consoles & emergency mode";
   };
   config = mkMerge [
     (mkIf cfg.nginx {
@@ -69,20 +66,7 @@ in
         };
       };
     })
-    (mkIf cfg.ssh.enable {
-      services = {
-        openssh = {
-          enable = true;
-          settings = {
-            PermitRootLogin = "no";
-            PasswordAuthentication = false;
-            KbdInteractiveAuthentication = false;
-            AllowUsers = [ config.users.users.main.name ];
-          };
-        };
-      };
-    })
-    (mkIf cfg.ssh.headless {
+    (mkIf cfg.headless {
       systemd = {
         services = {
           "getty@tty1".enable = false;
@@ -93,10 +77,12 @@ in
         enableEmergencyMode = false;
       };
       boot = {
-        kernelParams = [ "panic=1" "boot.panic_on_fail" ];
+        kernelParams = [
+          "panic=1"
+          "boot.panic_on_fail"
+        ];
         loader.timeout = 0;
       };
     })
   ];
 }
-

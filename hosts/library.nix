@@ -1,5 +1,6 @@
 #nixos-rebuild switch --target-host library --flake .#library --sudo --ask-sudo-password
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   system = {
     lockdown = true;
     cleanup = true;
@@ -24,14 +25,14 @@
       dataDir = "/storage/games/paper";
       openFirewall = true;
       jvmOpts =
-        "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders -XX:+UseTransparentHugePages" +
-        " -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled" +
-        " -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC" +
-        " -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40" +
-        " -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30" +
-        " -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15" +
-        " -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32" +
-        " -jar paper.jar";
+        "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders -XX:+UseTransparentHugePages"
+        + " -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled"
+        + " -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC"
+        + " -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40"
+        + " -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30"
+        + " -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15"
+        + " -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32"
+        + " -jar paper.jar";
       jvmPackage = pkgs.jdk25_headless;
     };
     media = {
@@ -48,10 +49,7 @@
     networking = {
       nginx = true;
       samba = true;
-      ssh = {
-        enable = true;
-        headless = true;
-      };
+      headless = true;
     };
   };
 
@@ -76,11 +74,17 @@
     };
   };
 
-  services.openssh.hostKeys = [{
-    comment = "library host";
-    path = "/etc/ssh/library_ed25519_key"; # library priv
-    type = "ed25519";
-  }];
+  services.openssh = {
+    enable = true;
+    hostKeys = [
+      {
+        comment = "library host";
+        path = "/etc/ssh/library_ed25519_key"; # library priv
+        type = "ed25519";
+      }
+    ];
+  };
+
   networking = {
     firewall.enable = true;
     useNetworkd = true;
@@ -97,7 +101,7 @@
       name = "enp6s0";
       dns = [ "1.1.1.1" ];
       address = [ "192.168.0.3/24" ];
-      routes = [{ Gateway = "192.168.0.1"; }];
+      routes = [ { Gateway = "192.168.0.1"; } ];
     };
   };
 
@@ -131,8 +135,7 @@
       fsType = "zfs";
     };
     "/boot" = {
-      device =
-        "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part1";
+      device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part1";
       fsType = "vfat";
       options = [
         "rw"
@@ -143,8 +146,10 @@
       ];
     };
   };
-  swapDevices = [{
-    device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part2";
-  }];
+  swapDevices = [
+    {
+      device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part2";
+    }
+  ];
   system.stateVersion = "23.11";
 }
