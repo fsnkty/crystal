@@ -1,5 +1,5 @@
 #nixos-rebuild switch --target-host library --flake .#library --sudo --ask-sudo-password
-{ ... }: {
+{ pkgs, ... }: {
   system = {
     lockdown = true;
     cleanup = true;
@@ -13,8 +13,26 @@
   server = {
     gtnh = {
       enable = true;
-      dataDir = "/storage/gtnh";
+      dataDir = "/storage/games/gtnh";
       openFirewall = true;
+      serverPort = 25566;
+      jvmOpts = "-Xms6G -Xmx6G -Dfml.readTimeout=180 @java9args.txt -jar lwjgl3ify-forgePatches.jar";
+      jvmPackage = pkgs.jre;
+    };
+    paper = {
+      enable = true;
+      dataDir = "/storage/games/paper";
+      openFirewall = true;
+      jvmOpts =
+        "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders -XX:+UseTransparentHugePages" +
+        " -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled" +
+        " -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC" +
+        " -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40" +
+        " -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30" +
+        " -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15" +
+        " -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32" +
+        " -jar paper.jar";
+      jvmPackage = pkgs.jdk25_headless;
     };
     media = {
       group = true;

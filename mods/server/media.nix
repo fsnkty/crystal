@@ -1,14 +1,9 @@
-{ config, pkgs, lib, modulesPath, inputs, ... }:
+{ config, pkgs, lib, ... }:
 let
   cfg = config.server.media;
   inherit (lib) mkMerge mkIf mkEnableOption;
 in
 {
-  disabledModules = [
-    "${modulesPath}/services/misc/jellyfin.nix"
-  ];
-  imports = [ "${inputs.jellyfinhardening}/nixos/modules/services/misc/jellyfin.nix" ];
-
   options.server.media = {
     jellyfin = mkEnableOption "";
     qbit = mkEnableOption "";

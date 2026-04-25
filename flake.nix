@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     wsl.url = "github:nix-community/NixOS-WSL";
-    jellyfinhardening.url = "github:jpds/nixpkgs/?ref=jellyfin-more-hardening";
   };
   outputs = inputs: {
     nixosConfigurations =

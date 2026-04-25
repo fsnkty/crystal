@@ -43,7 +43,7 @@ in
         settings = {
           allowed-users = [ "@wheel" ];
           trusted-users = [ "@wheel" ];
-          experimental-features = [ "no-url-literals" "nix-command" "flakes" ];
+          experimental-features = [ "nix-command" "flakes" ];
           auto-optimise-store = true;
         };
         optimise.automatic = true;
