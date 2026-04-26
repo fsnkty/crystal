@@ -46,10 +46,6 @@ in
       boot.enableContainers = false;
     })
     (mkIf cfg.nix {
-      nixpkgs = {
-        hostPlatform = "x86_64-linux";
-        config.allowUnfree = true;
-      };
       nix = {
         package = pkgs.nixVersions.latest;
         settings = {
@@ -69,7 +65,7 @@ in
         };
         # never used channels anyway
         channel.enable = false;
-        registry.nixpkgs.flake = inputs.nixpkgs;
+        #registry.nixpkgs.flake = inputs.nixpkgs;
         nixPath = [ "nixpkgs=flake:nixpkgs" ];
       };
       environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;

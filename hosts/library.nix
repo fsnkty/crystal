@@ -1,4 +1,3 @@
-#nixos-rebuild switch --target-host library --flake .#library --sudo --ask-sudo-password
 { pkgs, ... }:
 {
   system = {
@@ -67,7 +66,7 @@
     };
     users.amber = {
       name = "amber";
-      hashedPasswordFile = "keys/user_amber";
+      hashedPasswordFile = "/keys/user_amber";
       isNormalUser = true;
       extraGroups = [ "wheel" ];
       uid = 1002;

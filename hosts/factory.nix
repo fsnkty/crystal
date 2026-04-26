@@ -1,24 +1,14 @@
-{ inputs, pkgs, ... }:
+{ ... }:
 {
   # wsl
-  imports = [ inputs.wsl.nixosModules.wsl ];
   wsl = {
     enable = true;
     defaultUser = "main";
     wslConf.user.default = "fsnkty";
     useWindowsDriver = true;
   };
-  # vscode server
-  environment.systemPackages = [
-    pkgs.wget
-    pkgs.nixpkgs-fmt
-    pkgs.nixd
-  ];
-  programs.nix-ld = {
-    enable = true;
-    package = pkgs.nix-ld;
-  };
 
+  vscode.remote.setup = true;
   system = {
     lockdown = true;
     cleanup = true;
@@ -45,12 +35,15 @@
 
   # ssh
   programs.ssh.extraConfig = "
+    Host *
+      IdentityFile = ~/.ssh/factory
     Host library
       HostName = 119.224.63.166
       User = fsnkty
-      IdentityFile = /home/fsnkty/.ssh/factory
+    Host portal
+      HostName 192.168.0.121
+      User fsnkty
     Host github.com
-      IdentityFile = /home/fsnkty/.ssh/factory
   ";
   # github
   programs.git = {

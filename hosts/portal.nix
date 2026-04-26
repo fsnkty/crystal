@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   system = {
     lockdown = true;
@@ -8,6 +8,8 @@
     plymouth.setup = true;
   };
   shell.setup = true;
+
+  vscode.remote.setup = true;
 
   users.users.main = {
     openssh.authorizedKeys.keys = [
@@ -20,10 +22,49 @@
       "networkmanager"
       "wheel"
     ];
-    packages = [ pkgs.alacritty ];
+    packages = builtins.attrValues {
+      inherit (pkgs) alacritty chromium;
+    };
   };
 
-  programs.hyprland.enable = true;
+  programs = {
+    hyprland.enable = true;
+    hyprlock.enable = true;
+  };
+  services.greetd = {
+    enable = true;
+    settings.default_session = {
+      command = "start-hyprland > /dev/null";
+      user = config.users.users.main.name;
+    };
+  };
+  console = {
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
+  };
+  programs.dconf = {
+    enable = true;
+    profiles.user.databases = [
+      {
+        settings."org/gnome/desktop/interface" = {
+          color-scheme = "prefer-dark";
+          font-name = "SF Pro Text 12";
+          monospace-font-name = "Liga SFMono Nerd Font";
+          document-font-name = "SF Pro Text 12";
+        };
+      }
+    ];
+  };
+  environment.etc = {
+    "xdg/gtk-3.0/settings.ini".text = ''
+      [Settings]
+      gtk-application-prefer-dark-theme=1
+      gtk-font-name=SF Pro Text 12
+    '';
+  };
+  qt = {
+    enable = true;
+    style = "adwaita-dark";
+  };
 
   services = {
     openssh.enable = true;
