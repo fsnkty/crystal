@@ -4,51 +4,50 @@
     wire.url = "github:forallsys/wire/stable"; # deployment
     wsl.url = "github:nix-community/NixOS-WSL";
   };
-  outputs = inputs @ {
-    nixpkgs,
-    wire,
-    wsl,
-    ...
-  }:
-  let
-    inherit (nixpkgs) lib;
-    listNixRecursive =
-      path:
-      builtins.concatMap (
-        p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
-      ) path;
+  outputs =
+    inputs@{
+      nixpkgs,
+      wire,
+      wsl,
+      ...
+    }:
+    let
+      inherit (nixpkgs) lib;
+      listNixRecursive =
+        path:
+        builtins.concatMap (
+          p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
+        ) path;
       system = "x86_64-linux"; # I only have amd64 systems for now
-  in
-  {
-    wire = wire.makeHive {
-      meta = {
-        nixpkgs = import nixpkgs { localSystem = system; };
-        specialArgs = { inherit inputs; };
-      };
-      defaults = {name, ... }: {
-        nixpkgs = {
-          hostPlatform = system;
-          config.allowUnfree = true;
+    in
+    {
+      wire = wire.makeHive {
+        meta = {
+          nixpkgs = import nixpkgs { localSystem = system; };
+          specialArgs = { inherit inputs; };
         };
-        imports = listNixRecursive [ ./mods ] ++ [ ./hosts/${name}.nix];
-        deployment.target = {
-          user = "fsnkty";
-          hosts = "${name}";
+        defaults =
+          { name, ... }:
+          {
+            nixpkgs.hostPlatform = system;
+            networking.hostName = "${name}";
+            imports = listNixRecursive [ ./mods ] ++ [ ./hosts/${name}.nix ];
+            deployment.target = {
+              user = "fsnkty";
+              hosts = "${name}";
+            };
+          };
+        factory = {
+          imports = [ wsl.nixosModules.wsl ];
         };
+        portal = { };
+        library = { };
       };
-      portal = { };
-      factory = {
-        imports = [wsl.nixosModules.wsl];
+      devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
+        buildInputs = [
+          wire.packages.${system}.wire-small # non -small requires aarch64 for some reason
+        ];
       };
-      library = {
-        deployment.allowLocalDeployment = false;
-      };
+      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-tree;
     };
-    devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
-      buildInputs = [
-        wire.packages.${system}.wire-small # non -small requires aarch64 for some reason
-      ];
-    };
-    formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-tree;
-  };
 }

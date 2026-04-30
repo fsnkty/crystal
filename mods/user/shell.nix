@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.shell;
+  cfg = config.users.shell;
   inherit (lib) mkEnableOption mkOption mkIf;
   inherit (lib.types) lines;
 in
 {
-  options.shell = {
+  options.users.shell = {
     setup = mkEnableOption "enable customzied zsh shell";
     prompt = mkOption {
       type = lines;

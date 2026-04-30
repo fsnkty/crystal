@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   options.vscode.remote.setup = lib.mkEnableOption "";
   config = lib.mkIf config.vscode.remote.setup {
     # vscode server

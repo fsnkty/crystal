@@ -1,38 +1,24 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   system = {
-    lockdown = true;
     cleanup = true;
     nix = true;
     nz = true;
   };
-  shell = {
-    setup = true;
-    prompt = "'%F{cyan}%m%f %~ %# '";
-  };
-  server = {
-    gtnh = {
-      enable = true;
-      dataDir = "/storage/games/gtnh";
-      openFirewall = true;
-      serverPort = 25566;
-      jvmOpts = "-Xms6G -Xmx6G -Dfml.readTimeout=180 @java9args.txt -jar lwjgl3ify-forgePatches.jar";
-      jvmPackage = pkgs.jre;
+  users = {
+    mainSetup = true;
+    disableRoot = true;
+    shell = {
+      setup = true;
+      prompt = "'%F{cyan}%m%f %~ %# '";
     };
-    paper = {
-      enable = true;
-      dataDir = "/storage/games/paper";
-      openFirewall = true;
-      jvmOpts =
-        "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders -XX:+UseTransparentHugePages"
-        + " -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled"
-        + " -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC"
-        + " -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40"
-        + " -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30"
-        + " -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15"
-        + " -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32"
-        + " -jar paper.jar";
-      jvmPackage = pkgs.jdk25_headless;
+  };
+
+  server = {
+    networking = {
+      nginx = true;
+      samba = true;
+      headless = true;
     };
     media = {
       group = true;
@@ -45,32 +31,39 @@
         jellyseerr = true;
       };
     };
-    networking = {
-      nginx = true;
-      samba = true;
-      headless = true;
+    minecraft-servers = {
+      gtnh = {
+        enable = true;
+        dataDir = "/storage/games/gtnh";
+        openFirewall = true;
+        serverPort = 25566;
+        jvmOpts = "-Xms6G -Xmx6G -Dfml.readTimeout=180 @java9args.txt -jar lwjgl3ify-forgePatches.jar";
+        jvmPackage = pkgs.jre;
+      };
+      paper = {
+        enable = true;
+        dataDir = "/storage/games/paper";
+        openFirewall = true;
+        jvmOpts =
+          "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders -XX:+UseTransparentHugePages"
+          + " -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled"
+          + " -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC"
+          + " -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40"
+          + " -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30"
+          + " -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15"
+          + " -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32"
+          + " -jar paper.jar";
+        jvmPackage = pkgs.jdk25_headless;
+      };
     };
   };
 
-  users = {
-    mutableUsers = false;
-    users.main = {
-      name = "fsnkty";
-      hashedPasswordFile = "/keys/user";
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      uid = 1000;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzo6UVJ72vS2sNW20QjMCmfCeChGPUT4YfY8VHiMVjv fsnkty@factory"
-      ];
-    };
-    users.amber = {
-      name = "amber";
-      hashedPasswordFile = "/keys/user_amber";
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      uid = 1002;
-    };
+  users.users.amber = {
+    name = "amber";
+    hashedPasswordFile = "/keys/user_amber";
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    uid = 1002;
   };
 
   services.openssh = {
@@ -82,12 +75,17 @@
         type = "ed25519";
       }
     ];
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      AllowUsers = [ config.users.users.main.name ];
+    };
   };
 
   networking = {
     firewall.enable = true;
     useNetworkd = true;
-    hostName = "library";
     hostId = "9a350e7b";
     enableIPv6 = false; # no ipv6 provided by ISP
     useDHCP = false; # static IP

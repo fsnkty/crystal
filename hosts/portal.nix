@@ -1,89 +1,20 @@
-{ config, pkgs, ... }:
+# TODO:  a desktop lol. should come after hjem
+{ ... }:
 {
   system = {
-    lockdown = true;
     cleanup = true;
     nix = true;
     nz = true;
     plymouth.setup = true;
   };
-  shell.setup = true;
-
-  vscode.remote.setup = true;
-
-  users.users.main = {
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzo6UVJ72vS2sNW20QjMCmfCeChGPUT4YfY8VHiMVjv fsnkty@factory"
-    ];
-    isNormalUser = true;
-    name = "fsnkty";
-    description = "Madison";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-    packages = builtins.attrValues {
-      inherit (pkgs) alacritty chromium;
+  users = {
+    mainSetup = true;
+    disableRoot = true;
+    shell = {
+      setup = true;
+      prompt = "'%F{red}%m%f %~ %# '";
     };
-  };
-
-  programs = {
-    hyprland.enable = true;
-    hyprlock.enable = true;
-  };
-  services.greetd = {
-    enable = true;
-    settings.default_session = {
-      command = "start-hyprland > /dev/null";
-      user = config.users.users.main.name;
-    };
-  };
-  console = {
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
-  };
-  programs.dconf = {
-    enable = true;
-    profiles.user.databases = [
-      {
-        settings."org/gnome/desktop/interface" = {
-          color-scheme = "prefer-dark";
-          font-name = "SF Pro Text 12";
-          monospace-font-name = "Liga SFMono Nerd Font";
-          document-font-name = "SF Pro Text 12";
-        };
-      }
-    ];
-  };
-  environment.etc = {
-    "xdg/gtk-3.0/settings.ini".text = ''
-      [Settings]
-      gtk-application-prefer-dark-theme=1
-      gtk-font-name=SF Pro Text 12
-    '';
-  };
-  qt = {
-    enable = true;
-    style = "adwaita-dark";
-  };
-
-  services = {
-    openssh.enable = true;
-    pulseaudio.enable = false;
-    pipewire = {
-      enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      pulse.enable = true;
-    };
-  };
-
-  security.rtkit.enable = true;
-
-  networking = {
-    hostName = "portal";
-    networkmanager.enable = true;
+    git.setup = true;
   };
 
   # fingerprint scanner
@@ -113,9 +44,6 @@
   };
   # rest of hardware
   boot = {
-    plymouth = {
-      enable = true;
-    };
     zswap.enable = true;
     loader = {
       systemd-boot.enable = true;

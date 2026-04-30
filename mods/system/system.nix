@@ -11,24 +11,11 @@ let
 in
 {
   options.system = {
-    lockdown = mkEnableOption "close various potential security flaws";
     cleanup = mkEnableOption "remove some default software";
     nix = mkEnableOption "sane flake nix defaults";
     nz = mkEnableOption "all settings related to timezone/location being NZ";
   };
   config = mkMerge [
-    (mkIf cfg.lockdown {
-      users.users.root = {
-        hashedPassword = lib.mkDefault "!"; # invalid hash will never resolve
-        shell = lib.mkForce pkgs.shadow; # unuseable shell
-      };
-      services.openssh.settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
-        AllowUsers = [ config.users.users.main.name ];
-      };
-    })
     (mkIf cfg.cleanup {
       environment.defaultPackages = [ ];
       programs = {
@@ -46,6 +33,7 @@ in
       boot.enableContainers = false;
     })
     (mkIf cfg.nix {
+      nixpkgs.config.allowUnfree = true;
       nix = {
         package = pkgs.nixVersions.latest;
         settings = {
