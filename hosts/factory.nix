@@ -23,14 +23,17 @@
   };
   vscode.remote.setup = true;
 
+  networking.hosts = {
+    "119.224.63.166" = [ "library" ];
+    "192.168.0.121" = [ "portal" ];
+  };
+
   # ssh
   programs.ssh.extraConfig = "
     Host library
       IdentityFile = ~/.ssh/factory
-      HostName = 119.224.63.166
     Host portal
       IdentityFile = ~/.ssh/factory
-      HostName 192.168.0.121
     Host github.com
   ";
   system.stateVersion = "24.11";
