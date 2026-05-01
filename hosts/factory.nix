@@ -30,11 +30,8 @@
 
   # ssh
   programs.ssh.extraConfig = "
-    Host library
+    Host *
       IdentityFile = ~/.ssh/factory
-    Host portal
-      IdentityFile = ~/.ssh/factory
-    Host github.com
   ";
   system.stateVersion = "24.11";
 }
