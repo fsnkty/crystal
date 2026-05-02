@@ -70,6 +70,8 @@ in
         name: instance:
         nameValuePair "minecraft-${name}" (
           mkIf instance.enable {
+            wantedBy = [ "multi-user.target" ];
+            requires = [ "minecraft-${name}.socket" ];
             after = [
               "network.target"
               "minecraft-${name}.socket"
