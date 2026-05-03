@@ -8,6 +8,7 @@ in
     nginx = mkEnableOption "Nginx web server";
     samba = mkEnableOption "Samba file sharing service";
     headless = mkEnableOption "Disable all gettys, serial consoles & emergency mode";
+    ssh = mkEnableOption "";
   };
   config = mkMerge [
     (mkIf cfg.nginx {
@@ -82,6 +83,17 @@ in
           "boot.panic_on_fail"
         ];
         loader.timeout = 0;
+      };
+    })
+    (mkIf cfg.ssh {
+      services.openssh = {
+        enable = true;
+        settings = {
+          PermitRootLogin = "no";
+          PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+          AllowUsers = [ config.users.users.main.name ];
+        };
       };
     })
   ];

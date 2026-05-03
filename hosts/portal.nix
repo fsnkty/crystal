@@ -1,11 +1,19 @@
-# TODO:  a desktop lol. should come after hjem
 { ... }:
 {
   system = {
     cleanup = true;
     nix = true;
     nz = true;
-    plymouth.setup = true;
+    desktop = {
+      darkmode = true;
+      fonts = true;
+      audio = true;
+      plymouth = true;
+      hyprland = {
+        enable = true;
+        greetd-autologin = true;
+      };
+    };
   };
   users = {
     mainSetup = true;
@@ -16,7 +24,7 @@
     };
     git.setup = true;
   };
-
+  server.networking.ssh = true;
   # fingerprint scanner
   nixpkgs.overlays = [
     (final: prev: {

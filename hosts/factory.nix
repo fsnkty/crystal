@@ -18,7 +18,11 @@
   wsl = {
     enable = true;
     defaultUser = "main";
-    wslConf.user.default = "fsnkty";
+    wslConf = {
+      user.default = "fsnkty";
+      network.generateHosts = false; # might break port forwarding from wsl to windows, but it also breaks `networking.hosts`
+      # the above should get a real fix, e.g.. merging the two properly.
+    };
     useWindowsDriver = true;
   };
   vscode.remote.setup = true;

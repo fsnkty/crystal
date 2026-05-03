@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   system = {
     cleanup = true;
@@ -19,6 +19,7 @@
       nginx = true;
       samba = true;
       headless = true;
+      ssh = true;
     };
     media = {
       group = true;
@@ -66,22 +67,13 @@
     uid = 1002;
   };
 
-  services.openssh = {
-    enable = true;
-    hostKeys = [
-      {
-        comment = "library host";
-        path = "/etc/ssh/library_ed25519_key"; # library priv
-        type = "ed25519";
-      }
-    ];
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      AllowUsers = [ config.users.users.main.name ];
-    };
-  };
+  services.openssh.hostKeys = [
+    {
+      comment = "library host";
+      path = "/etc/ssh/library_ed25519_key"; # library priv
+      type = "ed25519";
+    }
+  ];
 
   networking = {
     firewall.enable = true;
