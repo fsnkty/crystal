@@ -1,23 +1,38 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    wire.url = "github:forallsys/wire/stable"; # deployment
-    wsl.url = "github:nix-community/NixOS-WSL";
+    wire = {
+      # deployment
+      url = "github:forallsys/wire/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hjem = {
+      # /home/ management
+      url = "github:feel-co/hjem";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wsl = {
+      # windows subsystem for linux
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
-    inputs@{
-      nixpkgs,
-      wire,
-      wsl,
-      ...
+    inputs@{ nixpkgs
+    , wire
+    , hjem
+    , wsl
+    , ...
     }:
     let
       inherit (nixpkgs) lib;
       listNixRecursive =
         path:
-        builtins.concatMap (
-          p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
-        ) path;
+        builtins.concatMap
+          (
+            p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
+          )
+          path;
       system = "x86_64-linux"; # I only have amd64 systems for now
     in
     {
@@ -31,7 +46,11 @@
           {
             nixpkgs.hostPlatform = system;
             networking.hostName = "${name}";
-            imports = listNixRecursive [ ./mods ] ++ [ ./hosts/${name}.nix ];
+            imports = listNixRecursive [ ./mods ] ++
+              [
+                ./hosts/${name}.nix
+                hjem.nixosModules.default
+              ];
             deployment.target = {
               user = "fsnkty";
               hosts = "${name}";
