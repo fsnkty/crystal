@@ -55,10 +55,16 @@
             };
           };
         factory = {
+          deployment.tags = [ "deployable" ];
           imports = [ wsl.nixosModules.wsl ];
         };
-        portal = { };
-        library = { };
+        portal = {
+          deployment.tags = [ "deployable" ];
+        };
+        library = {
+          deployment.tags = [ "deployable" ];
+        };
+        recovery = { };
       };
       devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
         buildInputs = [

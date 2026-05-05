@@ -13,6 +13,8 @@
     nix = true;
     nz = true;
   };
+  deployer.setup = true;
+  
   systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
   users.users.nixos = {
     openssh.authorizedKeys.keys = [
@@ -21,4 +23,6 @@
     password = "remote";
     initialHashedPassword = lib.mkForce null;
   };
+  # eval warning, for some reason the installer cd minimal is making this true..
+  boot.zfs.forceImportRoot = lib.mkForce false;
 }

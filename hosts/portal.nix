@@ -15,6 +15,7 @@
       };
     };
   };
+
   users = {
     mainSetup = true;
     disableRoot = true;
@@ -24,6 +25,7 @@
     };
     git.setup = true;
   };
+  networking.networkmanager.enable = true;
   server.networking.ssh = true;
   # fingerprint scanner
   nixpkgs.overlays = [
