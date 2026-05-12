@@ -1,4 +1,10 @@
-{ ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   system = {
     cleanup = true;
@@ -14,20 +20,24 @@
     };
     git.setup = true;
   };
-
+  users.users.main = {
+    uid = lib.mkForce 1001; # wsl issue
+    packages = [
+      inputs.wire.packages.x86_64-linux.wire-small
+      pkgs.wget
+      pkgs.nixpkgs-fmt
+      pkgs.nixd
+    ];
+  };
+  programs.nix-ld.enable = true;
   wsl = {
     enable = true;
-    defaultUser = "main";
+    defaultUser = "fsnkty";
     wslConf = {
       user.default = "fsnkty";
-      # might break port forwarding from wsl to windows,
-      # but it also breaks `networking.hosts`
-      # should get a real fix, e.g.. merging the two properly.
       network.generateHosts = false;
     };
-    useWindowsDriver = true;
   };
-  deployer.setup = true;
 
   networking.hosts = {
     "119.224.63.166" = [ "library" ];

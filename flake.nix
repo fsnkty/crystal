@@ -21,56 +21,41 @@
     inputs@{
       nixpkgs,
       wire,
-      hjem,
       wsl,
       ...
     }:
-    let
-      inherit (nixpkgs) lib;
-      listNixRecursive =
-        path:
-        builtins.concatMap (
-          p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
-        ) path;
-      system = "x86_64-linux"; # I only have amd64 systems for now
-    in
     {
       wire = wire.makeHive {
         meta = {
-          nixpkgs = import nixpkgs { localSystem = system; };
+          nixpkgs = import nixpkgs { localSystem = "x86_64-linux"; };
           specialArgs = { inherit inputs; };
         };
         defaults =
           { name, ... }:
           {
-            nixpkgs.hostPlatform = system;
+            nixpkgs.hostPlatform = "x86_64-linux";
             networking.hostName = "${name}";
-            imports = listNixRecursive [ ./mods ] ++ [
-              ./hosts/${name}.nix
-              hjem.nixosModules.default
-            ];
+            imports =
+              builtins.concatMap (
+                p:
+                builtins.filter (nixpkgs.lib.hasSuffix ".nix") (
+                  map toString (nixpkgs.lib.filesystem.listFilesRecursive p)
+                )
+              ) [ ./mods ]
+              ++ [ ./hosts/${name}.nix ];
             deployment.target = {
               user = "fsnkty";
               hosts = "${name}";
             };
           };
         factory = {
-          deployment.tags = [ "deployable" ];
-          imports = [ wsl.nixosModules.wsl ];
+          imports = [
+            wsl.nixosModules.wsl
+          ];
         };
-        portal = {
-          deployment.tags = [ "deployable" ];
-        };
-        library = {
-          deployment.tags = [ "deployable" ];
-        };
-        recovery = { };
+        portal = { };
+        library = { };
       };
-      devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
-        buildInputs = [
-          wire.packages.${system}.wire-small # non -small requires aarch64 for some reason
-        ];
-      };
-      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-tree;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
     };
 }
