@@ -25,12 +25,7 @@
       group = true;
       jellyfin = true;
       qbit = true;
-      arrs = {
-        radarr = true;
-        sonarr = true;
-        prowlarr = true;
-        jellyseerr = true;
-      };
+      arrs = true;
     };
     minecraft-servers = {
       gtnh = {

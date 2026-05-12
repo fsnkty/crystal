@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   system = {
     cleanup = true;
     nix = true;
@@ -40,7 +39,7 @@
         };
         buildInputs = (old.buildInputs or [ ]) ++ [ final.nss ];
         # Keep any patches Nixpkgs already applies to libfprint
-        patches = (old.patches or [ ]);
+        patches = old.patches or [ ];
       });
     })
   ];

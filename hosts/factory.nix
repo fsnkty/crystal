@@ -1,6 +1,5 @@
 {
   inputs,
-  config,
   pkgs,
   lib,
   ...
@@ -20,15 +19,15 @@
     };
     git.setup = true;
   };
-  users.users.main = {
-    uid = lib.mkForce 1001; # wsl issue
-    packages = [
-      inputs.wire.packages.x86_64-linux.wire-small
-      pkgs.wget
-      pkgs.nixpkgs-fmt
-      pkgs.nixd
-    ];
-  };
+  users.users.main.packages = [
+    inputs.wire.packages.x86_64-linux.wire-small
+    pkgs.wget
+    pkgs.nixd
+    pkgs.nixpkgs-fmt
+    pkgs.deadnix
+    pkgs.statix
+  ];
+  users.users.main.uid = lib.mkForce 1001;
   programs.nix-ld.enable = true;
   wsl = {
     enable = true;
