@@ -13,13 +13,13 @@
                 // You can write arbitrary Nix expressions here, to produce valid "options" declaration result.
                 // Tip: for flake-based configuration, utilize `builtins.getFlake`
                 "factory": {
-                    "expr": "(builtins.getFlake \"/home/fsnkty/crystal\").nixosConfigurations.factory.options",
+                    "expr": "(builtins.getFlake \"/home/fsnkty/crystal\").wire.nodes.factory.options",
                 },
                 "library": {
-                    "expr": "(builtins.getFlake \"/home/fsnkty/crystal\").nixosConfigurations.library.options",
+                    "expr": "(builtins.getFlake \"/home/fsnkty/crystal\").wire.nodes.library.options",
                 },
                 "portal": {
-                    "expr": "(builtins.getFlake \"/home/fsnkty/crystal\").nixosConfigurations.portal.options",
+                    "expr": "(builtins.getFlake \"/home/fsnkty/crystal\").wire.nodes.portal.options",
                 },
             },
         }

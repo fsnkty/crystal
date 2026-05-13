@@ -122,6 +122,9 @@ in
           enable = true;
           group = "media";
         };
+        flaresolverr = {
+          enable = true;
+        };
         recyclarr = {
           enable = true;
           group = "media";
