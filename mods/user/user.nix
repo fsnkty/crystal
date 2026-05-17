@@ -22,6 +22,7 @@ in
     (mkIf cfg.mainSetup {
       users.users.main = {
         name = "fsnkty";
+        description = "Madison";
         hashedPasswordFile = "/keys/user";
         isNormalUser = true;
         extraGroups = [ "wheel" ];

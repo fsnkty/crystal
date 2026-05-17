@@ -16,12 +16,17 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
       nixpkgs,
       wire,
       wsl,
+      lanzaboote,
       ...
     }:
     {
@@ -53,7 +58,14 @@
             wsl.nixosModules.wsl
           ];
         };
-        portal = { };
+        portal = {
+          imports = [
+            lanzaboote.nixosModules.lanzaboote
+          ];
+          deployment.target = {
+            hosts = "192.168.0.121";
+          };
+        };
         library = { };
       };
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;

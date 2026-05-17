@@ -13,10 +13,6 @@ in
     darkmode = mkEnableOption "";
     fonts = mkEnableOption "";
     audio = mkEnableOption "";
-    hyprland = {
-      enable = mkEnableOption "";
-      greetd-autologin = mkEnableOption "";
-    };
     plymouth = mkEnableOption "";
     dont-wait-network = mkEnableOption "";
   };
@@ -40,32 +36,6 @@ in
         ];
         initrd.verbose = false;
         loader.timeout = 0;
-      };
-    })
-    (mkIf cfg.hyprland.enable {
-      # desktop setup.
-      programs = {
-        hyprland = {
-          enable = true;
-          # withUWSM = true; # may require more setup, wont use for now.
-          # https://wiki.hypr.land/Useful-Utilities/Systemd-start/#launching-applications-inside-session
-          xwayland.enable = false; # its 2026 cmon now.
-        };
-        # https://github.com/AuthenticSm1les/hyprlogin should replace this prob
-        hyprlock.enable = true;
-      };
-    })
-    (mkIf cfg.hyprland.greetd-autologin {
-      services = {
-        # login / session management
-        greetd = {
-          enable = true;
-          settings.default_session = {
-            # same here, hyprlogin should be used. I'll probably need to work on it myself though.
-            command = "start-hyprland";
-            user = config.users.users.main.name;
-          };
-        };
       };
     })
     (mkIf cfg.darkmode {

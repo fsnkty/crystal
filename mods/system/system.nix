@@ -61,7 +61,7 @@ in
     (mkIf cfg.nz {
       time.timeZone = "Pacific/Auckland";
       i18n = {
-        defaultLocale = "en_GB.UTF-8";
+        defaultLocale = "en_NZ.UTF-8";
         extraLocaleSettings = {
           LC_ADDRESS = "en_NZ.UTF-8";
           LC_IDENTIFICATION = "en_NZ.UTF-8";

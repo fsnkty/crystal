@@ -1,4 +1,5 @@
-_: {
+{ pkgs, ... }:
+{
   system = {
     cleanup = true;
     nix = true;
@@ -8,13 +9,11 @@ _: {
       fonts = true;
       audio = true;
       plymouth = true;
-      hyprland = {
-        enable = true;
-        greetd-autologin = true;
-      };
+      dont-wait-network = true;
+      t460sfingerprint.enable = true;
     };
   };
-
+  server.networking.ssh = true;
   users = {
     mainSetup = true;
     disableRoot = true;
@@ -24,72 +23,66 @@ _: {
     };
     git.setup = true;
   };
-  networking.networkmanager.enable = true;
-  server.networking.ssh = true;
-  # fingerprint scanner
-  nixpkgs.overlays = [
-    (final: prev: {
-      libfprint = prev.libfprint.overrideAttrs (old: {
-        pname = "libfprint-vfs009x";
-        # version = "1.94.9+vfs009x";
-        src = final.fetchgit {
-          url = "https://gitlab.archlinux.org/gugah/libfprint.git";
-          rev = "450e6aea0f5c92b3719d910c0defb2c85b0746df"; # refs/head/vfs009x
-          sha256 = "sha256-Rm62zo2PRO1GlN8I9+r7MOl9q4AlUixrD1Y13Of8Xmw=";
-        };
-        buildInputs = (old.buildInputs or [ ]) ++ [ final.nss ];
-        # Keep any patches Nixpkgs already applies to libfprint
-        patches = old.patches or [ ];
-      });
-    })
-  ];
-  systemd.services.fprintd = {
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig.Type = "simple";
+  networking = {
+    hostName = "portal";
+    networkmanager.enable = true;
   };
-  services.fprintd = {
-    enable = true;
-    tod.enable = false;
+
+  services = {
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
   };
-  # rest of hardware
-  boot = {
-    zswap.enable = true;
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-    kernelModules = [ "kvm-intel" ];
-    initrd.availableKernelModules = [
-      "xhci_pci"
-      "ahci"
-      "usb_storage"
-      "sd_mod"
-      "rtsx_pci_sdmmc"
+  
+  users.users.main = {
+    extraGroups = [ "networkmanager" ];
+    packages = with pkgs; [
+      firefox
+      vscode
+      vim
+      wget
+      sbctl
     ];
   };
+
   hardware = {
     cpu.intel.updateMicrocode = true;
     enableRedistributableFirmware = true;
   };
-  fileSystems = {
-    "/boot" = {
-      device = "/dev/disk/by-uuid/2906-7F1F";
-      fsType = "vfat";
-      options = [
-        "rw"
-        "noatime"
-        "fmask=0077"
-        "dmask=0077"
-        "x-systemd.automount" # only mount when requested
-      ];
+  boot = {
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
     };
+    loader.efi.canTouchEfiVariables = true;
+    initrd = {
+      availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+      systemd.enable = true;
+      luks.devices = {
+        "rootcrypt" = {
+          device = "/dev/disk/by-uuid/4b906d09-a291-448f-b93f-ad8688ef6a6d";
+          crypttabExtraOpts = [ "tpm-device=auto" ];
+        };
+        "swapcrypt" = {
+          device = "/dev/disk/by-uuid/d4ef99d7-eeb8-4a9b-bfee-c9f4bf45cfe0";
+          crypttabExtraOpts = [ "tpm-device=auto" ];
+        };
+      };
+    };
+    kernelModules = [ "kvm-intel" ];
+  };
+  fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/30981d97-ba12-4c25-9e69-ff8874a2d9d2";
+      device = "/dev/mapper/rootcrypt";
       fsType = "ext4";
+      options = [ "noatime" ];
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/52A5-10D0";
+      fsType = "vfat";
+      options = [ "rw" "noatime" "fmask=0077" "dmask=0077" "x-systemd.automount" ];
     };
   };
-  swapDevices = [
-    { device = "/dev/disk/by-uuid/238ef32e-be79-4dce-8fd9-c1a5a9b39f9e"; }
-  ];
-  system.stateVersion = "25.05";
+  swapDevices = [{ device = "/dev/mapper/swapcrypt"; }];
+
+  system.stateVersion = "25.11";
 }
