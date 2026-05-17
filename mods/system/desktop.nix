@@ -15,8 +15,48 @@ in
     audio = mkEnableOption "";
     plymouth = mkEnableOption "";
     dont-wait-network = mkEnableOption "";
+    gnome-minimal = mkEnableOption "";
   };
   config = mkMerge [
+    (mkIf cfg.gnome-minimal {
+      services = {
+        displayManager.gdm.enable = true;
+        desktopManager.gnome.enable = true;
+      };
+      services.gnome = {
+        core-apps.enable = false;
+        core-developer-tools.enable = false;
+        games.enable = false;
+      };
+      environment = {
+        gnome.excludePackages = with pkgs; [ gnome-tour gnome-user-docs ];
+        systemPackages = with pkgs.gnomeExtensions; [ appindicator just-perfection ];
+      };
+      programs.dconf = {
+        enable = true;
+        profiles.user.databases = [
+          {
+            settings = {
+              "org/gnome/mutter" = {
+                experimental-features = [
+                  "scale-monitor-framebuffer"
+                  "xwayland-native-scaling"
+                  "autoclose-xwayland"
+                ];
+              };
+              "org/gnome/shell" = {
+                enabled-extensions = with pkgs.gnomeExtensions; [
+                  # system tray icons
+                  appindicator.extensionUuid
+                  # tweaks extension
+                  just-perfection.extensionUuid
+                ];
+              };
+            };
+          }
+        ];
+      };
+    })
     (mkIf cfg.dont-wait-network {
       systemd = {
         services.systemd-udev-settle.enable = false;
@@ -40,16 +80,13 @@ in
     })
     (mkIf cfg.darkmode {
       # gtk "dark mode" pref, ( some non-gtk guis will also listen to this )
-      programs.dconf = {
-        enable = true;
-        profiles.user.databases = [
-          {
-            settings."org/gnome/desktop/interface" = {
-              color-scheme = "prefer-dark";
-            };
-          }
-        ];
-      };
+      programs.dconf.profiles.user.databases = [
+        {
+          settings."org/gnome/desktop/interface" = {
+            color-scheme = "prefer-dark";
+          };
+        }
+      ];
       # similarly to gtk, just as a way to set a "dark mode", aditionally should also hopefully "fit in" more with gtk apps.
       qt = {
         enable = true;

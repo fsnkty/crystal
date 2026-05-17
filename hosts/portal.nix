@@ -11,6 +11,7 @@
       plymouth = true;
       dont-wait-network = true;
       t460sfingerprint.enable = true;
+      gnome-minimal = true;
     };
   };
   server.networking.ssh = true;
@@ -27,34 +28,46 @@
     hostName = "portal";
     networkmanager.enable = true;
   };
-
-  services = {
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-  };
   
   users.users.main = {
     extraGroups = [ "networkmanager" ];
     packages = with pkgs; [
+      alacritty
       firefox
       vscode
       vim
       wget
-      sbctl
-    ];
+      ];
   };
 
+  programs.steam.enable = true;
+
+  services.fstrim.enable = true;
   hardware = {
     cpu.intel.updateMicrocode = true;
     enableRedistributableFirmware = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        intel-vaapi-driver
+        intel-media-driver
+      ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        intel-vaapi-driver
+      ];
+    };
   };
+  environment.sessionVariables = { LIBVA_DRIVER_NAME = "i965"; };
   boot = {
+    kernelParams = [ "i915.enable_guc=2" ];
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
     };
     loader.efi.canTouchEfiVariables = true;
     initrd = {
+      kernelModules = [ "kvm-intel" "i915" ];
       availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
       systemd.enable = true;
       luks.devices = {
@@ -68,7 +81,6 @@
         };
       };
     };
-    kernelModules = [ "kvm-intel" ];
   };
   fileSystems = {
     "/" = {
