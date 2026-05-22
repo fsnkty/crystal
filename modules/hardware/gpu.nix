@@ -16,7 +16,7 @@ in
   };
   config = mkMerge [
     (mkIf cfg.intel.enable {
-      crystal.system.hardware.generic = true;
+      crystal.system.hardware.gpu.generic = true;
       environment.sessionVariables = {
         LIBVA_DRIVER_NAME = "i915";
       };
@@ -35,7 +35,7 @@ in
       };
     })
     (mkIf cfg.amd.enable {
-      crystal.system.hardware.generic = true;
+      crystal.system.hardware.gpu.generic = true;
       boot.initrd.kernelModules = [ "amdgpu" ];
     })
     (mkIf cfg.generic {
