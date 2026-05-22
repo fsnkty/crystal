@@ -1,13 +1,10 @@
-{
-  pkgs,
-  ...
-}:
-{
+_: {
   crystal = {
     system = {
       cleanup = true;
       nix.setup = true;
       timezone.nz = true;
+      vscode.remote = true;
     };
     users = {
       main = {
@@ -21,13 +18,6 @@
       root.disable = true;
     };
   };
-
-  # vscode remote setup
-  users.users.main.packages = [
-    pkgs.wget
-    pkgs.nixd
-  ];
-  programs.nix-ld.enable = true;
 
   wsl = {
     enable = true;

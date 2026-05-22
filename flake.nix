@@ -17,13 +17,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = {
-    self
-    , nixpkgs
-    , wire
-    , wsl
-    , lanzaboote
-    , ...
+  outputs =
+    {
+      self,
+      nixpkgs,
+      wire,
+      wsl,
+      lanzaboote,
+      ...
     }@inputs:
     let
       inherit (nixpkgs) lib;
@@ -31,13 +32,12 @@
       pkgs = nixpkgs.legacyPackages.${system};
       listNixRecursive =
         path:
-        builtins.concatMap
-          (
-            p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
-          )
-          path;
+        builtins.concatMap (
+          p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
+        ) path;
       listHosts = map (host: (lib.removeSuffix ".nix" host)) (
-        builtins.attrNames (builtins.readDir ./hosts));
+        builtins.attrNames (builtins.readDir ./hosts)
+      );
     in
     {
       wire = wire.makeHive {
@@ -46,12 +46,14 @@
           nixpkgs = import nixpkgs { localSystem = system; };
           specialArgs = { inherit inputs; };
         };
-        defaults = {name, ...}: {
-          deployment.target = {
-            user = "fsnkty";
-            hosts = name;
+        defaults =
+          { name, ... }:
+          {
+            deployment.target = {
+              user = "fsnkty";
+              hosts = name;
+            };
           };
-        };
         factory = { };
         library = { };
         portal = { };

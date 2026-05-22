@@ -37,37 +37,46 @@ in
           XDG_CACHE_HOME = ''"$HOME"/.cache'';
         };
       };
-      programs.zsh = {
-        enable = true;
-        enableCompletion = true;
-        enableBashCompletion = true;
-        autosuggestions.enable = true;
-        syntaxHighlighting.enable = true;
-        histSize = 10000;
-        histFile = "$HOME/.cache/zsh_history";
-        shellInit = ''
-          zsh-newuser-install() { :; }
-          bindkey "^[[1;5C" forward-word
-          bindkey "^[[1;5D" backward-word
-          bindkey '^H' backward-kill-word
-          bindkey '5~' kill-word
-          (( ''${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
-          ZSH_HIGHLIGHT_STYLES[path]=none
-          ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-          nr() {
-            nix run nixpkgs#$1 -- ''${@:2}
-          }
-          ns() {
-            nix shell nixpkgs#''${^@}
-          }
-        '';
-        shellAliases = {
-          ls = "eza";
-          lg = "eza -lag";
-          grep = "grep --color=auto";
-          rebuild-library = "nixos-rebuild switch --target-host fsnkty@119.224.63.166 --flake .#library --sudo --ask-sudo-password";
+      programs = {
+        zsh = {
+          enable = true;
+          enableCompletion = true;
+          enableBashCompletion = true;
+          autosuggestions.enable = true;
+          syntaxHighlighting.enable = true;
+          histSize = 10000;
+          histFile = "$HOME/.cache/zsh_history";
+          shellInit = ''
+            zsh-newuser-install() { :; }
+            bindkey "^[[1;5C" forward-word
+            bindkey "^[[1;5D" backward-word
+            bindkey '^H' backward-kill-word
+            bindkey '5~' kill-word
+            (( ''${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+            ZSH_HIGHLIGHT_STYLES[path]=none
+            ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+            nr() {
+              nix run nixpkgs#$1 -- ''${@:2}
+            }
+            ns() {
+              nix shell nixpkgs#''${^@}
+            }
+            eval "$(direnv hook zsh)"
+          '';
+          shellAliases = {
+            ls = "eza";
+            lg = "eza -lag";
+            grep = "grep --color=auto";
+            rebuild-library = "nixos-rebuild switch --target-host fsnkty@119.224.63.166 --flake .#library --sudo --ask-sudo-password";
+          };
+          promptInit = "PROMPT=${cfg.prompt}";
         };
-        promptInit = "PROMPT=${cfg.prompt}";
+        direnv = {
+          enable = true;
+          nix-direnv.enable = true;
+          loadInNixShell = true;
+          enableZshIntegration = true;
+        };
       };
     };
 }
