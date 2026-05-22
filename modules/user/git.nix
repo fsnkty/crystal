@@ -1,16 +1,8 @@
-## TODO:
-## 1. move to hjem such that this setup only applys to the main user.
 { lib, config, ... }:
-let
-  cfg = config.users.git;
-  inherit (lib) mkEnableOption mkMerge mkIf;
-in
 {
-  options.users.git = {
-    setup = mkEnableOption "";
-  };
-  config = mkMerge [
-    (mkIf cfg.setup {
+  options.crystal.users.main.git.setup = lib.mkEnableOption "";
+  config = lib.mkMerge [
+    (lib.mkIf config.crystal.users.main.git.setup {
       programs.git = {
         enable = true;
         config = {

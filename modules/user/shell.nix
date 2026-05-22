@@ -5,13 +5,13 @@
   ...
 }:
 let
-  cfg = config.users.shell;
+  cfg = config.crystal.users.main.shell;
   inherit (lib) mkEnableOption mkOption mkIf;
   inherit (lib.types) lines;
 in
 {
-  options.users.shell = {
-    setup = mkEnableOption "enable customzied zsh shell";
+  options.crystal.users.main.shell = {
+    setup = mkEnableOption "zsh";
     prompt = mkOption {
       type = lines;
       default = "'%~ %# '";

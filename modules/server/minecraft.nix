@@ -23,7 +23,7 @@ let
     submodule
     separatedString
     ;
-  cfg = config.server.minecraft-servers;
+  cfg = config.crystal.server.minecraft-servers;
 
   instanceOpts =
     { name, ... }:
@@ -59,7 +59,7 @@ let
     };
 in
 {
-  options.server.minecraft-servers = mkOption {
+  options.crystal.server.minecraft-servers = mkOption {
     type = attrsOf (submodule instanceOpts);
     default = { };
   };

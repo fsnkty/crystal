@@ -1,10 +1,10 @@
 { config, lib, ... }:
 let
-  cfg = config.server.networking;
+  cfg = config.crystal.server.networking;
   inherit (lib) mkMerge mkIf mkEnableOption;
 in
 {
-  options.server.networking = {
+  options.crystal.server.networking = {
     nginx = mkEnableOption "Nginx web server";
     samba = mkEnableOption "Samba file sharing service";
     headless = mkEnableOption "Disable all gettys, serial consoles & emergency mode";

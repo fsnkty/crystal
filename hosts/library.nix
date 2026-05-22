@@ -1,65 +1,66 @@
 { pkgs, ... }:
 {
-  system = {
-    cleanup = true;
-    nix = true;
-    nz = true;
-  };
-  users = {
-    mainSetup = true;
-    disableRoot = true;
-    shell = {
-      setup = true;
-      prompt = "'%F{cyan}%m%f %~ %# '";
-    };
-  };
-
-  server = {
-    networking = {
-      nginx = true;
-      samba = true;
-      headless = true;
-      ssh = true;
-    };
-    media = {
-      group = true;
-      jellyfin = true;
-      qbit = true;
-      arrs = true;
-    };
-    minecraft-servers = {
-      gtnh = {
-        enable = true;
-        dataDir = "/storage/games/gtnh";
-        openFirewall = true;
-        serverPort = 25566;
-        jvmOpts = "-Xms6G -Xmx6G -Dfml.readTimeout=180 @java9args.txt -jar lwjgl3ify-forgePatches.jar";
-        jvmPackage = pkgs.jre;
-      };
-      paper = {
-        enable = true;
-        dataDir = "/storage/games/paper";
-        openFirewall = true;
-        jvmOpts =
-          "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders -XX:+UseTransparentHugePages"
-          + " -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled"
-          + " -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC"
-          + " -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40"
-          + " -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30"
-          + " -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15"
-          + " -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32"
-          + " -jar paper.jar";
-        jvmPackage = pkgs.jdk25_headless;
+  crystal = {
+    system = {
+      cleanup = true;
+      nix.setup = true;
+      timezone.nz = true;
+      hardware = {
+        cpu.intel.enable = true;
+        gpu.intel.enable = true;
       };
     };
-  };
-
-  users.users.amber = {
-    name = "amber";
-    hashedPasswordFile = "/keys/user_amber";
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    uid = 1002;
+    users = {
+      main = {
+        setup = true;
+        shell = {
+          setup = true;
+          prompt = "'%F{cyan}%m%f %~ %# '";
+        };
+        git.setup = true;
+      };
+      amber.setup = true;
+      root.disable = true;
+      mediaGroup.setup = true;
+    };
+    server = {
+      networking = {
+        nginx = true;
+        samba = true;
+        headless = true;
+        ssh = true;
+      };
+      media = {
+        jellyfin.enable = true;
+        qbittorrent.enable = true;
+        arrs.enable = true;
+      };
+      minecraft-servers = {
+        gtnh = {
+          enable = true;
+          dataDir = "/storage/games/gtnh";
+          openFirewall = true;
+          serverPort = 25566;
+          jvmOpts = "-Xms6G -Xmx6G -Dfml.readTimeout=180 @java9args.txt -jar lwjgl3ify-forgePatches.jar";
+          jvmPackage = pkgs.jre;
+        };
+        paper = {
+          enable = true;
+          dataDir = "/storage/games/paper";
+          openFirewall = true;
+          jvmOpts =
+            "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders -XX:+UseTransparentHugePages"
+            + " -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled"
+            + " -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC"
+            + " -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40"
+            + " -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30"
+            + " -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15"
+            + " -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32"
+            + " -jar paper.jar";
+          jvmPackage = pkgs.jdk25_headless;
+        };
+      };
+    };
   };
 
   services.openssh.hostKeys = [
@@ -89,13 +90,8 @@
     };
   };
 
-  hardware = {
-    enableRedistributableFirmware = true;
-    cpu.intel.updateMicrocode = true;
-  };
   boot = {
     loader.systemd-boot.enable = true;
-    kernelModules = [ "kvm-intel" ];
     supportedFilesystems = [ "zfs" ];
   };
   services.zfs = {

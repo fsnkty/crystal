@@ -1,34 +1,34 @@
 {
-  inputs,
   pkgs,
-  lib,
   ...
 }:
 {
-  system = {
-    cleanup = true;
-    nix = true;
-    nz = true;
-  };
-  users = {
-    mainSetup = true;
-    disableRoot = true;
-    shell = {
-      setup = true;
-      prompt = "'%F{red}%m%f %~ %# '";
+  crystal = {
+    system = {
+      cleanup = true;
+      nix.setup = true;
+      timezone.nz = true;
     };
-    git.setup = true;
+    users = {
+      main = {
+        setup = true;
+        shell = {
+          setup = true;
+          prompt = "'%F{red}%m%f %~ %# '";
+        };
+        git.setup = true;
+      };
+      root.disable = true;
+    };
   };
+
+  # vscode remote setup
   users.users.main.packages = [
-    inputs.wire.packages.x86_64-linux.wire-small
     pkgs.wget
     pkgs.nixd
-    pkgs.nixpkgs-fmt
-    pkgs.deadnix
-    pkgs.statix
   ];
-  users.users.main.uid = lib.mkForce 1001;
   programs.nix-ld.enable = true;
+
   wsl = {
     enable = true;
     defaultUser = "fsnkty";

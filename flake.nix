@@ -6,17 +6,13 @@
       url = "github:forallsys/wire/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hjem = {
-      # /home/ management
-      url = "github:feel-co/hjem";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     wsl = {
       # windows subsystem for linux
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
+      # secure boot systemd-boot
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -25,14 +21,18 @@
     inputs@{
       nixpkgs,
       wire,
-      wsl,
       lanzaboote,
+      wsl,
       ...
     }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
     {
       wire = wire.makeHive {
         meta = {
-          nixpkgs = import nixpkgs { localSystem = "x86_64-linux"; };
+          nixpkgs = import nixpkgs { localSystem = system; };
           specialArgs = { inherit inputs; };
         };
         defaults =
@@ -62,12 +62,17 @@
           imports = [
             lanzaboote.nixosModules.lanzaboote
           ];
-          deployment.target = {
-            hosts = "192.168.0.121";
-          };
         };
         library = { };
       };
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = [
+          wire.packages.x86_64-linux.wire-small
+          pkgs.nixpkgs-fmt
+          pkgs.deadnix
+          pkgs.statix
+        ];
+      };
+      formatter.${system} = pkgs.nixfmt-tree;
     };
 }

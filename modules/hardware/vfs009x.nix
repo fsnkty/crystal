@@ -1,7 +1,7 @@
 { config, lib, ... }:
 {
-  options.system.desktop.t460sfingerprint.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.system.desktop.t460sfingerprint.enable {
+  options.crystal.system.hardware.vfs009x.enable = lib.mkEnableOption "";
+  config = lib.mkIf config.crystal.system.hardware.vfs009x.enable {
     # fingerprint scanner
     nixpkgs.overlays = [
       (final: prev: {

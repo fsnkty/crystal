@@ -1,34 +1,35 @@
 { pkgs, ... }:
 {
-  system = {
-    cleanup = true;
-    nix = true;
-    nz = true;
+  crystal = {
+    system = {
+      cleanup = true;
+      nix.setup = true;
+      timezone.nz = true;
+      hardware = {
+        cpu.intel.enable = true;
+        gpu.intel.enable = true;
+        vfs009x.enable = true;
+      };
+    };
+    users = {
+      main = {
+        setup = true;
+        shell.setup = true;
+        git.setup = true;
+      };
+      root.disable = true;
+    };
     desktop = {
-      darkmode = true;
-      fonts = true;
-      audio = true;
-      plymouth = true;
-      dont-wait-network = true;
-      t460sfingerprint.enable = true;
-      gnome-minimal = true;
+      darkmode.enable = true;
+      fonts.setup = true;
+      audio.setup = true;
+      plymouth.setup = true;
+      fastboot.enable = true;
+      gnome.setup = true;
     };
+    server.networking.ssh = true;
   };
-  server.networking.ssh = true;
-  users = {
-    mainSetup = true;
-    disableRoot = true;
-    shell = {
-      setup = true;
-      prompt = "'%F{red}%m%f %~ %# '";
-    };
-    git.setup = true;
-  };
-  networking = {
-    hostName = "portal";
-    networkmanager.enable = true;
-  };
-  
+
   users.users.main = {
     extraGroups = [ "networkmanager" ];
     packages = with pkgs; [
@@ -37,38 +38,29 @@
       vscode
       vim
       wget
-      ];
+    ];
   };
 
   programs.steam.enable = true;
 
-  services.fstrim.enable = true;
-  hardware = {
-    cpu.intel.updateMicrocode = true;
-    enableRedistributableFirmware = true;
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = with pkgs; [
-        intel-vaapi-driver
-        intel-media-driver
-      ];
-      extraPackages32 = with pkgs.pkgsi686Linux; [
-        intel-vaapi-driver
-      ];
-    };
-  };
-  environment.sessionVariables = { LIBVA_DRIVER_NAME = "i965"; };
+  networking.networkmanager.enable = true;
+
+  services.fstrim.enable = true; # ssd
+
   boot = {
-    kernelParams = [ "i915.enable_guc=2" ];
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
     };
     loader.efi.canTouchEfiVariables = true;
     initrd = {
-      kernelModules = [ "kvm-intel" "i915" ];
-      availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+      availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "usb_storage"
+        "sd_mod"
+        "rtsx_pci_sdmmc"
+      ];
       systemd.enable = true;
       luks.devices = {
         "rootcrypt" = {
@@ -91,10 +83,16 @@
     "/boot" = {
       device = "/dev/disk/by-uuid/52A5-10D0";
       fsType = "vfat";
-      options = [ "rw" "noatime" "fmask=0077" "dmask=0077" "x-systemd.automount" ];
+      options = [
+        "rw"
+        "noatime"
+        "fmask=0077"
+        "dmask=0077"
+        "x-systemd.automount"
+      ];
     };
   };
-  swapDevices = [{ device = "/dev/mapper/swapcrypt"; }];
+  swapDevices = [ { device = "/dev/mapper/swapcrypt"; } ];
 
   system.stateVersion = "25.11";
 }
