@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     wire = {
       # deployment
       url = "github:forallsys/wire/stable";
@@ -80,7 +80,6 @@
           pkgs.nixpkgs-fmt
           pkgs.deadnix
           pkgs.statix
-          pkgs.nh
         ];
       };
       formatter.${system} = pkgs.nixfmt-tree;

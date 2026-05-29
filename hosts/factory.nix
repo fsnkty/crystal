@@ -18,7 +18,7 @@ _: {
       root.disable = true;
     };
   };
-
+  virtualisation.docker.enable = true;
   wsl = {
     enable = true;
     defaultUser = "fsnkty";
