@@ -1,21 +1,10 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-    wire = {
-      # deployment
-      url = "github:forallsys/wire/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    wsl = {
-      # windows subsystem for linux
-      url = "github:nix-community/NixOS-WSL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    lanzaboote = {
-      # secure boot systemd-boot
-      url = "github:nix-community/lanzaboote/v1.0.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    wire.url = "github:forallsys/wire/stable";
+    wire.inputs.nixpkgs.follows = "nixpkgs";
+    wsl.url = "github:nix-community/NixOS-WSL";
+    wsl.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs =
     {
@@ -23,7 +12,6 @@
       nixpkgs,
       wire,
       wsl,
-      lanzaboote,
       ...
     }@inputs:
     let
@@ -64,7 +52,6 @@
           modules = listNixRecursive [ ./modules ] ++ [
             wire.nixosModules.default
             wsl.nixosModules.wsl
-            lanzaboote.nixosModules.lanzaboote
             ./hosts/${name}.nix
             {
               nixpkgs.hostPlatform = system;

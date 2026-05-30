@@ -21,9 +21,11 @@
         gnome-tour
         gnome-user-docs
       ];
-      systemPackages = with pkgs.gnomeExtensions; [
-        appindicator
-        just-perfection
+      systemPackages = [
+        pkgs.gnomeExtensions.appindicator
+        pkgs.gnomeExtensions.just-perfection
+        pkgs.alacritty
+        pkgs.firefox
       ];
     };
     programs.dconf = {

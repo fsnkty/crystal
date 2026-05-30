@@ -33,8 +33,6 @@
   users.users.main = {
     extraGroups = [ "networkmanager" ];
     packages = with pkgs; [
-      alacritty
-      firefox
       vscode
       vim
       wget
@@ -48,11 +46,10 @@
   services.fstrim.enable = true; # ssd
 
   boot = {
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
+    loader = {
+      limine.enable = true;
+      efi.canTouchEfiVariables = true;
     };
-    loader.efi.canTouchEfiVariables = true;
     initrd = {
       availableKernelModules = [
         "xhci_pci"
