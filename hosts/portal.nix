@@ -32,11 +32,12 @@
 
   users.users.main = {
     extraGroups = [ "networkmanager" ];
-    packages = with pkgs; [
-      vscode
-      vim
-      wget
-    ];
+    packages = builtins.attrValues {
+      inherit (pkgs)
+        vscode
+        vim
+        wget;
+    };
   };
 
   programs.steam.enable = true;

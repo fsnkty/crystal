@@ -1,18 +1,26 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    wire.url = "github:forallsys/wire/stable";
-    wire.inputs.nixpkgs.follows = "nixpkgs";
-    wsl.url = "github:nix-community/NixOS-WSL";
-    wsl.inputs.nixpkgs.follows = "nixpkgs";
+    wire = {
+      url = "github:forallsys/wire/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    apple-fonts.url= "github:Lyndeno/apple-fonts.nix";
   };
   outputs =
-    {
-      self,
-      nixpkgs,
-      wire,
-      wsl,
-      ...
+    { self
+    , nixpkgs
+    , wire
+    , wsl
+    , ...
     }@inputs:
     let
       inherit (nixpkgs) lib;
@@ -20,9 +28,11 @@
       pkgs = nixpkgs.legacyPackages.${system};
       listNixRecursive =
         path:
-        builtins.concatMap (
-          p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
-        ) path;
+        builtins.concatMap
+          (
+            p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
+          )
+          path;
       listHosts = map (host: (lib.removeSuffix ".nix" host)) (
         builtins.attrNames (builtins.readDir ./hosts)
       );
@@ -45,6 +55,7 @@
         factory = { };
         library = { };
         portal = { };
+        cafe = { };
       };
       nixosConfigurations = lib.genAttrs listHosts (
         name:
@@ -67,6 +78,7 @@
           pkgs.nixpkgs-fmt
           pkgs.deadnix
           pkgs.statix
+          pkgs.nixd
         ];
       };
       formatter.${system} = pkgs.nixfmt-tree;

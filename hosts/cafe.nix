@@ -1,4 +1,4 @@
-_: {
+{ pkgs, ... }: {
   crystal = {
     system = {
       cleanup = true;
@@ -7,7 +7,6 @@ _: {
       hardware = {
         cpu.amd.enable = true;
         gpu.amd.enable = true;
-        vfs009x.enable = true;
       };
     };
     users = {
@@ -27,9 +26,22 @@ _: {
       audio.setup = true;
       plymouth.setup = true;
       fastboot.enable = true;
-      gnome.setup = true;
+      gaming = {
+        steam.enable = true;
+        thunderStore.enable = true;
+      };
     };
   };
+
+  networking.networkmanager.enable = true;
+  users.users.main.packages = builtins.attrValues {
+    inherit (pkgs)
+      alacritty
+      chromium
+      vscodium
+      discord;
+  };
+
   boot = {
     loader = {
       limine.enable = true;
@@ -44,16 +56,16 @@ _: {
         "sd_mod"
         "rtsx_pci_sdmmc"
       ];
-      luks.devices."rootscrypt".device = "/dev/disk/by-uuid/FOOBAR";
+      luks.devices."rootcrypt".device = "/dev/disk/by-uuid/b1bfd3ca-6793-44b1-97ee-662ff0ec6eb1";
     };
   };
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/FOOBAR";
+      device = "/dev/mapper/rootcrypt";
       fsType = "ext4";
     };
     "/boot" = {
-      device = "/dev/disk/by-uuid/BAZQUX";
+      device = "/dev/disk/by-uuid/0859-D0D6";
       fsType = "vfat";
       options = [
         "rw"
@@ -63,9 +75,16 @@ _: {
         "x-systemd.automount"
       ];
     };
+    "/mnt/gaming" = {
+      device = "/dev/sda1";
+      fsType = "ntfs3";
+      options = [ "uid=1000" ];
+    };
+    "/mnt/gaming2" = {
+      device = "/dev/sdb1";
+      fsType = "ntfs3";
+      options = [ "uid=1000" ];
+    };
   };
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 16*1024; # 16 GiB
-  }];
+  system.stateVersion = "26.05";
 }
