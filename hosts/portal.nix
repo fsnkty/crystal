@@ -20,12 +20,12 @@
       root.disable = true;
     };
     desktop = {
+      kde.enable = true;
       darkmode.enable = true;
       fonts.setup = true;
       audio.setup = true;
       plymouth.setup = true;
       fastboot.enable = true;
-      gnome.setup = true;
     };
     server.networking.ssh = true;
   };
