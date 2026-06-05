@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   crystal = {
     system = {
       cleanup = true;
@@ -40,13 +40,16 @@
       alacritty
       chromium
       vscodium
-      discord;
+      discord
+      proton-pass;
   };
 
   boot = {
-    loader = {
-      limine.enable = true;
-      efi.canTouchEfiVariables = true;
+    # limine seemingly has no hold key for timeout skip
+    loader.systemd-boot.enable = lib.mkForce false;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
     };
     initrd = {
       systemd.enable = true;
@@ -57,16 +60,19 @@
         "sd_mod"
         "rtsx_pci_sdmmc"
       ];
-      luks.devices."rootcrypt".device = "/dev/disk/by-uuid/b1bfd3ca-6793-44b1-97ee-662ff0ec6eb1";
+      luks.devices."root" = {
+	      device = "/dev/disk/by-label/rootcrypt";
+	      crypttabExtraOpts = [ "tpm2-device=auto" ];
+      };
     };
   };
   fileSystems = {
     "/" = {
-      device = "/dev/mapper/rootcrypt";
+      device = "/dev/disk/by-label/root";
       fsType = "ext4";
     };
     "/boot" = {
-      device = "/dev/disk/by-uuid/0859-D0D6";
+      device = "/dev/disk/by-label/boot";
       fsType = "vfat";
       options = [
         "rw"
@@ -75,16 +81,6 @@
         "dmask=0077"
         "x-systemd.automount"
       ];
-    };
-    "/mnt/gaming" = {
-      device = "/dev/sda1";
-      fsType = "ntfs3";
-      options = [ "uid=1000" ];
-    };
-    "/mnt/gaming2" = {
-      device = "/dev/sdb1";
-      fsType = "ntfs3";
-      options = [ "uid=1000" ];
     };
   };
   system.stateVersion = "26.05";

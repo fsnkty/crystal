@@ -5,8 +5,8 @@
       url = "github:forallsys/wire/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    wsl = {
-      url = "github:nix-community/NixOS-WSL";
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     apple-fonts = {
@@ -18,7 +18,7 @@
     { self
     , nixpkgs
     , wire
-    , wsl
+    , lanzaboote
     , ...
     }@inputs:
     let
@@ -61,7 +61,7 @@
         lib.nixosSystem {
           modules = listNixRecursive [ ./modules ] ++ [
             wire.nixosModules.default
-            wsl.nixosModules.wsl
+	          lanzaboote.nixosModules.lanzaboote
             ./hosts/${name}.nix
             {
               nixpkgs.hostPlatform = system;
