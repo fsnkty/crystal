@@ -21,7 +21,6 @@
       root.disable = true;
     };
     desktop = {
-      kde.enable = true;
       darkmode.enable = true;
       fonts.setup = true;
       audio.setup = true;
@@ -31,19 +30,37 @@
         steam.enable = true;
         thunderStore.enable = true;
       };
+      shell.enable = true;
     };
   };
-
-  networking.networkmanager.enable = true;
+  
+  networking = {
+    useNetworkd = true;
+    enableIPv6 = true;
+    useDHCP = false;
+  };
+  systemd.network = {
+    enable = true;
+    networks.enp39s0 = {
+      name = "enp39s0";
+      dns = [ "1.1.1.1" ];
+      address = [ "192.168.0.4/24" ];
+      routes = [ { Gateway = "192.168.0.1"; } ];
+    };
+  };
   users.users.main.packages = builtins.attrValues {
     inherit (pkgs)
       alacritty
       chromium
       vscodium
       discord
-      proton-pass;
+      proton-pass
+      phinger-cursors;
   };
 
+  # nothing graphical target critical actually *needs* to be online immediately.
+  # saves 0.3~s on boot
+  systemd.services.NetworkManager-wait-online.enable = false;
   boot = {
     # limine seemingly has no hold key for timeout skip
     loader.systemd-boot.enable = lib.mkForce false;
@@ -51,6 +68,8 @@
       enable = true;
       pkiBundle = "/var/lib/sbctl";
     };
+    # faster init for RNG, saves 1~s on boot
+    kernelParams = [ "random.trust_cpu=on" ];
     initrd = {
       systemd.enable = true;
       availableKernelModules = [
@@ -67,10 +86,6 @@
     };
   };
   fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/root";
-      fsType = "ext4";
-    };
     "/boot" = {
       device = "/dev/disk/by-label/boot";
       fsType = "vfat";
@@ -79,8 +94,15 @@
         "noatime"
         "fmask=0077"
         "dmask=0077"
-        "x-systemd.automount"
       ];
+    };
+    "/" = {
+      device = "/dev/disk/by-label/root";
+      fsType = "ext4";
+    };
+    "/games" = {
+      device = "/dev/disk/by-label/games";
+      fsType = "ext4";
     };
   };
   system.stateVersion = "26.05";

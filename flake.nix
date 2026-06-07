@@ -51,7 +51,6 @@
               hosts = name;
             };
           };
-        factory = { };
         library = { };
         portal = { };
         cafe = { };

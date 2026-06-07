@@ -14,6 +14,7 @@
       packages = lib.mkForce [
         inputs.apple-fonts.packages.x86_64-linux.sf-pro-nerd
         inputs.apple-fonts.packages.x86_64-linux.sf-mono-nerd
+        pkgs.noto-fonts-color-emoji
       ];
       enableDefaultPackages = false;
       fontconfig = {
@@ -21,6 +22,7 @@
           monospace = [ "SFMono Nerd Font" ];
           sansSerif = [ "SFPro Nerd Font" ];
           serif = [ "SFPro Nerd Font" ];
+          emoji = [ "Noto Color Emoji" ];
         };
       };
     };
