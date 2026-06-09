@@ -20,7 +20,6 @@
       root.disable = true;
     };
     desktop = {
-      kde.enable = true;
       darkmode.enable = true;
       fonts.setup = true;
       audio.setup = true;

@@ -29,6 +29,7 @@
       gaming = {
         steam.enable = true;
         thunderStore.enable = true;
+        prism.enable = true;
       };
       shell.enable = true;
     };
@@ -38,6 +39,10 @@
     useNetworkd = true;
     enableIPv6 = true;
     useDHCP = false;
+    hosts = {
+      "119.224.63.166" = [ "library" ];
+      "192.168.0.121" = [ "portal" ];
+    };
   };
   systemd.network = {
     enable = true;
@@ -54,13 +59,9 @@
       chromium
       vscodium
       discord
-      proton-pass
-      phinger-cursors;
+      proton-pass;
   };
 
-  # nothing graphical target critical actually *needs* to be online immediately.
-  # saves 0.3~s on boot
-  systemd.services.NetworkManager-wait-online.enable = false;
   boot = {
     # limine seemingly has no hold key for timeout skip
     loader.systemd-boot.enable = lib.mkForce false;
@@ -68,8 +69,12 @@
       enable = true;
       pkiBundle = "/var/lib/sbctl";
     };
-    # faster init for RNG, saves 1~s on boot
-    kernelParams = [ "random.trust_cpu=on" ];
+    kernelParams = [
+      # faster init for RNG, saves 1~s on boot
+      "random.trust_cpu=on"
+      # hopefully reduce mode switching
+      "video=DP-1:1920x1080@144"
+    ];
     initrd = {
       systemd.enable = true;
       availableKernelModules = [
@@ -103,6 +108,9 @@
     "/games" = {
       device = "/dev/disk/by-label/games";
       fsType = "ext4";
+      options = [
+        "x-systemd.automount"
+      ];
     };
   };
   system.stateVersion = "26.05";

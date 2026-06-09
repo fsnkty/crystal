@@ -10,14 +10,10 @@ in
   options.crystal.desktop.gaming = {
     steam.enable = lib.mkEnableOption "";
     thunderStore.enable = lib.mkEnableOption "";
+    prism.enable = lib.mkEnableOption "";
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.steam.enable {
-      # TODO: FIXES:
-      # various font configs use a `description` field which steams fontconfig doesnt recognise
-      # unable to determine architecture of provider / ld config: Error reading "(null)" ELF header: invalid 'Elf' handle
-      # run/opengl-driver/share/drirc.d is unlikely to appear in /run/host
-      # run/opengl-driver-32/share/drirc.d is unlikely to appear in /run/host
       programs.steam = {
         enable = true;
         extraPackages = [
@@ -29,7 +25,15 @@ in
       };
     })
     (lib.mkIf cfg.thunderStore.enable {
-      environment.systemPackages = [pkgs.r2modman];
+      environment.systemPackages = [
+        pkgs.r2modman
+      ];
+    })
+    (lib.mkIf cfg.prism.enable {
+      environment.systemPackages = [
+        pkgs.prismlauncher
+        pkgs.jre25_minimal
+      ];
     })
   ];
 }
