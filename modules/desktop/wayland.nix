@@ -22,10 +22,20 @@
         # systemd based management 
         withUWSM = true;
       };
+      hyprlock.enable = true;
     };
-    services.displayManager.dms-greeter = {
+    services.greetd = {
       enable = true;
-      compositor.name = "hyprland";
+      settings = {
+        inital_session = {
+          command = "uwsm start default";
+          user = "fsnkty";
+        };
+        default_session = {
+          command = "uwsm start default";
+          user = "fsnkty";
+        };
+      };
     };
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
   };

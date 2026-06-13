@@ -59,7 +59,8 @@
       chromium
       vscodium
       discord
-      proton-pass;
+      proton-pass
+      protonmail-desktop;
   };
 
   boot = {
