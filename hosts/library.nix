@@ -24,6 +24,7 @@
       mediaGroup.setup = true;
     };
     server = {
+      vaultwarden.enable = true;
       networking = {
         nginx = true;
         samba = true;
