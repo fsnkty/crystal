@@ -94,6 +94,7 @@
   boot = {
     loader.systemd-boot.enable = true;
     supportedFilesystems = [ "zfs" ];
+    zfs.forceImportRoot = false;
   };
   services.zfs = {
     autoScrub.enable = true;

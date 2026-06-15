@@ -10,29 +10,19 @@ let
 in
 {
   options.crystal.system.hardware.gpu = {
-    intel.enable = mkEnableOption "INTEL i915";
+    intel.enable = mkEnableOption "INTEL 2014+";
     amd.enable = mkEnableOption "AMD GPU rdna onwards";
     generic = mkEnableOption "generic GPU setup";
   };
   config = mkMerge [
     (mkIf cfg.intel.enable {
       crystal.system.hardware.gpu.generic = true;
-      environment.sessionVariables = {
-        LIBVA_DRIVER_NAME = "i915";
-      };
-      boot = {
-        kernelParams = [ "i915.enable_guc=2" ];
-        initrd.kernelModules = [ "i915" ];
-      };
-      hardware.graphics = {
-        extraPackages = [
-          pkgs.intel-vaapi-driver
-          pkgs.intel-media-driver
-        ];
-        extraPackages32 = [
-          pkgs.pkgsi686Linux.intel-vaapi-driver
-        ];
-      };
+      environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+      hardware.graphics.extraPackages = [
+        pkgs.intel-ocl
+        pkgs.intel-media-driver
+        pkgs.intel-compute-runtime-legacy1
+      ];
     })
     (mkIf cfg.amd.enable {
       crystal.system.hardware.gpu.generic = true;
