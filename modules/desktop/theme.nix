@@ -9,8 +9,14 @@
   config = lib.mkIf config.crystal.desktop.darkmode.enable {
     environment.systemPackages = builtins.attrValues {
       inherit (pkgs)
-        whitesur-icon-theme
-        phinger-cursors;
+        phinger-cursors
+        ;
+    };
+    environment.sessionVariables = {
+      XCURSOR_SIZE = "24";
+      HYPRCURSOR_SIZE = "24";
+      XCURSOR_THEME = "phinger-cursors-dark";
+      HYPRCURSOR_THEME = "phinger-cursors-dark";
     };
     # gtk "dark mode" pref
     # some non-gtk guis will also listen to this, e.g.. chromium & vscodium's "system" opt
@@ -18,7 +24,6 @@
       {
         settings."org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
-          icon-theme = "WhiteSur-dark";
         };
       }
     ];

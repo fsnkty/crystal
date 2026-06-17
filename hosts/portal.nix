@@ -35,7 +35,8 @@
       inherit (pkgs)
         vscode
         vim
-        wget;
+        wget
+        ;
     };
   };
 

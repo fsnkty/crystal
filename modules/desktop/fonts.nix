@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -11,17 +10,20 @@
     # better for hidpi
     console.font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
     fonts = {
-      packages = lib.mkForce [
-        inputs.apple-fonts.packages.x86_64-linux.sf-pro-nerd
-        inputs.apple-fonts.packages.x86_64-linux.sf-mono-nerd
-        pkgs.noto-fonts-color-emoji
-      ];
+      packages = builtins.attrValues {
+        inherit (pkgs)
+          noto-fonts
+          noto-fonts-cjk-sans
+          noto-fonts-cjk-serif
+          noto-fonts-color-emoji
+          ;
+      };
       enableDefaultPackages = false;
       fontconfig = {
         defaultFonts = lib.mkForce {
-          monospace = [ "SFMono Nerd Font" ];
-          sansSerif = [ "SFPro Nerd Font" ];
-          serif = [ "SFPro Nerd Font" ];
+          monospace = [ "Noto Sans Mono" ];
+          sansSerif = [ "Noto Sans" ];
+          serif = [ "Noto Serif" ];
           emoji = [ "Noto Color Emoji" ];
         };
       };

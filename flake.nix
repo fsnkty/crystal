@@ -9,25 +9,12 @@
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    apple-fonts = {
-      url= "github:Lyndeno/apple-fonts.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    quickshell = {
-      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs =
-    { self
-    , nixpkgs
-    , wire
-    , lanzaboote
-    , ...
+    {
+      self,
+      nixpkgs,
+      ...
     }@inputs:
     let
       inherit (nixpkgs) lib;
@@ -35,17 +22,15 @@
       pkgs = nixpkgs.legacyPackages.${system};
       listNixRecursive =
         path:
-        builtins.concatMap
-          (
-            p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
-          )
-          path;
+        builtins.concatMap (
+          p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
+        ) path;
       listHosts = map (host: (lib.removeSuffix ".nix" host)) (
         builtins.attrNames (builtins.readDir ./hosts)
       );
     in
     {
-      wire = wire.makeHive {
+      wire = inputs.wire.makeHive {
         inherit (self) nixosConfigurations;
         meta = {
           nixpkgs = import nixpkgs { localSystem = system; };
@@ -67,8 +52,8 @@
         name:
         lib.nixosSystem {
           modules = listNixRecursive [ ./modules ] ++ [
-            wire.nixosModules.default
-	          lanzaboote.nixosModules.lanzaboote
+            inputs.wire.nixosModules.default
+            inputs.lanzaboote.nixosModules.lanzaboote
             ./hosts/${name}.nix
             {
               nixpkgs.hostPlatform = system;
@@ -80,7 +65,7 @@
       );
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = [
-          wire.packages.x86_64-linux.wire-small
+          inputs.wire.packages.x86_64-linux.wire-small
           pkgs.nixpkgs-fmt
           pkgs.deadnix
           pkgs.statix

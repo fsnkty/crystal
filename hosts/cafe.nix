@@ -34,7 +34,7 @@
       shell.enable = true;
     };
   };
-  
+
   networking = {
     useNetworkd = true;
     enableIPv6 = true;
@@ -60,7 +60,8 @@
       vscodium
       discord
       proton-pass
-      protonmail-desktop;
+      protonmail-desktop
+      ;
   };
 
   boot = {
@@ -86,8 +87,8 @@
         "rtsx_pci_sdmmc"
       ];
       luks.devices."root" = {
-	      device = "/dev/disk/by-label/rootcrypt";
-	      crypttabExtraOpts = [ "tpm2-device=auto" ];
+        device = "/dev/disk/by-label/rootcrypt";
+        crypttabExtraOpts = [ "tpm2-device=auto" ];
       };
     };
   };
