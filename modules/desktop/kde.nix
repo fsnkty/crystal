@@ -25,9 +25,9 @@ in
     environment.plasma6.excludePackages = builtins.attrValues {
       inherit (pkgs.kdePackages)
         aurorae # theme?
-        #plasma-browser-integration # maybe useful
+        plasma-browser-integration # maybe useful
         plasma-workspace-wallpapers # what
-        #konsole # alacritty >
+        konsole # alacritty instead
         #ark # gui 7zip? maybe useful ig
         elisa # music player
         #gwenview # photo viewer
@@ -36,8 +36,8 @@ in
         ktexteditor # kate dep
         khelpcenter # obv
         #dolphin # file manager
-        #baloo-widgets # dolphin dep?
-        #dolphin-plugins # dolphin dep.
+        baloo-widgets # dolphin dep?
+        dolphin-plugins # dolphin dep.
         #spectacle # screenshots
         #ffmpegthumbs # makes thumbnails of videos, prob just a dolphin dep
         krdp # rdp server

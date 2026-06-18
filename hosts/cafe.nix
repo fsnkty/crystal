@@ -31,7 +31,6 @@
         thunderStore.enable = true;
         prism.enable = true;
       };
-      shell.enable = false;
       kde.enable = true;
     };
   };
