@@ -6,7 +6,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v1.0.0";
+      # move to a newer version once it includes this commit.
+      # fixes failed assertion about bootspec.
+      url = "github:nix-community/lanzaboote?rev=2a9c6ba61f2e1bd6eaf4e1e12aca77699bf7ea95";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
