@@ -31,7 +31,8 @@
         thunderStore.enable = true;
         prism.enable = true;
       };
-      shell.enable = true;
+      shell.enable = false;
+      kde.enable = true;
     };
   };
 
@@ -63,6 +64,8 @@
       protonmail-desktop
       ;
   };
+
+  hardware.bluetooth.enable = true;
 
   boot = {
     # limine seemingly has no hold key for timeout skip
