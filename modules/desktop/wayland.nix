@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ pkgs, lib, config, ... }:
 {
   options.crystal.desktop.shell = {
     enable = lib.mkEnableOption "";
@@ -9,11 +9,15 @@
         enable = true;
         withUWSM = true;
       };
+      hyprlock.enable = true;
     };
+    environment.systemPackages = [
+      pkgs.hyprpaper
+    ];
     services.greetd = {
       enable = true;
       settings = {
-        inital_session = {
+        default_session = {
           command = "uwsm start default";
           user = "fsnkty";
         };
