@@ -2,6 +2,12 @@
 # https://github.com/NixOS/nixpkgs/blob/bb38195945cf64396b4997e3c84703b519be86b0/nixos/modules/services/desktop-managers/plasma6.nix
 # re-implamenting locally to seperate concerns and remove some more "core" features
 # use cases I dont have etc.
+
+# wishful
+# remove plastik, windows 9x and fusion theme options.
+# unfortunately not realistic as they seem to be deeply intertwined in QT or Kwin, removal would require rebuilds.
+# not so bad in the case of kwin, but for QT would cascase heavily, very sad.
+# fix https://discourse.nixos.org/t/manage-printers-in-applications-list-while-cups-disabled/55909
 { config
 , lib
 , pkgs
@@ -10,29 +16,23 @@
 {
   options.crystal.desktop.kde.enable = lib.mkEnableOption "";
   config = lib.mkIf config.crystal.desktop.kde.enable {
-    nixpkgs.overlays = [
-      (final: prev: {
-        kdePackages = prev.kdePackages // {
-          # remove plastik
-          breeze = prev.kdePackages.breeze.overrideAttrs (oldAttrs: {
-            postInstall = (oldAttrs.postInstall or "") + ''
-              find $out -type d -name "plastik" -exec rm -rf {} +
-            '';
-          });
-        };
-      })
-    ];
+    
     # packages
     environment.systemPackages = [
       pkgs.xdg-user-dirs
-      (lib.getBin pkgs.kdePackages.qttools)
+    ] ++ lib.optionals config.networking.networkmanager.enable [
+      pkgs.kdePackages.qrca
+      pkgs.kdePackages.plasma-nm
+    ] ++ lib.optionals config.hardware.bluetooth.enable [
+      pkgs.kdePackages.bluedevil
+      pkgs.kdePackages.bluez-qt
     ] ++ builtins.attrValues {
       inherit (pkgs.kdePackages)
         # "requiredPackages"
         qtwayland# "Hack? To make everything run on Wayland"
         qtsvg# "Needed to render SVG icons"
 
-        # "Framewprls with globally loadable bits"
+        # "Frameworks with globally loadable bits"
         frameworkintegration# "provides Qt plugin" seems to be for QT apps to integrate with KDE more
         kauth# "provides helper service" privilege elevation
         kcoreaddons# "provides extra mime type info" seemingly does various file and text manip
@@ -43,33 +43,22 @@
         kimageformats# "provides Qt plugins"
         qtimageformats# "provides optional image formats such as .webp and .avif"
         kio# "helper service + a bunch of other stuff"
+        kio-extras# desktop:/
         kio-admin# "managing files as admin"
-        #kio-extras # "MTP, AFC, etc"
-        #kio-fuse # above for FUSE
-        #knighttime # "night mode switching daemon" can probably be removed.
         kpackage# "provides kpackage tool
         kservice# "provides kbuildsyscoco6 tool"
-        # kunifiedpush # "provides a background service and a KCM" seemingly requires manual setup and is only useful for select services? shouldnt be related to general notifications.
         kwallet# "provides helper service"
         kwallet-pam# "provides helper service"
-        #kwalletmanager # "provides KCMs and stuff"
         plasma-activities# "provides plasma-activities-cli tool"
         solid# "provides solid-hardware6 tool" various hardware reading capabilities
-        #phonon-vlc # "provides Phonon plugin" "multi-platform sound framework for application developers"
 
         # "Core Plasma parts"
         kwin# compositor / window management
         kscreen# screen management
-        libkscreen# above lib
+        # libkscreen # above lib # not sure why we would include a lib in env
         kscreenlocker
         kactivitymanagerd
-        # kde-cli-tools provides
-        # keditfiletype, keditfiletype5, kinfo, kioclient, kioclient5
-        # kmimetypefinder, kmimetypefinder5, kstart, kstart5, ksvgtopng, ksvgtopng5, plasma-open-settings
         kglobalacceld# "keyboard shorecut daemon"
-        kwrited# "wall message proxy, not to be confused with kwrite"
-        baloo# "system indexer"
-        milou# "search engine atop baloo"
         kdegraphics-thumbnailers# "pdf etc thumbnailer"
         polkit-kde-agent-1# "polkit auth ui"
         plasma-desktop
@@ -88,10 +77,8 @@
         breeze-gtk
         ocean-sound-theme
         # same theme, different framework? 
-        qqc2-breeze-style
-        qqc2-desktop-style
-
-        #kdeplasma-addons # heavy package, should look into stripping
+        #qqc2-breeze-style
+        #qqc2-desktop-style
 
         systemsettings# settings app
         kcmutils# utilities for modules
@@ -105,12 +92,6 @@
         kconfig# required for xdg-terminal from xdg-utils
         qtbase# for qtpaths which is required for xdg-mime from xdg-utils
 
-        # union # only in master as of commit, this is a unified qt style handler
-
-        # bluetooth
-        bluedevil
-        bluez-qt
-        # plasma-nm # network manager
         plasma-pa# pulseaudio integ
         ;
     };
@@ -138,14 +119,9 @@
       # "Enable GTK applications to load SVG icons"
       gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
       gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
-      # kde-pim.enable = true; # packages for kmail kontact and the like
       ssh.askPassword = "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
       dconf.enable = true;
       kdeconnect.package = pkgs.kdePackages.kdeconnect-kde;
-      #chromium = {
-      #  enablePlasmaBrowserIntegration = true;
-      #  plasmaBrowserIntegrationPackage = pkgs.kdePackages.plasma-browser-integration;
-      #};
     };
 
     xdg = {
@@ -158,7 +134,6 @@
         extraPortals = [
           pkgs.kdePackages.kwallet
           pkgs.kdePackages.xdg-desktop-portal-kde
-          pkgs.xdg-desktop-portal-gtk
         ];
         configPackages = [ pkgs.kdePackages.plasma-workspace ];
       };
@@ -171,11 +146,9 @@
         defaultSession = "plasma";
       };
       # "Enable helpful DBus services."
-      accounts-daemon.enable = true;
       power-profiles-daemon.enable = true;
       udisks2.enable = true;
       libinput.enable = true;
-      geoclue2.enable = true;
       fwupd.enable = true;
       udev.packages = [
         # extras used by Solid
@@ -188,8 +161,6 @@
       packages = [ pkgs.kdePackages.drkonqi ];
       services = {
         "drkonqi-coredump-processor@".wantedBy = [ "systemd-coredump@.service" ];
-        # needs to read tmp pfp img
-        accounts-daemon.serviceConfig.PrivateTmp = false;
         plasmalogin.serviceConfig.KeyringMode = "inherit";
       };
       user.services.nixos-rebuild-sycoca = {
@@ -203,11 +174,11 @@
     };
 
     security = {
-      login.kwallet = {
-        enable = true;
-        package = pkgs.kdePackages.kwallet-pam;
-      };
       pam.services = {
+        login.kwallet = {
+          enable = true;
+          package = pkgs.kdePackages.kwallet-pam;
+        };
         kde = {
           kwallet = {
             enable = true;
