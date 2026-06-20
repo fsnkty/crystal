@@ -13,19 +13,75 @@
 , pkgs
 , ...
 }:
+let
+  cfg = config.crystal.desktop.kde;
+  inherit (lib) mkEnableOption mkIf;
+in 
 {
-  options.crystal.desktop.kde.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.crystal.desktop.kde.enable {
-    
-    # packages
-    environment.systemPackages = lib.optionals config.networking.networkmanager.enable [
-      pkgs.kdePackages.qrca
-      pkgs.kdePackages.plasma-nm
-    ] ++ lib.optionals config.hardware.bluetooth.enable [
-      pkgs.kdePackages.bluedevil
-      pkgs.kdePackages.bluez-qt
-    ] ++ builtins.attrValues {
-      inherit (pkgs.kdePackages)
+  options.crystal.desktop.kde = {
+    enable = mkEnableOption "";
+    plm.enable = mkEnableOption "plasma login manager";
+    drkonqi.enable = mkEnableOption "a GUI crash handler";
+    breeze.enable = mkEnableOption "set all themes to breeze";
+    rebuild-cache-service = mkEnableOption "";
+  };
+  config = lib.mkMerge [
+    (mkIf cfg.rebuild-cache-service {
+      systemd.user.services.nixos-rebuild-sycoca = {
+        description = "Rebuild KDE system configuration cache";
+        wantedBy = [ "graphical-session-pre.target" ];
+        serviceConfig.Type = "oneshot";
+        script = ''
+          rm -fv "''${XDG_CACHE_HOME:-$HOME/.cache}/ksycoca"*
+        '';
+      };
+    })
+    (mkIf cfg.enable {
+      qt.enable = true;
+      programs = {
+        xwayland.enable = true;
+        dconf.enable = true;
+        gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
+        gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
+        ssh.askPassword = "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
+        kdeconnect.package = pkgs.kdePackages.kdeconnect-kde;
+      };
+      xdg.portal = {
+        enable = true;
+        extraPortals = [
+          pkgs.kdePackages.kwallet
+          pkgs.kdePackages.xdg-desktop-portal-kde
+        ];
+        configPackages = [ pkgs.kdePackages.plasma-workspace ];
+      };
+      services = {
+        # "Enable helpful DBus services."
+        power-profiles-daemon.enable = true;
+        udisks2.enable = true;
+        libinput.enable = true;
+        fwupd.enable = true;
+        udev.packages = [
+          # extras used by Solid
+          pkgs.libmtp.out
+          pkgs.media-player-info
+        ];
+      };
+      environment = {
+        pathsToLink = [
+          # FIXME: modules should link subdirs of `/share` rather than relying on this
+          "/share"
+          "/libexec" # for drkonqi
+        ];
+        etc."X11/xkb".source = config.services.xserver.xkb.dir;
+        # packages
+        systemPackages = lib.optionals config.networking.networkmanager.enable [
+          pkgs.kdePackages.qrca
+          pkgs.kdePackages.plasma-nm
+        ] ++ lib.optionals config.hardware.bluetooth.enable [
+          pkgs.kdePackages.bluedevil
+          pkgs.kdePackages.bluez-qt
+        ] ++ builtins.attrValues {
+          inherit (pkgs.kdePackages)
         # "requiredPackages"
         qtwayland# "Hack? To make everything run on Wayland"
         qtsvg# "Needed to render SVG icons"
@@ -61,7 +117,6 @@
         polkit-kde-agent-1# "polkit auth ui"
         plasma-desktop
         plasma-workspace
-        drkonqi# "crash handler"
         kde-inotify-survey# "warns the user on low inotifywatch limits" inotify is related to filesystem events.
 
         # "Application integration"
@@ -93,134 +148,75 @@
         plasma-pa# pulseaudio integ
         ;
     };
-    environment = {
-      pathsToLink = [
-        # FIXME: modules should link subdirs of `/share` rather than relying on this
-        "/share"
-        "/libexec" # for drkonqi
-      ];
-      etc."X11/xkb".source = config.services.xserver.xkb.dir;
-      sessionVariables = {
-        XDG_CONFIG_DIRS = [ "$HOME/.config/kdedefaults" ];
-        XDG_DESKTOP_DIR = "$HOME/";
-        XDG_DOWNLOAD_DIR = "$HOME/Downloads";
-        XDG_DOCUMENTS_DIR = "$HOME/Documents";
-        XDG_TEMPLATES_DIR = "$HOME/Documents/Templates";
-        XDG_PUBLICSHARE_DIR = "$HOME/Documents/Public";
-        XDG_PICTURES_DIR = "$HOME/Pictures";
-        XDG_VIDEOS_DIR = "$HOME/Pictures/Videos";
-        XDG_MUSIC_DIR = "$HOME/Pictures/Music";
-        XDG_PROJECTS_DIR = "$HOME/Projects";
-        KPACKAGE_DEP_RESOLVERS_PATH = "${pkgs.kdePackages.frameworkintegration.out}/libexec/kf6/kpackagehandlers";
       };
-    };
-
-    qt = {
-      enable = true;
-      style = "breeze";
-      platformTheme = "kde";
-    };
-
-    programs = {
-      xwayland.enable = true;
-      # "Enable GTK applications to load SVG icons"
-      gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
-      gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
-      ssh.askPassword = "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
-      dconf.enable = true;
-      kdeconnect.package = pkgs.kdePackages.kdeconnect-kde;
-    };
-
-    xdg = {
-      icons = {
+      security = {
+        pam.services = {
+          login.kwallet = {
+            enable = true;
+            package = pkgs.kdePackages.kwallet-pam;
+          };
+          kde = {
+            kwallet = {
+              enable = true;
+              package = pkgs.kdePackages.kwallet-pam;
+            };
+            # "kde" must not have fingerprint authentication otherwise it can block password login.
+            # See https://github.com/NixOS/nixpkgs/issues/239770 and https://invent.kde.org/plasma/kscreenlocker/-/merge_requests/163.
+            fprintAuth = false;
+            p11Auth = false;
+          };
+          kde-fingerprint = lib.mkIf config.services.fprintd.enable {
+            fprintAuth = true;
+            p11Auth = false;
+          };
+        };
+        wrappers = {
+          kwin_wayland = {
+            owner = "root";
+            group = "root";
+            capabilities = "cap_sys_nice+ep";
+            source = "${lib.getBin pkgs.kdePackages.kwin}/bin/kwin_wayland";
+          };
+        };
+      };
+    })
+    (mkIf cfg.breeze.enable {
+      qt = {
+        platformTheme = "kde";
+        style = "breeze";
+      };
+      xdg.icons = {
         enable = true;
         fallbackCursorThemes = [ "breeze_cursors" ];
       };
-      portal = {
-        enable = true;
-        extraPortals = [
-          pkgs.kdePackages.kwallet
-          pkgs.kdePackages.xdg-desktop-portal-kde
-        ];
-        configPackages = [ pkgs.kdePackages.plasma-workspace ];
-      };
-    };
-
-    services = {
-      displayManager = {
+    })
+    (mkIf cfg.plm.enable {
+      services.displayManager = {
         plasma-login-manager.enable = true;
         sessionPackages = [ pkgs.kdePackages.plasma-workspace.sessions ];
         defaultSession = "plasma";
       };
-      # "Enable helpful DBus services."
-      power-profiles-daemon.enable = true;
-      udisks2.enable = true;
-      libinput.enable = true;
-      fwupd.enable = true;
-      udev.packages = [
-        # extras used by Solid
-        pkgs.libmtp.out
-        pkgs.media-player-info
-      ];
-    };
-
-    systemd = {
-      packages = [ pkgs.kdePackages.drkonqi ];
-      services = {
-        "drkonqi-coredump-processor@".wantedBy = [ "systemd-coredump@.service" ];
-        plasmalogin.serviceConfig.KeyringMode = "inherit";
-      };
-      user.services.nixos-rebuild-sycoca = {
-        description = "Rebuild KDE system configuration cache";
-        wantedBy = [ "graphical-session-pre.target" ];
-        serviceConfig.Type = "oneshot";
-        script = ''
-          rm -fv "''${XDG_CACHE_HOME:-$HOME/.cache}/ksycoca"*
-        '';
-      };
-    };
-
-    security = {
-      pam.services = {
-        login.kwallet = {
-          enable = true;
-          package = pkgs.kdePackages.kwallet-pam;
+      # can allow kwallet to "auto-unlock" alongside the root encryption
+      systemd.services.plasmalogin.serviceConfig.KeyringMode = "inherit";
+      security.pam.services.plasmalogin-autologin.rules.auth = {
+        systemd_loadkey = {
+          order = 0;
+          control = "optional";
+          modulePath = "${pkgs.systemd}/lib/security/pam_systemd_loadkey.so";
         };
-        kde = {
-          kwallet = {
-            enable = true;
-            package = pkgs.kdePackages.kwallet-pam;
-          };
-          # "kde" must not have fingerprint authentication otherwise it can block password login.
-          # See https://github.com/NixOS/nixpkgs/issues/239770 and https://invent.kde.org/plasma/kscreenlocker/-/merge_requests/163.
-          fprintAuth = false;
-          p11Auth = false;
-        };
-        kde-fingerprint = lib.mkIf config.services.fprintd.enable {
-          fprintAuth = true;
-          p11Auth = false;
-        };
-        plasmalogin-autologin.rules.auth = {
-          systemd_loadkey = {
-            order = 0;
-            control = "optional";
-            modulePath = "${pkgs.systemd}/lib/security/pam_systemd_loadkey.so";
-          };
-          plasmalogin = {
-            order = 1;
-            control = "include";
-            modulePath = "plasmalogin";
-          };
+        plasmalogin = {
+          order = 1;
+          control = "include";
+          modulePath = "plasmalogin";
         };
       };
-      wrappers = {
-        kwin_wayland = {
-          owner = "root";
-          group = "root";
-          capabilities = "cap_sys_nice+ep";
-          source = "${lib.getBin pkgs.kdePackages.kwin}/bin/kwin_wayland";
-        };
+    })
+    (mkIf cfg.drkonqi.enable {
+      systemd = {
+        packages = [ pkgs.kdePackages.drkonqi ];
+        services."drkonqi-coredump-processor@".wantedBy = [ "systemd-coredump@.service" ];
       };
-    };
-  };
+      environment.systemPackages = [ pkgs.kdePackages.drkonqi ];
+    })
+  ];
 }
