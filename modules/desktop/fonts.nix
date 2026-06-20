@@ -10,14 +10,12 @@
     # better for hidpi
     console.font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
     fonts = {
-      packages = builtins.attrValues {
-        inherit (pkgs)
-          noto-fonts
-          noto-fonts-cjk-sans
-          noto-fonts-cjk-serif
-          noto-fonts-color-emoji
-          ;
-      };
+      packages = lib.mkForce [
+        pkgs.noto-fonts
+        pkgs.noto-fonts-cjk-sans
+        pkgs.noto-fonts-cjk-serif
+        pkgs.noto-fonts-color-emoji
+      ];
       enableDefaultPackages = false;
       fontconfig = {
         defaultFonts = lib.mkForce {
