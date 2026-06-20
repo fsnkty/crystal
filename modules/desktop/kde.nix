@@ -67,7 +67,7 @@
         # "Application integration"
         libplasma# "provides kirigami platform theme"
         plasma-integration# "provides Qt platform theme"
-        kde-gtk-config# "syncs KDE settings to GTK"
+        #kde-gtk-config# "syncs KDE settings to GTK" we can likely just set this in nix
 
         # "Artwork + themes"
         breeze
