@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   crystal = {
     system = {
       cleanup = true;
@@ -31,10 +37,23 @@
         thunderStore.enable = true;
         prism.enable = true;
       };
-      kde.enable = true;
+      kde = {
+        enable = true;
+        breeze.enable = true;
+        gtk = {
+          enable = true;
+          setBreeze = true;
+        };
+        drkonqi.enable = true;
+        kwallet = {
+          enable = true;
+          unlock-with-luks = true;
+        };
+        rebuild-cache-service = true;
+      };
     };
   };
-
+  services.displayManager.plasma-login-manager.enable = true;
   networking = {
     useNetworkd = true;
     enableIPv6 = true;
@@ -65,36 +84,35 @@
   };
 
   hardware.bluetooth.enable = true;
-    
-    environment = {
-      etc = {
-        "xdg/kdeglobals" = {
-          text = ''
-            [KDE Control Module Restrictions][$i]
-            kcm_updates=false
-            kcm_feedback=false
-            kcm_baloofile=false
-            kcm_componentchooser=false
-            kcm_fontinst=false
-            kcm_fonts=false
-            kcm_users=false
-          '';
-        };
-      };
-      sessionVariables = {
-        XDG_CONFIG_DIRS = [ "$HOME/.config/kdedefaults" ];
-        XDG_DESKTOP_DIR = "$HOME/";
-        XDG_DOWNLOAD_DIR = "$HOME/Downloads";
-        XDG_DOCUMENTS_DIR = "$HOME/Documents";
-        XDG_TEMPLATES_DIR = "$HOME/Documents/Templates";
-        XDG_PUBLICSHARE_DIR = "$HOME/Documents/Public";
-        XDG_PICTURES_DIR = "$HOME/Pictures";
-        XDG_VIDEOS_DIR = "$HOME/Pictures/Videos";
-        XDG_MUSIC_DIR = "$HOME/Pictures/Music";
-        XDG_PROJECTS_DIR = "$HOME/Projects";
-        KPACKAGE_DEP_RESOLVERS_PATH = "${pkgs.kdePackages.frameworkintegration.out}/libexec/kf6/kpackagehandlers";
+
+  environment = {
+    etc = {
+      "xdg/kdeglobals" = {
+        text = ''
+          [KDE Control Module Restrictions][$i]
+          kcm_updates=false
+          kcm_feedback=false
+          kcm_baloofile=false
+          kcm_componentchooser=false
+          kcm_fontinst=false
+          kcm_fonts=false
+          kcm_users=false
+        '';
       };
     };
+    sessionVariables = {
+      XDG_CONFIG_DIRS = [ "$HOME/.config/kdedefaults" ];
+      XDG_DESKTOP_DIR = "$HOME/";
+      XDG_DOWNLOAD_DIR = "$HOME/Downloads";
+      XDG_DOCUMENTS_DIR = "$HOME/Documents";
+      XDG_TEMPLATES_DIR = "$HOME/Documents/Templates";
+      XDG_PUBLICSHARE_DIR = "$HOME/Documents/Public";
+      XDG_PICTURES_DIR = "$HOME/Pictures";
+      XDG_VIDEOS_DIR = "$HOME/Pictures/Videos";
+      XDG_MUSIC_DIR = "$HOME/Pictures/Music";
+      XDG_PROJECTS_DIR = "$HOME/Projects";
+    };
+  };
 
   boot = {
     # limine seemingly has no hold key for timeout skip
