@@ -168,6 +168,22 @@
         "type": "github"
       }
     },
+    "fsnkty-nixpkgs": {
+      "locked": {
+        "lastModified": 1782104931,
+        "narHash": "sha256-PMyKTEA257OZ+stws0w3kqQ215l8J7oeVNlHjCbR5TY=",
+        "ref": "modularize-plasma6",
+        "rev": "443d482cacbd504a754cc0e5f3afbec9a1e7976f",
+        "revCount": 1020106,
+        "type": "git",
+        "url": "file:///home/fsnkty/Projects/nixpkgs"
+      },
+      "original": {
+        "ref": "modularize-plasma6",
+        "type": "git",
+        "url": "file:///home/fsnkty/Projects/nixpkgs"
+      }
+    },
     "git-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_4",
@@ -391,6 +407,7 @@
     },
     "root": {
       "inputs": {
+        "fsnkty-nixpkgs": "fsnkty-nixpkgs",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "wire": "wire"

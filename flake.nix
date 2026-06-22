@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    fsnkty-nixpkgs.url = "git+file:///home/fsnkty/Projects/nixpkgs?ref=modularize-plasma6";
     wire = {
       url = "github:forallsys/wire/stable";
       inputs.nixpkgs.follows = "nixpkgs";
