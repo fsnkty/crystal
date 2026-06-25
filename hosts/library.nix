@@ -29,6 +29,7 @@
         samba = true;
         headless = true;
         ssh = true;
+        tailscale.enable = true;
       };
       media = {
         jellyfin.enable = true;

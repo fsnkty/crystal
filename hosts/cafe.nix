@@ -29,6 +29,7 @@
       root.disable = true;
     };
     desktop = {
+      htop.enable = true;
       kde-std.enable = true;
       darkmode.enable = true;
       fonts.setup = true;
@@ -61,17 +62,6 @@
       routes = [ { Gateway = "192.168.0.1"; } ];
     };
   };
-  users.users.main.packages = builtins.attrValues {
-    inherit (pkgs)
-      alacritty
-      chromium
-      vscodium
-      discord
-      proton-pass
-      protonmail-desktop
-      ;
-  };
-
   hardware.bluetooth.enable = true;
 
   boot = {
