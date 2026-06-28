@@ -5,10 +5,6 @@
       url = "github:nix-community/lanzaboote/v1.1.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    wire = {
-      url = "github:forallsys/wire/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs =
     {
@@ -30,29 +26,10 @@
       );
     in
     {
-      wire = inputs.wire.makeHive {
-        inherit (self) nixosConfigurations;
-        meta = {
-          nixpkgs = import nixpkgs { localSystem = system; };
-          specialArgs = { inherit inputs; };
-        };
-        defaults =
-          { name, ... }:
-          {
-            deployment.target = {
-              user = "fsnkty";
-              hosts = name;
-            };
-          };
-        library = { };
-        portal = { };
-        cafe = { };
-      };
       nixosConfigurations = lib.genAttrs listHosts (
         name:
         lib.nixosSystem {
           modules = listNixRecursive [ ./modules ] ++ [
-            inputs.wire.nixosModules.default
             inputs.lanzaboote.nixosModules.lanzaboote
             ./hosts/${name}.nix
             {
@@ -65,7 +42,6 @@
       );
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = [
-          inputs.wire.packages.x86_64-linux.wire-small
           pkgs.nixpkgs-fmt
           pkgs.deadnix
           pkgs.statix
