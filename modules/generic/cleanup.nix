@@ -4,7 +4,7 @@
   ...
 }:
 {
-  options.crystal.system.cleanup = lib.mkEnableOption "opinionated removal of some default nixos packages etc";
+  options.crystal.system.cleanup = lib.mkEnableOption "opinionated removal of some default packages, services, etc..";
   config = lib.mkIf config.crystal.system.cleanup {
     environment.defaultPackages = [ ];
     programs = {

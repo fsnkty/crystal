@@ -5,8 +5,8 @@ let
 in
 {
   options.crystal.system.hardware.cpu = {
-    intel.enable = mkEnableOption "INTEL CPU";
-    amd.enable = mkEnableOption "AMD CPU";
+    intel = mkEnableOption "INTEL CPU";
+    amd = mkEnableOption "AMD CPU";
   };
   config = mkMerge [
     (mkIf cfg.intel.enable {

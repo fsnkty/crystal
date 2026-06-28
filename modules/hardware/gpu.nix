@@ -10,8 +10,8 @@ let
 in
 {
   options.crystal.system.hardware.gpu = {
-    intel.enable = mkEnableOption "INTEL 2014+";
-    amd.enable = mkEnableOption "AMD GPU rdna onwards";
+    intel = mkEnableOption "INTEL 2014+";
+    amd = mkEnableOption "AMD GPU rdna onwards";
     generic = mkEnableOption "generic GPU setup";
   };
   config = mkMerge [

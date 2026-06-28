@@ -6,8 +6,8 @@
       nix.setup = true;
       timezone.nz = true;
       hardware = {
-        cpu.intel.enable = true;
-        gpu.intel.enable = true;
+        cpu.intel = true;
+        gpu.intel = true;
       };
     };
     users = {

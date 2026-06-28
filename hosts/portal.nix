@@ -6,9 +6,9 @@
       nix.setup = true;
       timezone.nz = true;
       hardware = {
-        cpu.intel.enable = true;
-        gpu.intel.enable = true;
-        vfs009x.enable = true;
+        cpu.intel = true;
+        gpu.intel = true;
+        vfs009x = true;
       };
     };
     users = {
@@ -26,11 +26,7 @@
       audio.setup = true;
       plymouth.setup = true;
       fastboot.enable = true;
-      gaming = {
-        steam.enable = true;
-        thunderStore.enable = true;
-        prism.enable = true;
-      };
+      gaming.steam.enable = true;
     };
     server.networking.ssh = true;
   };

@@ -7,9 +7,9 @@
   options.crystal.desktop.audio.setup = lib.mkEnableOption "";
   config = lib.mkIf config.crystal.desktop.audio.setup {
     services = {
-      # audio
       pipewire = {
         enable = true;
+        # compat
         alsa.enable = true;
         pulse.enable = true;
       };

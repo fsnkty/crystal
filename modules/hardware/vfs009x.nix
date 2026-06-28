@@ -1,6 +1,6 @@
 { config, lib, ... }:
 {
-  options.crystal.system.hardware.vfs009x.enable = lib.mkEnableOption "";
+  options.crystal.system.hardware.vfs009x = lib.mkEnableOption "";
   config = lib.mkIf config.crystal.system.hardware.vfs009x.enable {
     # fingerprint scanner
     nixpkgs.overlays = [

@@ -6,7 +6,7 @@
   ...
 }:
 {
-  options.crystal.system.nix.setup = lib.mkEnableOption "Flake first & opionated nix defaults";
+  options.crystal.system.nix.setup = lib.mkEnableOption "Flake first nix config";
   config = lib.mkIf config.crystal.system.nix.setup {
     nixpkgs.config.allowUnfree = true;
     nix = {
@@ -26,9 +26,7 @@
         dates = "weekly";
         options = "--delete-older-than 7d";
       };
-      # never used channels anyway
       channel.enable = false;
-      #registry.nixpkgs.flake = inputs.nixpkgs;
       nixPath = [ "nixpkgs=flake:nixpkgs" ];
     };
     environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;

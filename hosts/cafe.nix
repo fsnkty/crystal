@@ -13,8 +13,8 @@
       nix.setup = true;
       timezone.nz = true;
       hardware = {
-        cpu.amd.enable = true;
-        gpu.amd.enable = true;
+        cpu.amd = true;
+        gpu.amd = true;
       };
     };
     users = {
