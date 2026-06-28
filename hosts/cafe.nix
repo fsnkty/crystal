@@ -29,6 +29,7 @@
       root.disable = true;
     };
     desktop = {
+      kde-std.enable = true;
       darkmode.enable = true;
       fonts.setup = true;
       audio.setup = true;
@@ -39,21 +40,6 @@
         thunderStore.enable = true;
         prism.enable = true;
       };
-    };
-  };
-  services.displayManager.plasma-login-manager.enable = true;
-  
-  disabledModules = [ "${modulesPath}/services/desktop-managers/plasma6.nix" ];
-  imports = [ "${inputs.fsnkty-nixpkgs}/nixos/modules/services/desktop-managers/plasma6.nix" ];
-  
-  services.desktopManager.plasma6 = {
-    enable = true;
-    services.kwallet.unlock-with-luks = true;
-  };
-  
-  environment.etc."xdg/kdeglobals".text = lib.generators.toINI {} {
-    "KDE Control Module Restrictions][$i" = {
-      kcm_users = !config.users.mutableUsers;
     };
   };
   
@@ -89,8 +75,6 @@
   hardware.bluetooth.enable = true;
 
   boot = {
-    # limine seemingly has no hold key for timeout skip
-    loader.systemd-boot.enable = lib.mkForce false;
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";

@@ -20,11 +20,17 @@
       root.disable = true;
     };
     desktop = {
+      kde-std.enable = true;
       darkmode.enable = true;
       fonts.setup = true;
       audio.setup = true;
       plymouth.setup = true;
       fastboot.enable = true;
+      gaming = {
+        steam.enable = true;
+        thunderStore.enable = true;
+        prism.enable = true;
+      };
     };
     server.networking.ssh = true;
   };
@@ -40,16 +46,14 @@
     };
   };
 
-  programs.steam.enable = true;
-
   networking.networkmanager.enable = true;
 
   services.fstrim.enable = true; # ssd
 
   boot = {
-    loader = {
-      limine.enable = true;
-      efi.canTouchEfiVariables = true;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
     };
     initrd = {
       availableKernelModules = [
