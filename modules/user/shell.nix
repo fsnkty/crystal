@@ -14,7 +14,7 @@ in
     setup = mkEnableOption "zsh";
     prompt = mkOption {
       type = lines;
-      default = "'%~ %# '";
+      default = "'%m %~ %# '";
     };
   };
   config =

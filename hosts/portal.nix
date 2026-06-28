@@ -39,6 +39,7 @@
     extraGroups = [ "networkmanager" ];
     packages = builtins.attrValues {
       inherit (pkgs)
+        firefox
         vscode
         vim
         wget
