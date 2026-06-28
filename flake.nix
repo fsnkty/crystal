@@ -7,15 +7,11 @@
     };
   };
   outputs =
-    {
-      self,
-      nixpkgs,
-      ...
-    }@inputs:
+    inputs:
     let
-      inherit (nixpkgs) lib;
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      inherit (inputs.nixpkgs) lib;
       listNixRecursive =
         path:
         builtins.concatMap (

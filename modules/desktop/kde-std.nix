@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   options.crystal.desktop.kde-std.enable = lib.mkEnableOption "";
   config = lib.mkIf config.crystal.desktop.kde-std.enable {
     services = {

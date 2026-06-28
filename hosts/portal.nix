@@ -44,7 +44,7 @@
   };
 
   networking.networkmanager.enable = true;
-  
+
   boot = {
     lanzaboote = {
       enable = true;

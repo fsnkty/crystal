@@ -1,12 +1,4 @@
-{
-  modulesPath,
-  inputs,
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-{
+_: {
   crystal = {
     system = {
       cleanup = true;
@@ -43,7 +35,7 @@
       };
     };
   };
-  
+
   networking = {
     useNetworkd = true;
     enableIPv6 = true;
@@ -122,8 +114,8 @@
         "x-systemd.device-timeout=5s"
         "x-systemd.mount-timeout=5s"
         "credentials=/keys/librarysmb"
-        "uid=${toString config.users.users.main.uid}"
-        "gid=${toString config.users.groups.users.gid}"
+        "uid=1000"
+        "gid=1000"
       ];
     };
   };
