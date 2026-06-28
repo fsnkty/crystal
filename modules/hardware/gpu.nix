@@ -15,7 +15,7 @@ in
     generic = mkEnableOption "generic GPU setup";
   };
   config = mkMerge [
-    (mkIf cfg.intel.enable {
+    (mkIf cfg.intel {
       crystal.system.hardware.gpu.generic = true;
       environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
       hardware.graphics.extraPackages = [
@@ -24,7 +24,7 @@ in
         pkgs.intel-compute-runtime-legacy1
       ];
     })
-    (mkIf cfg.amd.enable {
+    (mkIf cfg.amd {
       crystal.system.hardware.gpu.generic = true;
       boot.initrd.kernelModules = [ "amdgpu" ];
     })

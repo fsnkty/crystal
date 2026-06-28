@@ -44,9 +44,7 @@
   };
 
   networking.networkmanager.enable = true;
-
-  services.fstrim.enable = true; # ssd
-
+  
   boot = {
     lanzaboote = {
       enable = true;

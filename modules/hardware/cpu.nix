@@ -9,13 +9,13 @@ in
     amd = mkEnableOption "AMD CPU";
   };
   config = mkMerge [
-    (mkIf cfg.intel.enable {
+    (mkIf cfg.intel {
       hardware.cpu.intel.updateMicrocode = true;
       boot.initrd.kernelModules = [
         "kvm-intel" # virt acel
       ];
     })
-    (mkIf cfg.amd.enable {
+    (mkIf cfg.amd {
       hardware.cpu.amd.updateMicrocode = true;
       powerManagement.cpuFreqGovernor = "schedutil";
       boot = {
