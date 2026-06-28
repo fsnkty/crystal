@@ -21,7 +21,6 @@
       };
       amber.setup = true;
       root.disable = true;
-      mediaGroup.setup = true;
     };
     server = {
       vaultwarden.enable = true;
@@ -62,6 +61,11 @@
         };
       };
     };
+  };
+
+  users.groups.media = {
+    gid = 1000;
+    members = [ config.users.users.main.name ];
   };
 
   services.openssh.hostKeys = [

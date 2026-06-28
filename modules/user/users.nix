@@ -16,9 +16,8 @@ in
 {
   options.crystal.users = {
     root.disable = mkEnableOption "disable root user";
-    main.setup = mkEnableOption "fsnkty, me, the main user";
+    main.setup = mkEnableOption "fsnkty, Madison, main user";
     amber.setup = mkEnableOption "Amber";
-    mediaGroup.setup = mkEnableOption "";
   };
   config = mkMerge [
     (mkIf cfg.root.disable {
@@ -51,12 +50,6 @@ in
         isNormalUser = true;
         extraGroups = [ "wheel" ];
         uid = 1002; # +1 on fsnkty
-      };
-    })
-    (mkIf cfg.mediaGroup.setup {
-      users.groups.media = {
-        gid = 1000;
-        members = [ config.users.users.main.name ];
       };
     })
   ];
