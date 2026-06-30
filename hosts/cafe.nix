@@ -1,4 +1,9 @@
-_: {
+{
+  modulesPath,
+  pkgs,
+  ...
+}:
+{
   crystal = {
     system = {
       cleanup = true;
@@ -22,7 +27,6 @@ _: {
     };
     desktop = {
       htop.enable = true;
-      kde-std.enable = true;
       darkmode.enable = true;
       fonts.setup = true;
       audio.setup = true;
@@ -35,6 +39,62 @@ _: {
       };
     };
   };
+  disabledModules = [ "${modulesPath}/services/desktop-managers/plasma6.nix" ];
+  services = {
+    orca.enable = false;
+    displayManager.plasma-login-manager.enable = true;
+    desktopManager.plasma6 = {
+      enable = true;
+      themes = {
+        breeze.enable = true;
+        gtk = {
+          enable = true;
+          setBreeze = true;
+        };
+      };
+      services = {
+        plasma-browser-integration.enable = false;
+        kwallet.unlock-with-luks = true;
+      };
+      enableQt5Integration = false;
+    };
+  };
+  environment.plasma6 = {
+    ModuleRestrictions = false;
+    excludePackages = with pkgs.kdePackages; [
+      aurorae
+      kwin-x11
+      plasma-workspace-wallpapers
+      konsole
+      ark
+      elisa
+      okular
+      kate
+      ktexteditor
+      khelpcenter
+      krdp
+      plasma-keyboard
+      qtvirtualkeyboard
+      baloo-widgets
+      dolphin-plugins
+    ];
+    excludeRequiredPackages = with pkgs.kdePackages; [
+      kmenuedit
+      plasma-systemmonitor
+      phonon-vlc
+      kdeplasma-addons
+      baloo
+      milou
+    ];
+  };
+
+
+  users.users.main.packages = with pkgs; [
+    ungoogled-chromium
+    discord
+    vscodium
+    alacritty
+  ];
 
   networking = {
     useNetworkd = true;
@@ -60,10 +120,19 @@ _: {
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
+       measuredBoot = {
+        enable = true;
+        # pcrs 2 and 3 likely a bad fit, "pluggable" may mean USB and the like
+        pcrs = [
+          0 # firmware changes
+          1 # hardware (CPU/RAM/ETC) changes
+          4 # bootloader changes
+          7 # secureboot enabled/disabled or certs updated etc
+        ];
+      };
+      configurationLimit = 8; # hard limit enforced when using measuredBoot
     };
     kernelParams = [
-      # faster init for RNG, saves 1~s on boot
-      "random.trust_cpu=on"
       # hopefully reduce mode switching
       "video=DP-1:1920x1080@144"
     ];

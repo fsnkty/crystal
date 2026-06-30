@@ -2,7 +2,13 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     lanzaboote = {
+      # systemd-boot secure boot
       url = "github:nix-community/lanzaboote/v1.1.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hjem = {
+      # $HOME manager
+      url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -42,6 +48,7 @@
           pkgs.deadnix
           pkgs.statix
           pkgs.nixd
+          pkgs.nh
         ];
       };
       formatter.${system} = pkgs.nixfmt-tree;
