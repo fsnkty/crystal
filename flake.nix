@@ -1,13 +1,13 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # systemd-boot secure boot
     lanzaboote = {
-      # systemd-boot secure boot
       url = "github:nix-community/lanzaboote/v1.1.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # $HOME manager
     hjem = {
-      # $HOME manager
       url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
