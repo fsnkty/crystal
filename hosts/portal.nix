@@ -20,25 +20,54 @@
       root.disable = true;
     };
     desktop = {
-      kde-std.enable = true;
-      darkmode.enable = true;
       fonts.setup = true;
       audio.setup = true;
       plymouth.setup = true;
       fastboot.enable = true;
       gaming.steam.enable = true;
+      theme.enable = true;
+      plasma6 = {
+        enable = true;
+        excludePackages = builtins.attrValues {
+          inherit (pkgs.kdePackages)
+            aurorae
+            kwin-x11
+            plasma-workspace-wallpapers
+            konsole
+            ark
+            elisa
+            okular
+            kate
+            ktexteditor
+            khelpcenter
+            krdp
+            plasma-keyboard
+            qtvirtualkeyboard
+            baloo-widgets
+            dolphin-plugins
+            kmenuedit
+            plasma-systemmonitor
+            phonon-vlc
+            kdeplasma-addons
+            baloo
+            milou
+            ;
+        };
+      };
     };
     server.networking.ssh = true;
   };
+  services.displayManager.plasma-login-manager.enable = true;
 
   users.users.main = {
     extraGroups = [ "networkmanager" ];
     packages = builtins.attrValues {
       inherit (pkgs)
-        firefox
-        vscode
+        ungoogled-chromium
+        discord
+        vscodium
+        alacritty
         vim
-        wget
         ;
     };
   };

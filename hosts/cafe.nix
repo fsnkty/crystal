@@ -74,6 +74,7 @@
       discord
       vscodium
       alacritty
+      vim
       ;
   };
 
