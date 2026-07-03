@@ -76,9 +76,17 @@ in
                       )
                     '';
                   };
-                  # undo the XDG_DATA_DIRS injection that is usually done in the qt wrapper
-                  # script and instead inject the path of the above helper package
-                  derivedPkg = basePkg.overrideAttrs {
+                  derivedPkg = basePkg.overrideAttrs (oldAttrs: {
+                    # build cache
+                    stdenv = final.ccacheStdenv;
+                    CCACHE_DIR = config.programs.ccache.cacheDir;
+                    
+                    # add Zen 3 microarchitecture optimization flags
+                    NIX_CFLAGS_COMPILE = (oldAttrs.NIX_CFLAGS_COMPILE or "") + " -march=znver3 -mtune=znver3 -O3";
+                    NIX_CXXFLAGS_COMPILE = (oldAttrs.NIX_CXXFLAGS_COMPILE or "") + " -march=znver3 -mtune=znver3 -O3";
+                    
+                    # undo the XDG_DATA_DIRS injection that is usually done in the qt wrapper
+                    # script and instead inject the path of the above helper package
                     preFixup = ''
                       for index in "''${!qtWrapperArgs[@]}"; do
                         if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
@@ -92,7 +100,7 @@ in
                       qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
                       qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
                     '';
-                  };
+                  });
                 in
                 derivedPkg;
             }
