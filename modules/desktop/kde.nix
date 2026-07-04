@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 let
   cfg = config.crystal.desktop.kde;
@@ -18,6 +17,11 @@ let
     optionals
     types
     ;
+
+  activationScript = ''
+    # will be rebuilt automatically
+    rm -fv "''${XDG_CACHE_HOME:-$HOME/.cache}/ksycoca"*
+  '';
 in
 {
   options.crystal.desktop.kde = {
@@ -29,15 +33,6 @@ in
     manageKCM = mkOption {
       type = types.bool;
       default = true;
-    };
-    rebuild-cache-service = mkOption {
-      type = types.bool;
-      default = true;
-      description = ''
-        rebuilds the ksycoca6 cache on system activation and graphical target start.
-        This is a workaround to be a incompatibility with NixOS and how ksycoca6 chooses to invalidate cache.
-        You can follow the issue here, https://github.com/NixOS/nixpkgs/issues/292632.
-      '';
     };
   };
 
@@ -96,36 +91,36 @@ in
       qt.enable = true;
       programs.xwayland.enable = true;
       environment.systemPackages =
-        let 
+        let
           inherit (config)
             services
             hardware
             networking
             powerManagement
             ;
-        in 
+        in
         (builtins.attrValues {
           inherit (kdePackages)
-            qtwayland # Hack? To make everything run on Wayland
-            qtsvg # Needed to render SVG icons
+            qtwayland# Hack? To make everything run on Wayland
+            qtsvg# Needed to render SVG icons
 
             # Frameworks with globally loadable bits
-            frameworkintegration # provides Qt plugin
-            kauth # provides helper service
-            kcoreaddons # provides extra mime type info
-            kded # provides helper service
-            kfilemetadata # provides Qt plugins
-            kguiaddons # provides geo URL handlers
-            kiconthemes # provides Qt plugins
-            kimageformats # provides Qt plugins
-            qtimageformats # provides optional image formats such as .webp and .avif
-            kio # provides helper service + a bunch of other stuff
-            kio-admin # managing files as admin
-            kio-extras # stuff for MTP, AFC, etc
-            kpackage # provides kpackagetool tool
-            kservice # provides kbuildsycoca6 tool
-            plasma-activities # provides plasma-activities-cli tool
-            solid # provides solid-hardware6 tool
+            frameworkintegration# provides Qt plugin
+            kauth# provides helper service
+            kcoreaddons# provides extra mime type info
+            kded# provides helper service
+            kfilemetadata# provides Qt plugins
+            kguiaddons# provides geo URL handlers
+            kiconthemes# provides Qt plugins
+            kimageformats# provides Qt plugins
+            qtimageformats# provides optional image formats such as .webp and .avif
+            kio# provides helper service + a bunch of other stuff
+            kio-admin# managing files as admin
+            kio-extras# stuff for MTP, AFC, etc
+            kpackage# provides kpackagetool tool
+            kservice# provides kbuildsycoca6 tool
+            plasma-activities# provides plasma-activities-cli tool
+            solid# provides solid-hardware6 tool
 
             # Core Plasma parts
             kwin
@@ -134,18 +129,18 @@ in
             kscreenlocker
             kactivitymanagerd
             kde-cli-tools
-            kglobalacceld # keyboard shortcut daemon
-            kwrited # wall message proxy, not to be confused with kwrite
-            kdegraphics-thumbnailers # pdf etc thumbnailer
-            polkit-kde-agent-1 # polkit auth ui
+            kglobalacceld# keyboard shortcut daemon
+            kwrited# wall message proxy, not to be confused with kwrite
+            kdegraphics-thumbnailers# pdf etc thumbnailer
+            polkit-kde-agent-1# polkit auth ui
             plasma-desktop
             plasma-workspace
-            kde-inotify-survey # warns the user on low inotifywatch limits
+            kde-inotify-survey# warns the user on low inotifywatch limits
 
             # Application integration
-            libplasma # provides Kirigami platform theme
-            plasma-integration # provides Qt platform theme
-            kde-gtk-config # syncs KDE settings to GTK
+            libplasma# provides Kirigami platform theme
+            plasma-integration# provides Qt platform theme
+            kde-gtk-config# syncs KDE settings to GTK
 
             # Plasma utilities
             ksystemstats
@@ -158,20 +153,20 @@ in
             dolphin
             spectacle
             ffmpegthumbs
-            kconfig # required for xdg-terminal from xdg-utils
-            qtbase # for qtpaths which is required for xdg-mime from xdg-utils
+            kconfig# required for xdg-terminal from xdg-utils
+            qtbase# for qtpaths which is required for xdg-mime from xdg-utils
             # kwallet
             kwallet
             kwallet-pam
             kwalletmanager
             drkonqi
             ;
-            })
-            ++ [
-              pkgs.hicolor-icon-theme # fallback icons
-              pkgs.xdg-user-dirs # recommended upstream
-              (getBin kdePackages.qttools) # Expose qdbus in PATH
-            ]
+        })
+        ++ [
+          pkgs.hicolor-icon-theme # fallback icons
+          pkgs.xdg-user-dirs # recommended upstream
+          (getBin kdePackages.qttools) # Expose qdbus in PATH
+        ]
         # Optional and hardware support features
         ++ optionals hardware.bluetooth.enable [
           kdePackages.bluedevil
@@ -209,7 +204,15 @@ in
           "drkonqi-coredump-processor@".wantedBy = [ "systemd-coredump@.service" ];
         };
         packages = [ kdePackages.drkonqi ];
+        # FIXME: ugly hack. See #292632 in nixpkgs for details.
+        user.services.nixos-rebuild-sycoca = {
+          description = "Rebuild KDE system configuration cache";
+          wantedBy = [ "graphical-session-pre.target" ];
+          serviceConfig.Type = "oneshot";
+          script = activationScript;
+        };
       };
+      system.userActivationScripts.rebuildSycoca = activationScript;
 
       xdg = {
         portal = {
@@ -226,8 +229,6 @@ in
         gnupg.agent.pinentryPackage = mkDefault pkgs.pinentry-qt;
         kde-pim.enable = mkDefault true;
         ssh.askPassword = mkDefault "${kdePackages.ksshaskpass.out}/bin/ksshaskpass";
-        kdeconnect.package = kdePackages.kdeconnect-kde;
-        partition-manager.package = kdePackages.partitionmanager;
       };
       services = {
         pipewire.enable = mkDefault true;
@@ -315,24 +316,6 @@ in
       };
 
     })
-    (
-      let
-        activationScript = ''
-          # will be rebuilt automatically
-          rm -fv "''${XDG_CACHE_HOME:-$HOME/.cache}/ksycoca"*
-        '';
-      in
-      mkIf cfg.rebuild-cache-service {
-        # FIXME: ugly hack. See #292632 for details.
-        system.userActivationScripts.rebuildSycoca = activationScript;
-        systemd.user.services.nixos-rebuild-sycoca = {
-          description = "Rebuild KDE system configuration cache";
-          wantedBy = [ "graphical-session-pre.target" ];
-          serviceConfig.Type = "oneshot";
-          script = activationScript;
-        };
-      }
-    )
     (mkIf cfg.manageKCM {
       environment.etc."xdg/kdeglobals".text =
         lib.generators.toINI
