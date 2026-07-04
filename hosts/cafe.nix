@@ -33,6 +33,7 @@
     };
     programs = {
       git.setup = true;
+      neovim = true;
       htop = true;
       alacritty = true;
       gaming = {
@@ -49,7 +50,6 @@
       ungoogled-chromium
       discord
       vscodium
-      vim
       ;
   };
 

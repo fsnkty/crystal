@@ -28,6 +28,7 @@
     };
     programs = {
       git.setup = true;
+      neovim = true;
       htop = true;
       alacritty = true;
       gaming.steam = true;
@@ -43,7 +44,6 @@
         ungoogled-chromium
         discord
         vscodium
-        vim
         ;
     };
   };
