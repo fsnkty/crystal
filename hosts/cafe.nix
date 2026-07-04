@@ -36,34 +36,7 @@
       };
       plymouth.setup = true;
       theme.enable = true;
-      plasma6 = {
-        enable = true;
-        excludePackages = builtins.attrValues {
-          inherit (pkgs.kdePackages)
-            aurorae
-            kwin-x11
-            plasma-workspace-wallpapers
-            konsole
-            ark
-            elisa
-            okular
-            kate
-            ktexteditor
-            khelpcenter
-            krdp
-            plasma-keyboard
-            qtvirtualkeyboard
-            baloo-widgets
-            dolphin-plugins
-            kmenuedit
-            plasma-systemmonitor
-            phonon-vlc
-            kdeplasma-addons
-            baloo
-            milou
-            ;
-        };
-      };
+      kde.enable = true;
     };
   };
   services.displayManager.plasma-login-manager.enable = true;
