@@ -1,0 +1,142 @@
+{ pkgs, config, ... }:
+{
+  crystal = {
+    system = {
+      cleanup = true;
+      nix.setup = true;
+      timezone.nz = true;
+      hardware = {
+        cpu.intel = true;
+        gpu.intel = true;
+      };
+    };
+    users = {
+      main = {
+        setup = true;
+        shell = {
+          setup = true;
+          prompt = "'%F{cyan}%m%f %~ %# '";
+        };
+        git.setup = true;
+      };
+      amber.setup = true;
+      root.disable = true;
+    };
+    server = {
+      vaultwarden.enable = true;
+      networking = {
+        nginx = true;
+        samba = true;
+        headless = true;
+        ssh = true;
+        tailscale.enable = true;
+      };
+      media = {
+        jellyfin.enable = true;
+        qbittorrent.enable = true;
+        arrs.enable = true;
+      };
+      minecraft-servers = {
+        gtnh = {
+          enable = true;
+          dataDir = "/storage/games/gtnh";
+          openFirewall = true;
+          serverPort = 25566;
+          jvmOpts = "-Xms6G -Xmx6G -Dfml.readTimeout=180 -Dfml.queryResult=confirm @java9args.txt -jar lwjgl3ify-forgePatches.jar ";
+          jvmPackage = pkgs.jre;
+        };
+        paper = {
+          enable = true;
+          dataDir = "/storage/games/paper";
+          openFirewall = true;
+          jvmOpts =
+            "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders -XX:+UseTransparentHugePages"
+            + " -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled"
+            + " -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC"
+            + " -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40"
+            + " -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30"
+            + " -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15"
+            + " -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32"
+            + " -jar paper.jar";
+          jvmPackage = pkgs.jdk25_headless;
+        };
+      };
+    };
+  };
+
+  users.groups.media = {
+    gid = 1000;
+    members = [ config.users.users.main.name ];
+  };
+
+  services.openssh.hostKeys = [
+    {
+      comment = "library host";
+      path = "/etc/ssh/library_ed25519_key"; # library priv
+      type = "ed25519";
+    }
+  ];
+
+  networking = {
+    firewall.enable = true;
+    useNetworkd = true;
+    hostId = "9a350e7b";
+    enableIPv6 = false; # no ipv6 provided by ISP
+    useDHCP = false; # static IP
+    nameservers = [ "1.1.1.1" ];
+  };
+  systemd.network = {
+    enable = true;
+    networks.enp6s0 = {
+      enable = true;
+      name = "enp6s0";
+      dns = [ "1.1.1.1" ];
+      address = [ "192.168.0.3/24" ];
+      routes = [ { Gateway = "192.168.0.1"; } ];
+    };
+  };
+
+  boot = {
+    loader.systemd-boot.enable = true;
+    supportedFilesystems = [ "zfs" ];
+    zfs.forceImportRoot = false;
+  };
+  services.zfs = {
+    autoScrub.enable = true;
+    autoSnapshot = {
+      enable = true;
+      flags = "-k -p --utc";
+    };
+  };
+  fileSystems = {
+    "/" = {
+      device = "rpool/root";
+      fsType = "zfs";
+    };
+    "/storage" = {
+      device = "spool/storage";
+      fsType = "zfs";
+    };
+    "/var/lib" = {
+      device = "spool/state";
+      fsType = "zfs";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part1";
+      fsType = "vfat";
+      options = [
+        "rw"
+        "noatime"
+        "fmask=0077"
+        "dmask=0077"
+        "x-systemd.automount" # only mount when requested
+      ];
+    };
+  };
+  swapDevices = [
+    {
+      device = "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNF0R716712D-part2";
+    }
+  ];
+  system.stateVersion = "23.11";
+}
