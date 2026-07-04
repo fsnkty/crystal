@@ -1,5 +1,4 @@
 { config
-, pkgs
 , lib
 , ...
 }:
@@ -34,6 +33,7 @@
       })
     ];
     nix.settings = {
+      max-jobs = 12; # 16 causes such heavy memory pressure that even bailing to zram or disk is too much.
       system-features = [
         # cafe
         "gccarch-znver3"
@@ -46,5 +46,7 @@
       extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
     };
     programs.ccache.enable = true;
+    # builds run in this slice
+    systemd.oomd.enableUserSlices = true;
   };
 }
