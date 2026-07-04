@@ -126,11 +126,6 @@
     };
   };
   zramSwap.enable = true;
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 64*1024;
-    priority = 1; # to come after zrams default of 5
-  }];
   fileSystems = {
     "/boot" = {
       device = "/dev/disk/by-label/boot";
