@@ -51,72 +51,33 @@ in
       nixpkgs.overlays = [
         (final: prev: {
           kdePackages = prev.kdePackages.overrideScope (
-            kdeFinal: kdePrev:
-              let
-                optimizedKdePackages = prev.lib.mapAttrs (name: pkg:
-                  # ensure is actually a pkg
-                  if prev.lib.isDerivation pkg then
-                    pkg.overrideAttrs (oldAttrs:
-                      let
-                        flags = " -march=znver3 -mtune=znver3 -O3";
-                        
-                        # 1. Determine if the package stores these flags in `env` or as a root attribute
-                        inEnvC = oldAttrs ? env && oldAttrs.env ? NIX_CFLAGS_COMPILE;
-                        inEnvCxx = oldAttrs ? env && oldAttrs.env ? NIX_CXXFLAGS_COMPILE;
-                        
-                        # 2. Extract the existing flags from the correct location
-                        oldC = if inEnvC then oldAttrs.env.NIX_CFLAGS_COMPILE else (oldAttrs.NIX_CFLAGS_COMPILE or "");
-                        oldCxx = if inEnvCxx then oldAttrs.env.NIX_CXXFLAGS_COMPILE else (oldAttrs.NIX_CXXFLAGS_COMPILE or "");
-                      in
-                      {
-                        stdenv = final.ccacheStdenv;
-                        CCACHE_DIR = config.programs.ccache.cacheDir;
-                      }
-                      # 3. Apply to root ONLY if they weren't in `env`
-                      // prev.lib.optionalAttrs (!inEnvC) {
-                        NIX_CFLAGS_COMPILE = oldC + flags;
-                      }
-                      // prev.lib.optionalAttrs (!inEnvCxx) {
-                        NIX_CXXFLAGS_COMPILE = oldCxx + flags;
-                      }
-                      # 4. Apply to `env` ONLY if the derivation already uses `env`
-                      // prev.lib.optionalAttrs (oldAttrs ? env) {
-                        env = oldAttrs.env // prev.lib.optionalAttrs inEnvC {
-                          NIX_CFLAGS_COMPILE = oldC + flags;
-                        } // prev.lib.optionalAttrs inEnvCxx {
-                          NIX_CXXFLAGS_COMPILE = oldCxx + flags;
-                        };
-                      }
-                    )
-                  else
-                    pkg
-                ) kdePrev;
-              in
-              optimizedKdePackages // {
-                # Apply XDG data dir fixes strictly to plasma-workspace
-                plasma-workspace =
-                  let
-                    basePkg = optimizedKdePackages.plasma-workspace;
-                    
-                    xdgdataPkg = final.stdenv.mkDerivation {
-                      name = "${basePkg.name}-xdgdata";
-                      buildInputs = [ basePkg ];
-                      dontUnpack = true;
-                      dontFixup = true;
-                      dontWrapQtApps = true;
-                      installPhase = ''
-                        mkdir -p $out/share
-                        ( IFS=:
-                          for DIR in $XDG_DATA_DIRS; do
-                            if [[ -d "$DIR" ]]; then
-                              ${prev.lib.getExe prev.lndir} -silent "$DIR" $out
-                            fi
-                          done
-                        )
-                      '';
-                    };
-                  in
-                  basePkg.overrideAttrs (oldAttrs: {
+            kdeFinal: kdePrev: {
+              # https://old.reddit.com/r/NixOS/comments/1pdtc3v/kde_plasma_is_slow_compared_to_any_other_distro/
+              # https://github.com/NixOS/nixpkgs/issues/126590#issuecomment-3194531220
+              plasma-workspace =
+                let
+                  basePkg = kdePrev.plasma-workspace;
+                  # a helper package that merges all the XDG_DATA_DIRS into a single directory
+                  xdgdataPkg = final.stdenv.mkDerivation {
+                    name = "${basePkg.name}-xdgdata";
+                    buildInputs = [ basePkg ];
+                    dontUnpack = true;
+                    dontFixup = true;
+                    dontWrapQtApps = true;
+                    installPhase = ''
+                      mkdir -p $out/share
+                      ( IFS=:
+                        for DIR in $XDG_DATA_DIRS; do
+                          if [[ -d "$DIR" ]]; then
+                            ${prev.lib.getExe prev.lndir} -silent "$DIR" $out
+                          fi
+                        done
+                      )
+                    '';
+                  };
+                  derivedPkg = basePkg.overrideAttrs (oldAttrs: {
+                    # undo the XDG_DATA_DIRS injection that is usually done in the qt wrapper
+                    # script and instead inject the path of the above helper package
                     preFixup = ''
                       for index in "''${!qtWrapperArgs[@]}"; do
                         if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
@@ -131,7 +92,9 @@ in
                       qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
                     '';
                   });
-              }
+                in
+                derivedPkg;
+            }
           );
         })
       ];
