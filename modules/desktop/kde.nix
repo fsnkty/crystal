@@ -268,14 +268,6 @@ in
         # Add ~/.config/kdedefaults to XDG_CONFIG_DIRS for shells, since Plasma sets that.
         # FIXME: maybe we should append to XDG_CONFIG_DIRS in /etc/set-environment instead?
         sessionVariables.XDG_CONFIG_DIRS = [ "$HOME/.config/kdedefaults" ];
-        # Needed for things that depend on other store.kde.org packages to install correctly,
-        # notably Plasma look-and-feel packages (a.k.a. Global Themes)
-        #
-        # FIXME: this is annoyingly impure and should really be fixed at source level somehow,
-        # but kpackage is a library so we can't just wrap the one thing invoking it and be done.
-        # This also means things won't work for people not on Plasma, but at least this way it
-        # works for SOME people.
-        #environment.sessionVariables.KPACKAGE_DEP_RESOLVERS_PATH = "${kdePackages.frameworkintegration.out}/libexec/kf6/kpackagehandlers";
       };
       systemd = {
         services = {
