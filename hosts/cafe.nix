@@ -6,10 +6,7 @@
   crystal = {
     system = {
       cleanup = true;
-      nix = {
-        setup = true;
-        cafe = true;
-      };
+      nix.setup = true;
       timezone.nz = true;
       hardware = {
         cpu.amd = true;
