@@ -34,6 +34,7 @@
     programs = {
       git.setup = true;
       htop = true;
+      alacritty = true;
       gaming = {
         steam = true;
         thunderStore = true;
@@ -48,7 +49,6 @@
       ungoogled-chromium
       discord
       vscodium
-      alacritty
       vim
       ;
   };

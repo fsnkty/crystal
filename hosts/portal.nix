@@ -29,6 +29,7 @@
     programs = {
       git.setup = true;
       htop = true;
+      alacritty = true;
       gaming.steam = true;
     };
     server.networking.ssh = true;
@@ -42,7 +43,6 @@
         ungoogled-chromium
         discord
         vscodium
-        alacritty
         vim
         ;
     };
