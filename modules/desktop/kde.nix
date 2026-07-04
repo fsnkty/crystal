@@ -31,27 +31,33 @@ in
       type = types.listOf types.package;
       default = builtins.attrValues {
         inherit (pkgs.kdePackages)
+          # "optional"
           aurorae
-          kwin-x11
           plasma-workspace-wallpapers
           konsole
+          kwin-x11
           ark
           elisa
           okular
           kate
           ktexteditor
           khelpcenter
+          baloo-widgets
+          dolphin-plugins
           krdp
           plasma-keyboard
           qtvirtualkeyboard
-          baloo-widgets
-          dolphin-plugins
-          kmenuedit
-          plasma-systemmonitor
-          phonon-vlc
-          kdeplasma-addons
+          # "required"
+          kio-fuse
+          knighttime
+          kunifiedpush
           baloo
           milou
+          phonon-vlc
+          kmenuedit
+          kinfocenter
+          plasma-systemmonitor
+          kdeplasma-addons
           ;
       };
     };
