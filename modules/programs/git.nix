@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.crystal.users.main.git;
+  cfg = config.crystal.programs.git;
 in
 {
-  options.crystal.users.main.git = {
+  options.crystal.programs.git = {
     setup = lib.mkEnableOption "";
     signingkey = lib.mkOption {
       type = lib.types.str;

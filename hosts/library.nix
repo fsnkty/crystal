@@ -17,11 +17,11 @@
           setup = true;
           prompt = "'%F{cyan}%m%f %~ %# '";
         };
-        git.setup = true;
       };
       amber.setup = true;
       root.disable = true;
     };
+    programs.htop = true;
     server = {
       vaultwarden.enable = true;
       networking = {

@@ -5,16 +5,16 @@
   ...
 }:
 let
-  cfg = config.crystal.desktop.gaming;
+  cfg = config.crystal.programs.gaming;
 in
 {
-  options.crystal.desktop.gaming = {
-    steam.enable = lib.mkEnableOption "";
-    thunderStore.enable = lib.mkEnableOption "";
-    prism.enable = lib.mkEnableOption "";
+  options.crystal.programs.gaming = {
+    steam = lib.mkEnableOption "";
+    thunderStore = lib.mkEnableOption "";
+    prism = lib.mkEnableOption "";
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.steam.enable {
+    (lib.mkIf cfg.steam {
       programs.steam = {
         enable = true;
         extraPackages = [
@@ -25,12 +25,12 @@ in
         ];
       };
     })
-    (lib.mkIf cfg.thunderStore.enable {
+    (lib.mkIf cfg.thunderStore {
       environment.systemPackages = [
         pkgs.r2modman
       ];
     })
-    (lib.mkIf cfg.prism.enable {
+    (lib.mkIf cfg.prism {
       environment.systemPackages = [
         pkgs.prismlauncher
         pkgs.jre25_minimal

@@ -5,8 +5,8 @@
   ...
 }:
 {
-  options.crystal.desktop.htop.enable = lib.mkEnableOption "";
-  config = lib.mkIf config.crystal.desktop.htop.enable {
+  options.crystal.programs.htop = lib.mkEnableOption "";
+  config = lib.mkIf config.crystal.programs.htop {
     environment = {
       systemPackages = [ pkgs.htop ];
       etc."htoprc".text = ''

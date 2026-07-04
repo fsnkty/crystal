@@ -15,7 +15,6 @@
       main = {
         setup = true;
         shell.setup = true;
-        git.setup = true;
       };
       root.disable = true;
     };
@@ -26,7 +25,11 @@
       fonts.setup = true;
       audio.setup = true;
       fastboot.enable = true;
-      gaming.steam.enable = true;
+    };
+    programs = {
+      git.setup = true;
+      htop = true;
+      gaming.steam = true;
     };
     server.networking.ssh = true;
   };

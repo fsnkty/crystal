@@ -20,7 +20,6 @@
           setup = true;
           prompt = "'%F{red}%m%f %~ %# '";
         };
-        git.setup = true;
       };
       root.disable = true;
     };
@@ -31,11 +30,14 @@
       fonts.setup = true;
       audio.setup = true;
       fastboot.enable = true;
-      htop.enable = true;
+    };
+    programs = {
+      git.setup = true;
+      htop = true;
       gaming = {
-        steam.enable = true;
-        thunderStore.enable = true;
-        prism.enable = true;
+        steam = true;
+        thunderStore = true;
+        prism = true;
       };
     };
   };
