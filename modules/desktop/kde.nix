@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  utils,
   ...
 }:
 let
@@ -26,40 +25,6 @@ in
       type = types.bool;
       default = false;
       description = "Enable the Plasma 6 (KDE 6) desktop environment.";
-    };
-    excludePackages = mkOption {
-      type = types.listOf types.package;
-      default = builtins.attrValues {
-        inherit (pkgs.kdePackages)
-          # "optional"
-          aurorae
-          plasma-workspace-wallpapers
-          konsole
-          kwin-x11
-          ark
-          elisa
-          okular
-          kate
-          ktexteditor
-          khelpcenter
-          baloo-widgets
-          dolphin-plugins
-          krdp
-          plasma-keyboard
-          qtvirtualkeyboard
-          # "required"
-          kio-fuse
-          knighttime
-          kunifiedpush
-          baloo
-          milou
-          phonon-vlc
-          kmenuedit
-          kinfocenter
-          plasma-systemmonitor
-          kdeplasma-addons
-          ;
-      };
     };
     manageKCM = mkOption {
       type = types.bool;
@@ -131,113 +96,82 @@ in
       qt.enable = true;
       programs.xwayland.enable = true;
       environment.systemPackages =
-        let
-          Packages =
-            (builtins.attrValues {
-              inherit (kdePackages)
-                qtwayland # Hack? To make everything run on Wayland
-                qtsvg # Needed to render SVG icons
-
-                # Frameworks with globally loadable bits
-                frameworkintegration # provides Qt plugin
-                kauth # provides helper service
-                kcoreaddons # provides extra mime type info
-                kded # provides helper service
-                kfilemetadata # provides Qt plugins
-                kguiaddons # provides geo URL handlers
-                kiconthemes # provides Qt plugins
-                kimageformats # provides Qt plugins
-                qtimageformats # provides optional image formats such as .webp and .avif
-                kio # provides helper service + a bunch of other stuff
-                kio-admin # managing files as admin
-                kio-extras # stuff for MTP, AFC, etc
-                kio-fuse # fuse interface for KIO
-                knighttime # night mode switching daemon
-                kpackage # provides kpackagetool tool
-                kservice # provides kbuildsycoca6 tool
-                kunifiedpush # provides a background service and a KCM
-                plasma-activities # provides plasma-activities-cli tool
-                solid # provides solid-hardware6 tool
-                phonon-vlc # provides Phonon plugin
-
-                # Core Plasma parts
-                kwin
-                kscreen
-                libkscreen
-                kscreenlocker
-                kactivitymanagerd
-                kde-cli-tools
-                kglobalacceld # keyboard shortcut daemon
-                kwrited # wall message proxy, not to be confused with kwrite
-                baloo # system indexer
-                milou # search engine atop baloo
-                kdegraphics-thumbnailers # pdf etc thumbnailer
-                polkit-kde-agent-1 # polkit auth ui
-                plasma-desktop
-                plasma-workspace
-                kde-inotify-survey # warns the user on low inotifywatch limits
-
-                # Application integration
-                libplasma # provides Kirigami platform theme
-                plasma-integration # provides Qt platform theme
-                kde-gtk-config # syncs KDE settings to GTK
-
-                # misc Plasma extras
-                kdeplasma-addons
-
-                # Plasma utilities
-                kmenuedit
-                kinfocenter
-                plasma-systemmonitor
-                ksystemstats
-                libksysguard
-                systemsettings
-                kcmutils
-
-                # "optional"
-                aurorae
-                plasma-workspace-wallpapers
-                konsole
-                kwin-x11
-                ark
-                elisa
-                gwenview
-                okular
-                kate
-                ktexteditor # provides elevated actions for kate
-                khelpcenter
-                dolphin
-                baloo-widgets # baloo information in Dolphin
-                dolphin-plugins
-                spectacle
-                ffmpegthumbs
-                krdp
-                kconfig # required for xdg-terminal from xdg-utils
-                qtbase # for qtpaths which is required for xdg-mime from xdg-utils
-                # touch keyboard
-                plasma-keyboard
-                qtvirtualkeyboard # used by plasma-keyboard KCM
-
-                # kwallet
-                kwallet
-                kwallet-pam
-                kwalletmanager
-                drkonqi
-                ;
-            })
-            ++ [
-              pkgs.hicolor-icon-theme # fallback icons
-              pkgs.xdg-user-dirs # recommended upstream
-              (getBin kdePackages.qttools) # Expose qdbus in PATH
-            ];
+        let 
           inherit (config)
             services
             hardware
             networking
             powerManagement
             ;
-        in
-        utils.removePackagesByName Packages cfg.excludePackages
+        in 
+        (builtins.attrValues {
+          inherit (kdePackages)
+            qtwayland # Hack? To make everything run on Wayland
+            qtsvg # Needed to render SVG icons
+
+            # Frameworks with globally loadable bits
+            frameworkintegration # provides Qt plugin
+            kauth # provides helper service
+            kcoreaddons # provides extra mime type info
+            kded # provides helper service
+            kfilemetadata # provides Qt plugins
+            kguiaddons # provides geo URL handlers
+            kiconthemes # provides Qt plugins
+            kimageformats # provides Qt plugins
+            qtimageformats # provides optional image formats such as .webp and .avif
+            kio # provides helper service + a bunch of other stuff
+            kio-admin # managing files as admin
+            kio-extras # stuff for MTP, AFC, etc
+            kpackage # provides kpackagetool tool
+            kservice # provides kbuildsycoca6 tool
+            plasma-activities # provides plasma-activities-cli tool
+            solid # provides solid-hardware6 tool
+
+            # Core Plasma parts
+            kwin
+            kscreen
+            libkscreen
+            kscreenlocker
+            kactivitymanagerd
+            kde-cli-tools
+            kglobalacceld # keyboard shortcut daemon
+            kwrited # wall message proxy, not to be confused with kwrite
+            kdegraphics-thumbnailers # pdf etc thumbnailer
+            polkit-kde-agent-1 # polkit auth ui
+            plasma-desktop
+            plasma-workspace
+            kde-inotify-survey # warns the user on low inotifywatch limits
+
+            # Application integration
+            libplasma # provides Kirigami platform theme
+            plasma-integration # provides Qt platform theme
+            kde-gtk-config # syncs KDE settings to GTK
+
+            # Plasma utilities
+            ksystemstats
+            libksysguard
+            systemsettings
+            kcmutils
+
+            # "optional"
+            gwenview
+            dolphin
+            spectacle
+            ffmpegthumbs
+            kconfig # required for xdg-terminal from xdg-utils
+            qtbase # for qtpaths which is required for xdg-mime from xdg-utils
+            # kwallet
+            kwallet
+            kwallet-pam
+            kwalletmanager
+            drkonqi
+            ;
+            })
+            ++ [
+              pkgs.hicolor-icon-theme # fallback icons
+              pkgs.xdg-user-dirs # recommended upstream
+              (getBin kdePackages.qttools) # Expose qdbus in PATH
+            ]
         # Optional and hardware support features
         ++ optionals hardware.bluetooth.enable [
           kdePackages.bluedevil
@@ -265,9 +199,6 @@ in
           "/libexec" # drkonqi
         ];
         etc."X11/xkb".source = config.services.xserver.xkb.dir;
-        # Add ~/.config/kdedefaults to XDG_CONFIG_DIRS for shells, since Plasma sets that.
-        # FIXME: maybe we should append to XDG_CONFIG_DIRS in /etc/set-environment instead?
-        sessionVariables.XDG_CONFIG_DIRS = [ "$HOME/.config/kdedefaults" ];
       };
       systemd = {
         services = {
@@ -368,8 +299,6 @@ in
             capabilities = "cap_sys_nice+ep";
             source = "${getBin pkgs.kdePackages.kwin}/bin/kwin_wayland";
           };
-          # FIXME: this should likely be conditional on having the appropriate hardware
-          # however, there is no obvious comprehensive way to check this
           ksystemstats_intel_helper = {
             owner = "root";
             group = "root";
