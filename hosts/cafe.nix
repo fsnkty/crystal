@@ -25,18 +25,18 @@
       root.disable = true;
     };
     desktop = {
-      htop.enable = true;
+      kde.enable = true;
+      theme.enable = true;
+      plymouth.setup = true;
       fonts.setup = true;
       audio.setup = true;
       fastboot.enable = true;
+      htop.enable = true;
       gaming = {
         steam.enable = true;
         thunderStore.enable = true;
         prism.enable = true;
       };
-      plymouth.setup = true;
-      theme.enable = true;
-      kde.enable = true;
     };
   };
   services.displayManager.plasma-login-manager.enable = true;
@@ -95,12 +95,16 @@
       };
     };
   };
+
   zramSwap.enable = true;
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 64*1024;
-    priority = 1; # to come after zrams default of 5
-  }];
+
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 64 * 1024;
+      priority = 1; # to come after zrams default of 5
+    }
+  ];
   fileSystems = {
     "/boot" = {
       device = "/dev/disk/by-label/boot";

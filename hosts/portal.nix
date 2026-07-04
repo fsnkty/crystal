@@ -20,13 +20,13 @@
       root.disable = true;
     };
     desktop = {
+      kde.enable = true;
+      theme.enable = true;
+      plymouth.setup = true;
       fonts.setup = true;
       audio.setup = true;
-      plymouth.setup = true;
       fastboot.enable = true;
       gaming.steam.enable = true;
-      theme.enable = true;
-      kde.enable = true;
     };
     server.networking.ssh = true;
   };

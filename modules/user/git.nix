@@ -19,7 +19,7 @@ in
         user = {
           name = "fsnkty";
           email = "fsnkty@pm.me";
-          signingkey = cfg.signingkey;
+          inherit (cfg) signingkey;
         };
         gpg.format = "ssh";
         commit.gpgsign = true;
