@@ -132,8 +132,8 @@
         "x-systemd.device-timeout=5s"
         "x-systemd.mount-timeout=5s"
         "credentials=/keys/librarysmb"
-        "uid=1000"
-        "gid=1000"
+        "uid=1001"
+        "gid=100"
       ];
     };
   };
