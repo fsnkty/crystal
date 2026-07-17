@@ -47,7 +47,7 @@
 
   users.users.main.packages = builtins.attrValues {
     inherit (pkgs)
-      ungoogled-chromium
+      google-chrome
       discord
       vscodium
       ;
