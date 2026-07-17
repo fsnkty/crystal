@@ -7,10 +7,7 @@
   options.crystal.desktop.plymouth.setup = lib.mkEnableOption "";
   config = lib.mkIf config.crystal.desktop.plymouth.setup {
     boot = {
-      plymouth = {
-        enable = true;
-        theme = "breeze";
-      };
+      plymouth.enable = true;
       consoleLogLevel = 3;
       kernelParams = [
         "quiet"
@@ -21,7 +18,6 @@
         "vt.global_cursor_default=0"
       ];
       initrd.verbose = false;
-      loader.timeout = 0;
     };
   };
 }
