@@ -30,7 +30,9 @@
       fonts.setup = true;
       audio.setup = true;
       fastboot.enable = true;
+      tailscale-systray.enable = true;
     };
+    server.networking.tailscale.enable = true;
     programs = {
       git.setup = true;
       neovim = true;

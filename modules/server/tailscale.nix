@@ -9,7 +9,6 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      # 1. Enable the service and the firewall
       services.tailscale = {
         enable = true;
         authKeyFile = "/keys/tailscale";
@@ -24,16 +23,11 @@ in
         };
       };
 
-      # 2. Force tailscaled to use nftables (Critical for clean nftables-only systems)
+      # Force tailscaled to use nftables
       # This avoids the "iptables-compat" translation layer issues.
       systemd.services.tailscaled.serviceConfig.Environment = [
         "TS_DEBUG_FIREWALL_MODE=nftables"
       ];
-
-      # 3. Optimization: Prevent systemd from waiting for network online
-      # (Optional but recommended for faster boot with VPNs)
-      systemd.network.wait-online.enable = false;
-      boot.initrd.systemd.network.wait-online.enable = false;
     })
   ];
 }
