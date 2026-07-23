@@ -52,6 +52,8 @@
       google-chrome
       discord
       vscodium
+      obsidian
+      blender
       ;
   };
 
