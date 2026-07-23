@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
@@ -102,7 +103,17 @@
     };
   };
 
-  zramSwap.enable = true;
+  # https://github.com/NixOS/nixpkgs/pull/351002/changes#diff-592dc0e631b55d09601fabca093a5a5cfc337eeb5e58a16750263dffc5f76637R162
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+  };
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 150;
+    "vm.watermark_boost_factor" = 0;
+    "vm.watermark_scale_factor" = 125;
+    "vm.page-cluster" = 0;
+  };
 
   fileSystems = {
     "/boot" = {
