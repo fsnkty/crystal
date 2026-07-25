@@ -10,11 +10,11 @@
       pipewire = {
         enable = true;
         # compat
-        alsa.enable = true;
-        pulse.enable = true;
+        #alsa.enable = true;
+        #pulse.enable = true;
       };
     };
     # allows pipewire to obtain RT prio as a user process
-    security.rtkit.enable = true;
+    #security.rtkit.enable = true;
   };
 }
