@@ -10,7 +10,6 @@
     environment.systemPackages = builtins.attrValues {
       inherit (pkgs.kdePackages)
         # gtk
-        kde-gtk-config
         breeze-gtk
         # kde
         breeze

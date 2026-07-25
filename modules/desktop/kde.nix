@@ -102,7 +102,7 @@ in
           # Application integration
           libplasma# provides Kirigami platform theme
           plasma-integration# provides Qt platform theme
-          kde-gtk-config# syncs KDE settings to GTK
+          # kde-gtk-config# syncs KDE settings to GTK # deps on xsettingsd, not needed after setting.
 
           # Plasma utilities
           ksystemstats
