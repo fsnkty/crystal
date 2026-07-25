@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.crystal.desktop.tailscale-systray;
   inherit (lib) mkIf mkEnableOption;
