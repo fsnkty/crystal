@@ -10,6 +10,8 @@
   config = lib.mkIf config.crystal.system.nix.setup {
     nixpkgs.config.allowUnfree = true;
     nix = {
+      daemonCPUSchedPolicy = "idle";
+      daemonIOSchedClass = "idle";
       package = pkgs.nixVersions.latest;
       settings = {
         allowed-users = [ "@wheel" ];
