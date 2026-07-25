@@ -55,6 +55,7 @@
       obsidian
       blender
       vlc
+      protonmail-desktop
       ;
   };
 
