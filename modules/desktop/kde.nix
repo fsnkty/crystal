@@ -168,7 +168,6 @@ in
         enable = true;
         extraPortals = [
           kdePackages.xdg-desktop-portal-kde
-          pkgs.xdg-desktop-portal-gtk
           kdePackages.kwallet
         ];
         configPackages = [ kdePackages.plasma-workspace ];
