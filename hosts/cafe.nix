@@ -54,6 +54,7 @@
       vscodium
       obsidian
       blender
+      vlc
       ;
   };
 
