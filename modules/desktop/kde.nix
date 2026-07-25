@@ -113,6 +113,7 @@ in
           # "optional"
           gwenview
           dolphin
+          ark
           spectacle
           ffmpegthumbs
           kconfig# required for xdg-terminal from xdg-utils
@@ -179,6 +180,7 @@ in
       ssh.askPassword = "${kdePackages.ksshaskpass.out}/bin/ksshaskpass";
     };
     services = {
+      speechd.enable = lib.mkForce false;
       pipewire.enable = true;
       displayManager = {
         sessionPackages = [ kdePackages.plasma-workspace.sessions ];
