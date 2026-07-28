@@ -127,6 +127,8 @@ in
 
           # audio
           plasma-pa
+          # power management
+          powerdevil
           ;
       })
       ++ [
@@ -180,6 +182,7 @@ in
       ssh.askPassword = "${kdePackages.ksshaskpass.out}/bin/ksshaskpass";
     };
     services = {
+      power-profiles-daemon.enable = true;
       speechd.enable = lib.mkForce false;
       pipewire.enable = true;
       displayManager = {
