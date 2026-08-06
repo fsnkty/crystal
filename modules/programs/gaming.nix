@@ -11,6 +11,7 @@ in
     steam = lib.mkEnableOption "";
     thunderStore = lib.mkEnableOption "";
     prism = lib.mkEnableOption "";
+    others = lib.mkEnableOption "";
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.steam {
@@ -44,6 +45,11 @@ in
       environment.systemPackages = [
         pkgs.prismlauncher
         pkgs.jre25_minimal
+      ];
+    })
+    (lib.mkIf cfg.prism {
+      environment.systemPackages = [
+        pkgs.tetrio-desktop # tetr.io desktop client
       ];
     })
   ];
