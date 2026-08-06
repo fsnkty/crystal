@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 let
   cfg = config.crystal.programs.gaming;
@@ -23,6 +22,17 @@ in
           # otherwise "/run/current-system/sw/bin/getent is unlikely to appear in /run/host"
           pkgs.getent
         ];
+      };
+      hjem.users.main.xdg.config.files."autostart/steam.desktop" = {
+        text = ''
+          [Desktop Entry]
+          Name=Steam Auto Start
+          Exec=steam %U -silent
+          Icon=steam
+          Type=Application
+          X-GNOME-Autostart-enabled=true
+        '';
+        clobber = true;
       };
     })
     (lib.mkIf cfg.thunderStore {
