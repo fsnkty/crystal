@@ -67,10 +67,16 @@ in
           Type=Application
           X-GNOME-Autostart-enabled=true
         '';
-        # discord will try put its own here if the settings changed
         clobber = true;
       };
-      "Vencord/themes/DisblockOrigin.theme.css".source = ./DisblockOrigin.theme.css;
+      "Vencord/themes/DisblockOrigin.theme.css" = {
+        source = ./DisblockOrigin.theme.css;
+        clobber = true;
+      };
+      "Vencord/settings/settings.json" = {
+        source = ./vencord-settings.json;
+        clobber = true;
+      };
     };
   };
 }
