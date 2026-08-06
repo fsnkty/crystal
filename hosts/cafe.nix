@@ -34,6 +34,7 @@
     };
     server.networking.tailscale.enable = true;
     programs = {
+      discord = true;
       vscodium = true;
       git.setup = true;
       neovim = true;
@@ -51,7 +52,6 @@
   users.users.main.packages = builtins.attrValues {
     inherit (pkgs)
       google-chrome
-      discord
       obsidian
       blender
       vlc
