@@ -34,6 +34,7 @@
     };
     server.networking.tailscale.enable = true;
     programs = {
+      vscodium = true;
       git.setup = true;
       neovim = true;
       htop = true;
@@ -51,7 +52,6 @@
     inherit (pkgs)
       google-chrome
       discord
-      vscodium
       obsidian
       blender
       vlc
