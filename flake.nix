@@ -32,6 +32,7 @@
         name:
         lib.nixosSystem {
           modules = listNixRecursive [ ./modules ] ++ [
+            inputs.hjem.nixosModules.hjem
             inputs.lanzaboote.nixosModules.lanzaboote
             ./hosts/${name}.nix
             {
