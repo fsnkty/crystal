@@ -16,17 +16,13 @@ let
         ];
       }
       (
-        builtins.readFile (
-          pkgs.fetchurl {
-            url = "https://pastebin.com/raw/8tQDsMVd";
-            sha256 = "sha256-IdXv0MfRG1/1pAAwHLS2+1NESFEz2uXrbSdvU9OvdJ8=";
-          }
-        )
+        builtins.readFile ./krisp-patcher.py
       );
 
   discord = (pkgs.discord.override {
     withTTS = false;
     withOpenASAR = true;
+    withVencord = true;
   }).overrideAttrs (old: {
     postFixup = (old.postFixup or "") + ''
       ${pkgs.findutils}/bin/find "$out/opt/Discord/modules" \
@@ -61,17 +57,20 @@ in
 
   config = lib.mkIf config.crystal.programs.discord {
     users.users.main.packages = [ discord ];
-    hjem.users.main.xdg.config.files."autostart/discord.desktop" = {
-      text = ''
-        [Desktop Entry]
-        Name=Discord Auto Start
-        Exec=discord --start-minimized
-        Icon=discord
-        Type=Application
-        X-GNOME-Autostart-enabled=true
-      '';
-      # discord will try put its own here if the settings changed
-      clobber = true;
+    hjem.users.main.xdg.config.files = {
+      "autostart/discord.desktop" = {
+        text = ''
+          [Desktop Entry]
+          Name=Discord Auto Start
+          Exec=discord --start-minimized
+          Icon=discord
+          Type=Application
+          X-GNOME-Autostart-enabled=true
+        '';
+        # discord will try put its own here if the settings changed
+        clobber = true;
+      };
+      "Vencord/themes/DisblockOrigin.theme.css".source = ./DisblockOrigin.theme.css;
     };
   };
 }
