@@ -61,5 +61,17 @@ in
 
   config = lib.mkIf config.crystal.programs.discord {
     users.users.main.packages = [ discord ];
+    hjem.users.main.xdg.config.files."autostart/discord.desktop" = {
+      text = ''
+        [Desktop Entry]
+        Name=Discord Auto Start
+        Exec=discord --start-minimized
+        Icon=discord
+        Type=Application
+        X-GNOME-Autostart-enabled=true
+      '';
+      # discord will try put its own here if the settings changed
+      clobber = true;
+    };
   };
 }
