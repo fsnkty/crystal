@@ -40,13 +40,19 @@ in
       programs = {
         zsh = {
           enable = true;
-          enableCompletion = true;
-          enableBashCompletion = true;
+          #enableCompletion = true;
+          #enableBashCompletion = true;
           autosuggestions.enable = true;
           syntaxHighlighting.enable = true;
           histSize = 10000;
-          histFile = "$HOME/.cache/zsh_history";
+          histFile = ''"$HOME/.cache/zsh_history"'';
+          # TODO: PR to nixpkgs to make this easier with the `enableCompletion` like options.
+          # manual completion setup to use alt path
           shellInit = ''
+            autoload -U compinit
+            compinit -d "$HOME/.cache/zsh_compdump"
+            autoload -U bashcompinit && bashcompinit
+
             zsh-newuser-install() { :; }
             bindkey "^[[1;5C" forward-word
             bindkey "^[[1;5D" backward-word
