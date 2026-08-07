@@ -23,7 +23,7 @@ in
     xdg = mkEnableOption "";
   };
   config = mkMerge [
-    (mkIf cfg.fastboot)
+    (mkIf cfg.fastboot
     {
       # Prevent systemd from waiting for network online
       systemd = {
@@ -31,8 +31,8 @@ in
         network.wait-online.enable = false;
       };
       boot.initrd.systemd.network.wait-online.enable = false;
-    }
-    (mkIf cfg.plymouth)
+    })
+    (mkIf cfg.plymouth
     {
       boot = {
         plymouth.enable = true;
@@ -47,8 +47,8 @@ in
         ];
         initrd.verbose = false;
       };
-    }
-    (mkIf cfg.fonts)
+    })
+    (mkIf cfg.fonts
     {
       # better for hidpi
       console.font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
@@ -69,29 +69,29 @@ in
           };
         };
       };
-    }
-    (mkIf cfg.theme.gtk)
+    })
+    (mkIf cfg.theme.gtk
     {
       environment.systemPackages = [
-        pkgs.breeze-gtk
+        pkgs.kdePackages.breeze-gtk
       ];
       programs.dconf = {
-      enable = true;
-      profiles.user.databases = [
-        {
-          settings = {
-            "org/gnome/desktop/interface" = {
-              color-scheme = "prefer-dark";
-              gtk-theme = "Breeze";
+        enable = true;
+        profiles.user.databases = [
+          {
+            settings = {
+              "org/gnome/desktop/interface" = {
+                color-scheme = "prefer-dark";
+                gtk-theme = "Breeze";
+              };
+              "org/gnome/desktop/wm/preferences".button-layout = "minimize,mazimize,close";
             };
-            "org/gnome/desktop/wm/preferences".button-layout = "minimize,mazimize,close";
-          };
-        }
-      ];
-    };
-    programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
-    }
-    (mkIf cfg.theme.qt)
+          }
+        ];
+      };
+      programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
+    })
+    (mkIf cfg.theme.qt
     {
       environment.systemPackages = builtins.attrValues {
       inherit (pkgs.kdePackages)
@@ -106,8 +106,8 @@ in
         platformTheme = "kde";
         style = "breeze";
       };
-    }
-    (mkIf cfg.xdg)
+    })
+    (mkIf cfg.xdg
     {
       xdg = {
         terminal-exec = {
@@ -137,6 +137,6 @@ in
           addedAssociations = links;
         };
       };
-    }
+    })
   ];
 }

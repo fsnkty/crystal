@@ -25,11 +25,14 @@
     };
     desktop = {
       kde.enable = true;
-      theme.enable = true;
-      plymouth.setup = true;
-      fonts.setup = true;
-      audio.setup = true;
-      fastboot.enable = true;
+      fastboot = true;
+      plymouth = true;
+      fonts = true;
+      theme = {
+        gtk = true;
+        qt = true;
+      };
+      xdg = true;
     };
     server.networking.tailscale.enable = true;
     programs = {
@@ -43,6 +46,7 @@
         steam = true;
         thunderStore = true;
         prism = true;
+        others = true;
       };
     };
   };

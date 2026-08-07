@@ -47,7 +47,7 @@ in
         pkgs.jre25_minimal
       ];
     })
-    (lib.mkIf cfg.prism {
+    (lib.mkIf cfg.others {
       environment.systemPackages = [
         pkgs.tetrio-desktop # tetr.io desktop client
       ];
