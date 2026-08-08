@@ -59,6 +59,7 @@
       blender
       vlc
       protonmail-desktop
+      bitwarden-desktop
       ;
   };
 
