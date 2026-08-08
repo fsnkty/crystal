@@ -40,7 +40,10 @@
       nginx.virtualHosts."vault.shimeji.cafe" = {
         useACMEHost = "shimeji.cafe";
         forceSSL = true;
-        locations."/".proxyPass = "http://127.0.0.1:8095";
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8095";
+          proxyWebsockets = true;
+        };
       };
     };
   };
