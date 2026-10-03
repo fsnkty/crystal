@@ -21,8 +21,8 @@ let
 
   discord = (pkgs.discord.override {
     withTTS = false;
-    withOpenASAR = true;
-    withVencord = true;
+    withOpenASAR = false;
+    withVencord = false;
   }).overrideAttrs (old: {
     postFixup = (old.postFixup or "") + ''
       ${pkgs.findutils}/bin/find "$out/opt/Discord/modules" \
