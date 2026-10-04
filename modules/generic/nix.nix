@@ -21,6 +21,7 @@
           "flakes"
         ];
         auto-optimise-store = true;
+        nix-path = [ "nixpkgs=flake:nixpkgs" ];
       };
       optimise.automatic = true;
       gc = {
@@ -29,7 +30,6 @@
         options = "--delete-older-than 7d";
       };
       channel.enable = false;
-      nixPath = [ "nixpkgs=flake:nixpkgs" ];
     };
     environment.etc."nix/inputs/nixpkgs".source = inputs.nixpkgs.outPath;
   };
