@@ -53,6 +53,10 @@ in
                     qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
                     qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
                   '';
+                  postInstall = (basePkg.postInstall or "") + ''
+                    rm -f "$sessions/share/xsessions/plasmax11.desktop"
+                    rm -f "$sessions/share/xsessions/plasma.desktop"
+                  '';
                 });
               in
               derivedPkg;
