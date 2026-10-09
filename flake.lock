@@ -31,6 +31,22 @@
         "type": "github"
       }
     },
+    "kconfig-declarative": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767464959,
+        "narHash": "sha256-mLrvQ7oNcueBVmNcot+aKwOYLDhvQQt8idUvr1fZOP4=",
+        "ref": "refs/heads/main",
+        "rev": "d936b450b065cbc15c3db5efc37cec527bce655e",
+        "revCount": 3,
+        "type": "git",
+        "url": "https://codeberg.org/viperML/kconfig-declarative"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/viperML/kconfig-declarative"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -57,11 +73,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1791048980,
-        "narHash": "sha256-KgItSKML8Xvte0B7/uGnBDsYzSnnKHcOaiUbgWBXLXw=",
+        "lastModified": 1791456040,
+        "narHash": "sha256-H83yz/do+hjOO0uujHyH8RgtIQP2v7Mw+cLwcZK/xKc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a7868a727837f3c09cee2ce0ca671c76b1589fed",
+        "rev": "e7439b6b14ad3cc35d05608ebca9bce01a25f5f8",
         "type": "github"
       },
       "original": {
@@ -95,6 +111,7 @@
     },
     "root": {
       "inputs": {
+        "kconfig-declarative": "kconfig-declarative",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs"
       }

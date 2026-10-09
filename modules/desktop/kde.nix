@@ -65,6 +65,27 @@ in
       })
     ];
     qt.enable = true;
+
+
+    kconfig.settings = 
+      let 
+        wallpaper = pkgs.stdenvNoCC.mkDerivation {
+          name = "wallpaper";
+          src = ../../assets/wallpaper.jpg;
+          dontUnpack = true;
+          installPhase = ''
+            cp $src $out
+          '';
+        };
+      in {
+      plasmarc = {
+        Wallpapers = {
+          usersWallpapers = wallpaper;
+        };
+      };
+    };
+
+
     environment.systemPackages =
       (builtins.attrValues {
         inherit (kdePackages)
