@@ -65,8 +65,7 @@ in
       })
     ];
     qt.enable = true;
-
-
+    
     kconfig.settings = 
       let 
         wallpaper = pkgs.stdenvNoCC.mkDerivation {
@@ -203,7 +202,6 @@ in
     programs = {
       xwayland.enable = true;
       gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
-      kde-pim.enable = true;
       ssh.askPassword = "${kdePackages.ksshaskpass.out}/bin/ksshaskpass";
     };
     services = {
