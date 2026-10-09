@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }: {
   options.crystal.programs.vscodium = lib.mkEnableOption "";
   config = lib.mkIf config.crystal.programs.vscodium {
@@ -16,5 +15,27 @@
         pkgs.vscode-extensions.mkhl.direnv
       ];
     };
+    home.file.".config/VSCodium/User/settings.json".text =
+      lib.generators.toJSON { }
+        {
+          "workbench.activityBar.location" = "top";
+          "workbench.layoutControl.enabled" = false;
+          "workbench.browser.showInTitleBar" = false;
+          "workbench.statusBar.visible" = false;
+          "workbench.tips.enabled" = false;
+          "workbench.editor.pinnedTabSizing" = "compact";
+          "workbench.tree.enableStickyScroll" = false;
+          "window.commandCenter" = false;
+          "window.density.editorTabHeight" = "compact";
+          "breadcrumbs.enabled" = false;
+          "editor.stickyScroll.enabled" = false;
+          "editor.minimap.enabled" = false;
+          "chat.agentsControl.enabled" = "hidden";
+          "terminal.integrated.initialHint" = false;
+          "terminal.integrated.stickyScroll.enabled" = false;
+          "terminal.integrated.defaultLocation" = "editor";
+          "git.enableSmartCommit" = true;
+        }
+    ;
   };
 }

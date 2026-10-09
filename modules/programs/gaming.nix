@@ -24,6 +24,14 @@ in
           pkgs.getent
         ];
       };
+      home.file.".config/autostart/steam.desktop".text = ''
+        [Desktop Entry]
+        Name=Steam Auto Start
+        Exec=steam %U -silent
+        Icon=steam
+        Type=Application
+        X-GNOME-Autostart-enabled=true
+      '';
     })
     (lib.mkIf cfg.thunderStore {
       environment.systemPackages = [

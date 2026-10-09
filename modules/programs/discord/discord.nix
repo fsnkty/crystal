@@ -57,5 +57,18 @@ in
 
   config = lib.mkIf config.crystal.programs.discord {
     users.users.main.packages = [ discord ];
+    home.file = {
+      ".config/autostart/discord.desktop".text = ''
+        [Desktop Entry]
+        Name=Discord Auto Start
+        Exec=discord --start-minimized
+        Icon=discord
+        Type=Application
+        X-GNOME-Autostart-enabled=true
+      '';
+      # https://codeberg.org/AllPurposeMat/Disblock-Origin
+      ".config/Vencord/themes/DisblockOrigin.theme.css".source = ./DisblockOrigin.theme.css;
+      ".config/Vencord/settings/settings.json".source = ./vencord-settings.json;
+    };
   };
 }
