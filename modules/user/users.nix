@@ -41,7 +41,6 @@ in
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzo6UVJ72vS2sNW20QjMCmfCeChGPUT4YfY8VHiMVjv fsnkty@factory"
         ];
       };
-      hjem.users.main.enable = true;
     })
     (mkIf cfg.amber.setup {
       users.users.amber = {

@@ -6,11 +6,6 @@
       url = "github:nix-community/lanzaboote/v1.2.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # $HOME manager
-    hjem = {
-      url = "github:feel-co/hjem";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs =
     inputs:
@@ -32,7 +27,6 @@
         name:
         lib.nixosSystem {
           modules = listNixRecursive [ ./modules ] ++ [
-            inputs.hjem.nixosModules.hjem
             inputs.lanzaboote.nixosModules.lanzaboote
             ./hosts/${name}.nix
             {
