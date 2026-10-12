@@ -42,6 +42,7 @@
       neovim = true;
       htop = true;
       alacritty = true;
+      firefox = true;
       obs = true;
       gaming = {
         steam = true;
