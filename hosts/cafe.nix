@@ -64,8 +64,6 @@
       ;
   };
 
-  programs.kdeconnect.enable = true;
-
   networking = {
     useNetworkd = true;
     enableIPv6 = true;
