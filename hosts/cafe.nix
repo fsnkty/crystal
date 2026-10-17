@@ -56,9 +56,7 @@
 
   users.users.main.packages = builtins.attrValues {
     inherit (pkgs)
-      google-chrome
       obsidian
-      blender
       vlc
       protonmail-desktop
       bitwarden-desktop
@@ -83,7 +81,13 @@
       routes = [ { Gateway = "192.168.0.1"; } ];
     };
   };
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    settings.general = {
+      Privacy = "device";
+      JustWorksRepairing = "confirm";
+    };
+  };
 
   boot = {
     lanzaboote = {
