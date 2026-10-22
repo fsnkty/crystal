@@ -36,6 +36,7 @@
           "terminal.integrated.stickyScroll.enabled" = false;
           "terminal.integrated.defaultLocation" = "editor";
           "git.enableSmartCommit" = true;
+          "workbench.colorTheme" = "Gruvbox Light Soft";
         }
     ;
   };
