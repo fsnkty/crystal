@@ -1,7 +1,6 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 {
   options.crystal.server.media.arrs.enable = lib.mkEnableOption "";
@@ -35,10 +34,12 @@
           let
             mkProfiles =
               ids:
-              map (id: {
-                trash_id = id;
-                reset_unmatched_scores.enabled = true;
-              }) ids;
+              map
+                (id: {
+                  trash_id = id;
+                  reset_unmatched_scores.enabled = true;
+                })
+                ids;
           in
           {
             radarr.radarr-main = {

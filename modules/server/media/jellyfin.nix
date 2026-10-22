@@ -1,7 +1,6 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 {
   options.crystal.server.media.jellyfin.enable = lib.mkEnableOption "";

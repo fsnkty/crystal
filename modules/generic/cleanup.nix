@@ -1,7 +1,6 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 {
   options.crystal.system.cleanup = lib.mkEnableOption "opinionated removal of some default packages, services, etc..";

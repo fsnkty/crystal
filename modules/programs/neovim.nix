@@ -1,7 +1,6 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 {
   options.crystal.programs.neovim = lib.mkEnableOption "";

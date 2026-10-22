@@ -1,7 +1,6 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 {
   options.crystal.system.timezone.nz = lib.mkEnableOption "set relavent options for an NZ timezone";

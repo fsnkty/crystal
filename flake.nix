@@ -19,9 +19,11 @@
       inherit (inputs.nixpkgs) lib;
       listNixRecursive =
         path:
-        builtins.concatMap (
-          p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
-        ) path;
+        builtins.concatMap
+          (
+            p: builtins.filter (lib.hasSuffix ".nix") (map toString (lib.filesystem.listFilesRecursive p))
+          )
+          path;
       listHosts = map (host: (lib.removeSuffix ".nix" host)) (
         builtins.attrNames (builtins.readDir ./hosts)
       );

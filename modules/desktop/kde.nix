@@ -41,16 +41,16 @@ in
       environment = {
         laminix.enable = true;
         sessionVariables.XDG_CONFIG_DIRS = [ "$HOME/.config/kdedefaults" ];
-        
+
         # effectively `qt.enable` and style/platformTheme
         variables = {
           QT_QPA_PLATFORMTHEME = "kde";
           QT_STYLE_OVERRIDE = "breeze";
         };
-        profileRelativeSessionVariables = 
+        profileRelativeSessionVariables =
           {
-            QT_PLUGIN_PATH = map(qt: "/${qt.qtbase.qtPluginPrefix}") [ pkgs.qt6 ];
-            QML2_IMPORT_PATH = map(qt: "/${qt.qtbase.qtQmlPrefix}") [ pkgs.qt6 ];
+            QT_PLUGIN_PATH = map (qt: "/${qt.qtbase.qtPluginPrefix}") [ pkgs.qt6 ];
+            QML2_IMPORT_PATH = map (qt: "/${qt.qtbase.qtQmlPrefix}") [ pkgs.qt6 ];
           };
         systemPackages =
           let
@@ -74,14 +74,14 @@ in
                   kio# provides helper service + a bunch of other stuff
                   kio-admin# managing files as admin
                   kio-extras# stuff for MTP, AFC, etc
-                  kio-fuse # fuse interface for KIO
-                  knighttime # night mode switching daemon
+                  kio-fuse# fuse interface for KIO
+                  knighttime# night mode switching daemon
                   kpackage# provides kpackagetool tool
                   kservice# provides kbuildsycoca6 tool
-                  kunifiedpush # provides a background service and a KCM
+                  kunifiedpush# provides a background service and a KCM
                   plasma-activities# provides plasma-activities-cli tool
                   solid# provides solid-hardware6 tool
-                  phonon-vlc # provides Phonon plugin
+                  phonon-vlc# provides Phonon plugin
 
                   # Core Plasma parts
                   kwin
@@ -91,27 +91,27 @@ in
                   kactivitymanagerd
                   kde-cli-tools
                   kglobalacceld# keyboard shortcut daemon
-                  kwrited # wall message proxy, not to be confused with kwrite
-                  baloo # system indexer
-                  milou # search engine atop baloo
+                  kwrited# wall message proxy, not to be confused with kwrite
+                  baloo# system indexer
+                  milou# search engine atop baloo
                   kdegraphics-thumbnailers# pdf etc thumbnailer
                   polkit-kde-agent-1# polkit auth ui
                   plasma-desktop
                   plasma-workspace
-                  kde-inotify-survey # warns the user on low inotifywatch limits
+                  kde-inotify-survey# warns the user on low inotifywatch limits
 
                   # Application integration
                   libplasma# provides Kirigami platform theme
                   plasma-integration# provides Qt platform theme
-                  kde-gtk-config # syncs KDE settings to GTK
+                  kde-gtk-config# syncs KDE settings to GTK
 
                   # Artwork + themes
                   breeze
                   breeze-icons
                   breeze-gtk
                   ocean-sound-theme
-                  qqc2-breeze-style #https://invent.kde.org/frameworks/qqc2-desktop-styl
-                  qqc2-desktop-style #https://invent.kde.org/frameworks/qqc2-desktop-style
+                  qqc2-breeze-style#https://invent.kde.org/frameworks/qqc2-desktop-styl
+                  qqc2-desktop-style#https://invent.kde.org/frameworks/qqc2-desktop-style
 
                   # misc Plasma extras
                   kdeplasma-addons
@@ -135,10 +135,10 @@ in
                   gwenview
                   okular
                   kate
-                  ktexteditor # provides elevated actions for kate
+                  ktexteditor# provides elevated actions for kate
                   khelpcenter
                   dolphin
-                  baloo-widgets # baloo information in Dolphin
+                  baloo-widgets# baloo information in Dolphin
                   dolphin-plugins
                   spectacle
                   ffmpegthumbs
@@ -147,16 +147,16 @@ in
                   qtbase# for qtpaths which is required for xdg-mime from xdg-utils
                   # touch keyboard
                   plasma-keyboard
-                  qtvirtualkeyboard # used by plasma-keyboard KCM
+                  qtvirtualkeyboard# used by plasma-keyboard KCM
 
                   # experimental(?) Union theme
                   union
                   ;
               })
               ++ [
-                  pkgs.hicolor-icon-theme # fallback icons
-                  pkgs.xdg-user-dirs # recommended upstream
-                  (lib.getBin kdePackages.qttools) # Expose qdbus in PATH
+                pkgs.hicolor-icon-theme # fallback icons
+                pkgs.xdg-user-dirs # recommended upstream
+                (lib.getBin kdePackages.qttools) # Expose qdbus in PATH
               ]
               ++ lib.optionals config.networking.networkmanager.enable [
                 kdePackages.qrca
@@ -178,7 +178,7 @@ in
               ++ lib.optional config.services.flatpak.enable kdePackages.flatpak-kcm;
           in
           utils.removePackagesByName kdepackages cfg.excludePackages;
-          };
+      };
       xdg.portal = {
         enable = true;
         extraPortals = [

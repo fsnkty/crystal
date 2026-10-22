@@ -1,9 +1,8 @@
-{
-  config,
-  inputs,
-  pkgs,
-  lib,
-  ...
+{ config
+, inputs
+, pkgs
+, lib
+, ...
 }:
 {
   options.crystal.system.nix.setup = lib.mkEnableOption "Flake first nix config";

@@ -1,6 +1,5 @@
-{
-  pkgs,
-  ...
+{ pkgs
+, ...
 }:
 {
   crystal = {
@@ -26,40 +25,40 @@
     desktop = {
       kde = {
         enable = true;
-        excludePackages = 
+        excludePackages =
           (builtins.attrValues {
             inherit (pkgs.kdePackages)
-            kio-fuse
-            knighttime
-            kunifiedpush
-            phonon-vlc
-            kwrited
-            baloo
-            milou
-            kde-inotify-survey
-            kde-gtk-config
-            qqc2-breeze-style
-            qqc2-desktop-style
-            kdeplasma-addons
-            kmenuedit
-            kinfocenter
-            plasma-systemmonitor
-            aurorae
-            plasma-browser-integration
-            plasma-workspace-wallpapers
-            konsole
-            elisa
-            okular
-            kate
-            ktexteditor
-            khelpcenter
-            baloo-widgets
-            dolphin-plugins
-            krdp
-            plasma-keyboard
-            qtvirtualkeyboard
-            union
-            ;
+              kio-fuse
+              knighttime
+              kunifiedpush
+              phonon-vlc
+              kwrited
+              baloo
+              milou
+              kde-inotify-survey
+              kde-gtk-config
+              qqc2-breeze-style
+              qqc2-desktop-style
+              kdeplasma-addons
+              kmenuedit
+              kinfocenter
+              plasma-systemmonitor
+              aurorae
+              plasma-browser-integration
+              plasma-workspace-wallpapers
+              konsole
+              elisa
+              okular
+              kate
+              ktexteditor
+              khelpcenter
+              baloo-widgets
+              dolphin-plugins
+              krdp
+              plasma-keyboard
+              qtvirtualkeyboard
+              union
+              ;
           }) ++ [
             #(lib.getBin pkgs.kdePackages.qttools)
             pkgs.hicolor-icon-theme
@@ -125,7 +124,7 @@
       name = "enp39s0";
       dns = [ "1.1.1.1" ];
       address = [ "192.168.0.4/24" ];
-      routes = [ { Gateway = "192.168.0.1"; } ];
+      routes = [{ Gateway = "192.168.0.1"; }];
     };
   };
   hardware.bluetooth = {

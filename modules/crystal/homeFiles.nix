@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 let
   inherit (builtins) replaceStrings;
@@ -22,11 +21,10 @@ let
     prefix:
     attrsOf (
       submodule (
-        {
-          config,
-          options,
-          name,
-          ...
+        { config
+        , options
+        , name
+        , ...
         }:
         {
           options = {

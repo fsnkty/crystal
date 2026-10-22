@@ -94,7 +94,7 @@
       ];
     };
   };
-  swapDevices = [ { device = "/dev/mapper/swapcrypt"; } ];
+  swapDevices = [{ device = "/dev/mapper/swapcrypt"; }];
 
   system.stateVersion = "25.11";
 }
