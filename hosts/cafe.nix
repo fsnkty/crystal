@@ -24,7 +24,53 @@
       root.disable = true;
     };
     desktop = {
-      kde.enable = true;
+      kde = {
+        enable = true;
+        excludePackages = 
+          (builtins.attrValues {
+            inherit (pkgs.kdePackages)
+            kio-fuse
+            knighttime
+            kunifiedpush
+            phonon-vlc
+            kwrited
+            baloo
+            milou
+            kde-inotify-survey
+            kde-gtk-config
+            qqc2-breeze-style
+            qqc2-desktop-style
+            kdeplasma-addons
+            kmenuedit
+            kinfocenter
+            plasma-systemmonitor
+            aurorae
+            plasma-browser-integration
+            plasma-workspace-wallpapers
+            konsole
+            elisa
+            okular
+            kate
+            ktexteditor
+            khelpcenter
+            baloo-widgets
+            dolphin-plugins
+            krdp
+            plasma-keyboard
+            qtvirtualkeyboard
+            union
+            ;
+          }) ++ [
+            #(lib.getBin pkgs.kdePackages.qttools)
+            pkgs.hicolor-icon-theme
+            #pkgs.xdg-user-dirs
+          ];
+        kwallet = {
+          enable = true;
+          luks = true;
+        };
+        drkonqi = true;
+      };
       fastboot = true;
       plymouth = true;
       fonts = true;
@@ -53,6 +99,7 @@
     };
   };
   services.displayManager.plasma-login-manager.enable = true;
+  services.speechd.enable = false;
 
   users.users.main.packages = builtins.attrValues {
     inherit (pkgs)

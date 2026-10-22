@@ -13,6 +13,7 @@
         pkgs.vscode-extensions.vscodevim.vim
         pkgs.vscode-extensions.tomoki1207.pdf
         pkgs.vscode-extensions.mkhl.direnv
+        pkgs.vscode-extensions.jdinhlife.gruvbox
       ];
     };
     home.file.".config/VSCodium/User/settings.json".text =
