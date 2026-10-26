@@ -33,16 +33,11 @@ in
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      qt = {
-        enable = true;
-        style = "breeze";
-        platformTheme = "kde";
-      };
+      laminix.enable = true;
       environment = {
-        laminix.enable = true;
         sessionVariables.XDG_CONFIG_DIRS = [ "$HOME/.config/kdedefaults" ];
-
-        # effectively `qt.enable` and style/platformTheme
+        pathsToLink = [ "/share" ];
+        # effectively `qt.enable` and style/platformTheme minus some qt5 support
         variables = {
           QT_QPA_PLATFORMTHEME = "kde";
           QT_STYLE_OVERRIDE = "breeze";
@@ -181,9 +176,7 @@ in
       };
       xdg.portal = {
         enable = true;
-        extraPortals = [
-          kdePackages.xdg-desktop-portal-kde
-        ];
+        extraPortals = [ kdePackages.xdg-desktop-portal-kde ];
         configPackages = [ kdePackages.plasma-workspace ];
       };
       programs = {
@@ -265,6 +258,5 @@ in
       };
       environment.pathsToLink = [ "/libexec" ];
     })
-
   ];
 }

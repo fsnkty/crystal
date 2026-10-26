@@ -69,6 +69,27 @@
           luks = true;
         };
         drkonqi = true;
+        kconfig.settings = {
+          kdeglobals = {
+            General = {
+              XftAntialias = true;
+              XftHintStyle = "hintslight";
+              XftSubPixel = "vbgr";
+              # dont need to set fonts here as its handled in desktop.nix
+              TerminalApplication = "alacritty";
+              AccentColor = "146,110,228";
+            };
+            KDE = {
+              AnimationDurationFactor = 0;
+              LookAndFeelPackage = "org.kde.breezedark.desktop";
+              widgetStyle = "Breeze";
+            };
+          };
+          kcminputrc.Libinput."5426"."132"."Razer Razer DeathAdder V2" = {
+            PointerAcceleration = "-0.150";
+            PointerAccelerationProfile = "1";
+          };
+        };
       };
       fastboot = true;
       plymouth = true;

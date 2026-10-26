@@ -8,57 +8,53 @@ let
   inherit (lib) types;
   format = pkgs.formats.json { };
   inherit (lib) mkOption literalExpression;
+  cfg = config.crystal.desktop.kde.kconfig;
 in
 {
 
-  options = {
-    kconfig = mkOption {
-      default = { };
-      type = types.submodule {
-        options = {
-          settings = lib.mkOption {
-            type = types.attrsOf format.type;
-            default = { };
-            description = "Configuration for each KDE Plasma file. The value can be anything serializable to json";
-            example = literalExpression ''
-              {
-                kwinrc = {
-                  Desktops.Number = 4;
-                };
-              }
-            '';
+  options.crystal.desktop.kde.kconfig = mkOption {
+    default = { };
+    type = types.submodule {
+      options = {
+        settings = lib.mkOption {
+          type = types.attrsOf format.type;
+          default = { };
+          description = "Configuration for each KDE Plasma file. The value can be anything serializable to json";
+          example = literalExpression ''
+            {
+              kwinrc.Desktops.Number = 4;
+            }
+          '';
+        };
+        manifest = lib.mkOption {
+          visible = false;
+          readOnly = true;
+          default = format.generate "kconfig-manifest.json" {
+            files = cfg.settings;
           };
-
-          manifest = lib.mkOption {
-            visible = false;
-            readOnly = true;
-            default = format.generate "kconfig-manifest.json" {
-              files = config.kconfig.settings;
-            };
-          };
-          package = lib.mkOption {
-            type = types.package;
-            description = "The kconfig-declarative package to use.";
-            default = pkgs.callPackage (inputs.kconfig-declarative + "/default.nix") { };
-            defaultText = literalExpression "<internal>";
-          };
+        };
+        package = lib.mkOption {
+          type = types.package;
+          description = "The kconfig-declarative package to use.";
+          default = pkgs.callPackage (inputs.kconfig-declarative + "/default.nix") { };
+          defaultText = literalExpression "<internal>";
         };
       };
     };
   };
 
   config = {
-    systemd.services.maid-kconfig =
-      lib.mkIf ((builtins.attrNames config.kconfig.settings) != [ ])
+    systemd.services.kconfig =
+      lib.mkIf ((builtins.attrNames cfg.settings) != [ ])
         {
           wantedBy = [ "plasma-plasmashell.service" ];
           before = [ "plasma-plasmashell.service" ];
           restartIfChanged = true;
-          restartTriggers = [ config.kconfig.manifest ];
+          restartTriggers = [ cfg.manifest ];
           serviceConfig = {
             RemainAfterExit = true;
             Type = "oneshot";
-            ExecStart = "${lib.getExe config.kconfig.package} apply ${config.kconfig.manifest}";
+            ExecStart = "${lib.getExe cfg.package} apply ${cfg.manifest}";
           };
         };
   };
