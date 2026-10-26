@@ -14,7 +14,28 @@
         pkgs.vscode-extensions.tomoki1207.pdf
         pkgs.vscode-extensions.mkhl.direnv
         pkgs.vscode-extensions.jdinhlife.gruvbox
-      ];
+        #pkgs.vscode-extensions.twxs.cmake
+        pkgs.vscode-extensions.ms-vscode.cmake-tools
+      ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+          {
+            name = "cpptools";
+            publisher = "ms-vscode";
+            version = "1.35.4";
+            sha256 = "sha256-1n4dVni2LoLJSMwVPakHjVaQHUaxNVOX8r9BEyAeumE=";
+          }
+          {
+            name = "qt-core";
+            publisher = "TheQtCompany";
+            version = "1.17.1";
+            sha256 = "sha256-ZqiMHI6SgMLIBcxxsoPXxhqditXXtwZgXwxXv1PKLI8=";
+          }
+          {
+            name = "qt-cpp";
+            publisher = "TheQtCompany";
+            version = "1.17.1";
+            sha256 = "sha256-n+2qMNGe4mVxLlnfdhK0imOr0lCUY5eT/PJhX0PJgj0=";
+          }
+        ];
     };
     home.file.".config/VSCodium/User/settings.json".text =
       lib.generators.toJSON { }
@@ -37,6 +58,10 @@
           "terminal.integrated.defaultLocation" = "editor";
           "git.enableSmartCommit" = true;
           "workbench.colorTheme" = "Gruvbox Light Soft";
+          "workbench.editorAssociations" = {
+            "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.qrc" = "default";
+            "*.qrc" = "qt-core.qrcEditor";
+          };
         }
     ;
   };
