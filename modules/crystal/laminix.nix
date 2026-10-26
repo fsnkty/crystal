@@ -11,14 +11,20 @@ let
 
   # The package set as it would be without this module's pkgs override.
   # Shims are built from this one, so they can't depend on themselves.
+  # Built like nixos/modules/misc/nixpkgs.nix builds its default set; the
+  # public config.nixpkgs.pkgs is only a user-supplied override.
   base =
-  let inherit (config.nixpkgs) hostPlatform buildPlatform; in
-  import (modulesPath + "/../..") (
-    { inherit (config.nixpkgs) config overlays; }
-    // (if buildPlatform != hostPlatform
+    let
+      inherit (config.nixpkgs) hostPlatform buildPlatform;
+    in
+    import (modulesPath + "/../..") (
+      { inherit (config.nixpkgs) config overlays; }
+      // (
+        if buildPlatform != hostPlatform
         then { localSystem = buildPlatform; crossSystem = hostPlatform; }
-        else { localSystem = hostPlatform; })
-  );
+        else { localSystem = hostPlatform; }
+      )
+    );
 
   # Paths left out of the profile layers. A wrapper showed a dependency's
   # dirs to one program, but daemons, shells, menus, the session and the
@@ -70,8 +76,8 @@ let
     lib.mapAttrsToList (var: map (s: "${var}:${lib.removePrefix "/" s}")) searchedVars
   );
 
-  # Profile dirs those pairs point at; Shims drop whole PKG/share dirs, so
-  # the profile must link them whole.
+  # Profile dirs those pairs point at. Shims drop whole package dirs, so the
+  # profile must link them whole.
   searched = map (p: "/" + lib.last (lib.splitString ":" p)) pairs;
 
   # Nothing runs from these outputs, so a shim doesn't read them.
@@ -112,7 +118,12 @@ let
             plasmaLaminaOriginal = pkg;
           };
       }
-      "source ${./shim.sh}";
+      ''
+        # makeBinaryWrapper is a shell function of this builder; export the
+        # functions so the script's bash children can call it.
+        for fn in $(declare -F | cut -d' ' -f3); do export -f "$fn" || true; done
+        ${base.python3.interpreter} ${./shim.py}
+      '';
 
   # Re-shim anything derived from a shim, so overrides can't silently
   # hand back the unshimmed original.
