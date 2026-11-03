@@ -42,7 +42,7 @@
           dataDir = "/storage/games/gtnh";
           openFirewall = true;
           serverPort = 25566;
-          jvmOpts = "-Xms4G -Xmx4G -Dfml.readTimeout=180 -Dfml.queryResult=confirm @java9args.txt -jar lwjgl3ify-forgePatches.jar ";
+          jvmOpts = "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders @java9args.txt -jar lwjgl3ify-forgePatches.jar";
           jvmPackage = pkgs.jre;
         };
         gtnh-coop = {
@@ -50,7 +50,7 @@
           dataDir = "/storage/games/gtnh-coop";
           openFirewall = true;
           serverPort = 25565;
-          jvmOpts = "-Xms6G -Xmx6G -Dfml.readTimeout=180 -Dfml.queryResult=confirm @java9args.txt -jar lwjgl3ify-forgePatches.jar ";
+          jvmOpts = "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders @java9args.txt -jar lwjgl3ify-forgePatches.jar";
           jvmPackage = pkgs.jre;
         };
         paper = {
