@@ -14,7 +14,7 @@
         pkgs.vscode-extensions.tomoki1207.pdf
         pkgs.vscode-extensions.mkhl.direnv
         pkgs.vscode-extensions.jdinhlife.gruvbox
-        #pkgs.vscode-extensions.twxs.cmake
+        pkgs.vscode-extensions.geequlim.godot-tools
         pkgs.vscode-extensions.ms-vscode.cmake-tools
       ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {

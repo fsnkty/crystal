@@ -127,6 +127,7 @@
       vlc
       protonmail-desktop
       bitwarden-desktop
+      godot
       ;
   };
 
