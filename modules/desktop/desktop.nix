@@ -45,7 +45,6 @@ in
             "rd.systemd.show_status=auto"
             "vt.global_cursor_default=0"
           ];
-          initrd.verbose = false;
         };
       })
     (mkIf cfg.fonts

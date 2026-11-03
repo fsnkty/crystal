@@ -167,7 +167,6 @@
       "video=DP-1:1920x1080@144"
     ];
     initrd = {
-      systemd.enable = true;
       availableKernelModules = [
         "xhci_pci"
         "ahci"
