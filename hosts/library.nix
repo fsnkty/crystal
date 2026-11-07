@@ -43,15 +43,15 @@
           openFirewall = true;
           serverPort = 25566;
           jvmOpts = "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders @java9args.txt -jar lwjgl3ify-forgePatches.jar";
-          jvmPackage = pkgs.jre;
+          jvmPackage = pkgs.jdk25_headless;
         };
         gtnh-coop = {
-          enable = true;
+          enable = false;
           dataDir = "/storage/games/gtnh-coop";
           openFirewall = true;
           serverPort = 25565;
           jvmOpts = "-Xms4G -Xmx4G -XX:+UseCompactObjectHeaders @java9args.txt -jar lwjgl3ify-forgePatches.jar";
-          jvmPackage = pkgs.jre;
+          jvmPackage = pkgs.jdk25_headless;
         };
         paper = {
           enable = false;
