@@ -26,7 +26,10 @@ in
       };
       security.acme = {
         acceptTerms = true;
-        defaults.email = "fsnkty@shimeji.cafe";
+        defaults = {
+          email = "fsnkty@shimeji.cafe";
+          dnsPropagationCheck = false;
+        };
         certs = {
           "shimeji.cafe" = {
             domain = "*.shimeji.cafe";
