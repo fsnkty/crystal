@@ -12,7 +12,7 @@
       openFirewall = true; 
       extraArgs = [ "--confirm-legal-notice" ];
       # 5.3.X ( in unstable ) isnt widely accepted, 5.2.X ( in stable ) is.
-      package = inputs.nixpkgs.legacyPackages."x86_64-linux".qbittorrent-nox;
+      package = inputs.nixpkgs-stable.legacyPackages."x86_64-linux".qbittorrent-nox;
       /*
       serverConfig = {
         LegalNotice.Accepted = true;
