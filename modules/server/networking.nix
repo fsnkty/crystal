@@ -26,17 +26,12 @@ in
       };
       security.acme = {
         acceptTerms = true;
-        defaults = {
-          email = "fsnkty@shimeji.cafe";
-          dnsPropagationCheck = false;
-        };
-        certs = {
-          "shimeji.cafe" = {
-            domain = "*.shimeji.cafe";
-            group = "nginx";
-            dnsProvider = "cloudflare";
-            environmentFile = "/keys/cloudflare";
-          };
+        defaults.email = "fsnkty@shimeji.cafe";
+        certs."shimeji.cafe" = {
+          domain = "*.shimeji.cafe";
+          group = "nginx";
+          dnsProvider = "cloudflare";
+          environmentFile = "/keys/cloudflare";
         };
       };
       networking.firewall.allowedTCPPorts = [
