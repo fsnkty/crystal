@@ -16,6 +16,7 @@
         pkgs.vscode-extensions.jdinhlife.gruvbox
         pkgs.vscode-extensions.geequlim.godot-tools
         pkgs.vscode-extensions.ms-vscode.cmake-tools
+        pkgs.vscode-extensions.rust-lang.rust-analyzer
       ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "cpptools";
@@ -52,12 +53,12 @@
           "breadcrumbs.enabled" = false;
           "editor.stickyScroll.enabled" = false;
           "editor.minimap.enabled" = false;
-          "chat.agentsControl.enabled" = "hidden";
+          #"chat.agentsControl.enabled" = "hidden";
           "terminal.integrated.initialHint" = false;
           "terminal.integrated.stickyScroll.enabled" = false;
           "terminal.integrated.defaultLocation" = "editor";
           "git.enableSmartCommit" = true;
-          "workbench.colorTheme" = "Gruvbox Light Soft";
+          "workbench.colorTheme" = "Gruvbox Dark Hard";
           "workbench.editorAssociations" = {
             "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.qrc" = "default";
             "*.qrc" = "qt-core.qrcEditor";
