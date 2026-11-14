@@ -9,8 +9,9 @@
   config = lib.mkIf config.crystal.system.nix.setup {
     nixpkgs.config.allowUnfree = true;
     nix = {
-      daemonCPUSchedPolicy = "idle";
-      daemonIOSchedClass = "idle";
+      # weirdly makes builds on even my desktop kill unrelated processes
+      #daemonCPUSchedPolicy = "idle";
+      #daemonIOSchedClass = "idle";
       package = pkgs.nixVersions.latest;
       settings = {
         allowed-users = [ "@wheel" ];
