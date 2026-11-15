@@ -7,7 +7,7 @@
   config = lib.mkIf config.crystal.programs.vscodium {
     programs.vscode = {
       enable = true;
-      package = pkgs.vscodium;
+      package = pkgs.vscode;
       extensions = [
         pkgs.vscode-extensions.jnoortheen.nix-ide
         pkgs.vscode-extensions.vscodevim.vim
@@ -17,6 +17,7 @@
         pkgs.vscode-extensions.geequlim.godot-tools
         pkgs.vscode-extensions.ms-vscode.cmake-tools
         pkgs.vscode-extensions.rust-lang.rust-analyzer
+        pkgs.vscode-extensions.tamasfe.even-better-toml
       ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "cpptools";
@@ -53,7 +54,6 @@
           "breadcrumbs.enabled" = false;
           "editor.stickyScroll.enabled" = false;
           "editor.minimap.enabled" = false;
-          #"chat.agentsControl.enabled" = "hidden";
           "terminal.integrated.initialHint" = false;
           "terminal.integrated.stickyScroll.enabled" = false;
           "terminal.integrated.defaultLocation" = "editor";
